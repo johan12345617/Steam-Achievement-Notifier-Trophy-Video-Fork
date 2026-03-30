@@ -183,7 +183,7 @@ const startsan = async (appinfo: AppInfo) => {
     
             linkedgame && log.write("INFO",`${sgpexe ? `"steam-game-path"` : "Linked Game"} executable found for AppID "${appid}": "${linkedgame}"`)
     
-            client.processes.getGameProcesses(appid,sanhelper.steampath,linkedgame ? path.basename(linkedgame) : null).forEach(({ exe,pid }: ProcessInfo) => {
+            client.processes.getGameProcesses(appid,linkedgame ? path.basename(linkedgame) : null).forEach(({ exe,pid }: ProcessInfo) => {
                 processinfo.push({
                     pid,
                     exe
@@ -243,8 +243,7 @@ const startsan = async (appinfo: AppInfo) => {
                             pid: pid,
                             active: isprocessrunning(pid)
                         } as DebugProcessInfo
-                    }),
-                    vdfentry: client.processes.getAppinfoForAppid(appid,sanhelper.steampath)
+                    })
                 })
     
                 if (!num) return

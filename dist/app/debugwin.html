@@ -162,7 +162,6 @@
                 transition: color var(--transition);
                 isolation: isolate;
                 overflow: hidden;
-                cursor: pointer;
             }
 
             .process::after {
@@ -179,56 +178,12 @@
                 z-index: -1;
             }
 
-            .process[copied]::after {
-                --color: limegreen;
-                translate: 0;
-            }
-
-            .process[failed]::after {
-                --color: red;
-                translate: 0;
-            }
-
-            .process:hover {
-                color: black;
-            }
-
-            .process:hover::after {
-                translate: 0;
-            }
-
             code {
                 font-size: 0.7rem;
             }
 
             .process > code {
                 word-break: break-all;
-            }
-
-            .process > img,
-            .process > #copyicon {
-                grid-column-start: 2;
-                grid-row: 1 / span 3;
-                place-self: center;
-                width: 1rem;
-                transition: scale var(--transition);
-            }
-
-            .process:hover > img {
-                scale: 0;
-            }
-
-            .process > #copyicon {
-                background: url("../../icon/clipboard.svg") center / contain no-repeat;
-                width: 1rem;
-                height: 1rem;
-                scale: 0;
-                filter: invert();
-                z-index: 10;
-            }
-
-            .process:hover > #copyicon {
-                scale: 1.5;
             }
         </style>
     </head>

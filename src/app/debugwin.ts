@@ -20,7 +20,7 @@ const getdebuginfo = (debuginfo: DebugInfo) => {
 }
 
 ipcRenderer.on("debuginfoupdated", (event,debuginfo: DebugInfo,reset?: boolean) => {
-    const { processes, vdfentry } = debuginfo
+    const { processes } = debuginfo
     const lbls = getdebuginfo(debuginfo)
 
     if (reset) document.getElementById("processes")!.innerHTML = ""
@@ -64,30 +64,9 @@ ipcRenderer.on("debuginfoupdated", (event,debuginfo: DebugInfo,reset?: boolean) 
                     <code class="value" id="pid_${i}">${pid}</code>
                 </div>
                 <img id="activity_${i}" src="../../icon/dot_${active ? "green" : "red"}.png">
-                <div id="copyicon"></div>
             </div>
         `
         processeselem.insertAdjacentHTML("beforeend",html)
-
-        if (vdfentry) {
-            const processelem = processeselem.querySelector(`.process:has(img#activity_${i})`) as HTMLElement | null
-            if (!processelem) return
-    
-            processelem.onclick = () => {
-                try {
-                    clipboard.writeText(JSON.stringify(vdfentry,null,4))
-                    processelem.setAttribute("copied","")
-                } catch (err) {
-                    processelem.setAttribute("failed","")
-                }
-
-                setTimeout(() => {
-                    for (const attr of (["copied","failed"] as const)) {
-                        processelem.removeAttribute(attr)
-                    }
-                },500)
-            }
-        }
     })
 })
 
