@@ -283,7 +283,11 @@ export const translations = {
                 ssenabled: "Enable",
                 ssmode: "Screenshot Mode",
                 screen: "Screen",
-                window: "Window"
+                window: "Window",
+                rauseemudir: "Save to Emulator Subfolder",
+                ssext: "Screenshot Format",
+                png: "PNG",
+                jpg: "JPG"
             }
         },
         streaming: {
@@ -837,7 +841,9 @@ export const translations = {
         listmode: `Set the behaviour of the <span class="hl">Exclusion</span>/<span class="hl">Inclusion List</span><br><br><span class="ttdesc">• <span class="hl">Exclusion</span>: Only ignore games specified in the list<br>• <span class="hl">Inclusion</span>: Ignore all games except those specified in the list</span>`,
         notifymax: `Set the maximum number of simultaneous on-screen notifications<br><br><span class="ttdesc">Increasing the number of simultaneous on-screen notifications requires more resources and may result in reduced performance</span>`,
         notifyspace: "Set the distance between simultaneous on-screen notifications",
-        audiocooldown: `Set the amount of time subsequent notifications wait before new audio can be played<br><br><span class="ttdesc">Audio will be unaffected if Max Notifications is set to 1</span>`
+        audiocooldown: `Set the amount of time subsequent notifications wait before new audio can be played<br><br><span class="ttdesc">Audio will be unaffected if Max Notifications is set to 1</span>`,
+        rauseemudir: "Save screenshots unlocked via RetroAchievements into a subfolder for the current emulator within the specified Screenshot Path directory",
+        ssext: "Set the file format of screenshots generated via the Screenshot with Notification Overlay option"
     },
     update: {
         updateavailable: "Update available",

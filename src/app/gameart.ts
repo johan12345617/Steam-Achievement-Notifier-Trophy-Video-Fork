@@ -2,19 +2,17 @@ import path from "path"
 import fs from "fs"
 
 export const gameart = {
-    convertICO: async (file: string,tempdir: string,__root: string) => {
+    convertICO: async (file: string,tempdir: string) => {
         if ((file as any) instanceof Error) throw file
         if (path.extname(file) !== ".ico") return file
     
         const iconpng = path.join(tempdir,"gameicon.png")
         if (fs.existsSync(iconpng)) return iconpng
-    
-        const { parse } = await import(`${__root}/node_modules/icojs`)
+
+        const { parseICO } = await import("icojs")
         
         const buffer = fs.readFileSync(file)
-        const layers = await parse(buffer,"image/png")
-        
-        // @ts-ignore
+        const layers = await parseICO(buffer,"image/png")
         const hq = layers.reduce((max,current) => (current.width > max.width) ? current : max)
     
         try {
@@ -107,7 +105,7 @@ export const gameart = {
     },
     getall: async (obj: object,files: string[],temp: string,__root:string) => {
         const icon = await gameart.get({ ...obj, type: "icon" } as GameArt,files).then(res => res).catch(fallback => fallback)
-        const gamearticon = await gameart.convertICO(icon,temp,__root)
+        const gamearticon = await gameart.convertICO(icon,temp)
         const gameartlibhero = await gameart.get({ ...obj, type: "library_hero" } as GameArt,files).then(res => res).catch(fallback => fallback)
         const gameartlogo = await gameart.get({ ...obj, type: "logo" } as GameArt,files).then(res => res).catch(fallback => fallback)
 

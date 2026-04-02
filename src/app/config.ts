@@ -315,6 +315,7 @@ export const sanconfig = {
                 ppsspppath: "",
                 rauser: "",
                 rakey: "",
+                rauseemudir: false,
                 exportachdata: false,
                 colorprofile: "none",
                 replaynotifyshortcut: "CTRL+SHIFT+BACKSPACE",
@@ -327,6 +328,7 @@ export const sanconfig = {
                 notifymax: 1,
                 notifyspace: -25,
                 audiocooldown: 1000,
+                ssext: "png",
                 customisation: {
                     main: {} as Customisation,
                     semi: {} as Customisation,

@@ -16,18 +16,18 @@
         "update:beta": "npx tsc && node ./dist/app/_updatebetarevision.js"
     },
     "repository": {
-        "url": "https://github.com/${author}/${author}"
+        "url": "https://github.com/SteamAchievementNotifier/SteamAchievementNotifier"
     },
     "bugs": {
-        "url": "https://github.com/${author}/${author}/issues"
+        "url": "https://github.com/SteamAchievementNotifier/SteamAchievementNotifier/issues"
     },
-    "homepage": "https://github.com/${author}/${author}#readme",
+    "homepage": "https://github.com/SteamAchievementNotifier/SteamAchievementNotifier#readme",
     "devDependencies": {
         "@types/fs-extra": "^11.0.4",
         "@types/sortablejs": "^1.15.8",
-        "electron": "^35.0.0",
-        "electron-builder": "^24.9.1",
-        "typescript": "^5.2.2"
+        "electron": "^41.1.1",
+        "electron-builder": "^26.8.1",
+        "typescript": "^6.0.2"
     },
     "dependencies": {
         "@electron/asar": "^3.3.1",
@@ -38,7 +38,7 @@
         "electron-store": "8.2.0",
         "electron-updater": "^6.1.7",
         "fs-extra": "^11.2.0",
-        "icojs": "^0.18.0",
+        "icojs": "^0.20.1",
         "jpeg-js": "^0.4.4",
         "sanhelper.rs": "./deps/sanhelper.rs",
         "simple-vdf": "^1.1.1",
@@ -82,8 +82,8 @@
         "publish": [
             {
                 "provider": "github",
-                "owner": "${author}",
-                "repo": "${author}",
+                "owner": "SteamAchievementNotifier",
+                "repo": "SteamAchievementNotifier",
                 "vPrefixedTagName": false
             }
         ],

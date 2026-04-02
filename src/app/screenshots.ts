@@ -257,22 +257,8 @@ export const screenshot = {
             
             // Screenshots are disabled in `ipcMain.on("notify")` event and shouldn't reach here anyway, but added as a logical fallback
             if (!config.get(`customisation.${notify.type}.ssenabled`)) return log.write("INFO",`${type === "ss" ? "Screenshots" : "Notification Images"} disabled for "${notify.type}" type`)
-
-            let rapath = ""
-
-            if (notify.ra) {
-                const key = await new Promise<string | null>(resolve => {
-                    ipcMain.once("sendemu",(event,emu: string | null) => resolve(emu))
-                    ipcMain.emit("getemu")
-                })
-
-                const { language } = await import("./language")
-                const emu = key ? await language.get(key,["settings","ra","content"]) : null
-
-                rapath = path.join("RetroAchievements",emu || "[Unknown Emulator]")
-            }
-
-            const imgpath: string = path.join(config.get(`${type === "ss" ? "ov" : "img"}path`),rapath) as string
+            
+            const imgpath: string = path.join(config.get(`${type === "ss" ? "ov" : "img"}path`),await screenshot.rapath(notify,config.get("rauseemudir"))) as string
             const srcpath: string | null = type === "ss" ? (!ispreview ? screenshot.srcpath(notify.id) : sanhelper.setfilepath("img","santextlogobg.png")) : null
 
             try {
@@ -322,7 +308,11 @@ export const screenshot = {
                     const { width, height } = await screenshot.setnotifybounds({ width: dims.width, height: dims.height },notify.type,dims.offset,"sswin",notify.customisation)
 
                     if (type === "img") {
-                        sswin.win.setSize(Math.round(width * (notify.customisation.scale / 100)),Math.round(height * (notify.customisation.scale / 100)))
+                        const scale = notify.customisation.scale / 100
+                        const bordersize = 50
+                        const glowsize = Math.round(bordersize * scale)
+                        
+                        sswin.win.setSize(Math.round((width * scale) * 1.075) + glowsize,Math.round(height * scale) + glowsize)
                         sswin.win.center()
                     }
 
@@ -359,7 +349,7 @@ export const screenshot = {
                     const regex = /[^a-zA-Z0-9 _()\-\[\]]/g
                     const ssdir = path.join(imgpath,(!notify.istestnotification && info.gamename ? info.gamename : "Steam Achievement Notifier").replace(regex,"").replace(/\.$/,"").trim()).replace(/\\/g,"/")
                     const ssbasename = `${info.title.replace(regex,"").trim()}${type === "img" ? " - Notification" : ""}`
-                    const ssext = ".png"
+                    const ssext: ".png" | ".jpg" = `.${config.get("screenshots") === "notifyimg" ? "png" : config.get("ssext")}`
 
                     let sscounter = 0
                     let ssimg = path.join(ssdir,`${ssbasename}${ssext}`).replace(/\\/g,"/")
@@ -462,5 +452,19 @@ export const screenshot = {
         }
 
         return log.write(sswin && !sswin.timer ? "INFO" : "WARN",`"sswin" for ID ${id} ${sswin && !sswin.timer ? "cleared successfully" : "could not be found"}`)
+    },
+    rapath: async (notify: Notify,rauseemudir: boolean) => {
+        if (!notify.ra) return ""
+        if (!rauseemudir) return "RetroAchievements"
+        
+        const key = await new Promise<string | null>(resolve => {
+            ipcMain.once("sendemu",(event,emu: string | null) => resolve(emu))
+            ipcMain.emit("getemu")
+        })
+
+        const { language } = await import("./language")
+        const emu = key ? await language.get(key,["settings","ra","content"]) : null
+
+        return path.join("RetroAchievements",emu || "[Unknown Emulator]")
     }
 }

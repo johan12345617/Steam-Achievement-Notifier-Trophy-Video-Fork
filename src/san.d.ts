@@ -129,6 +129,7 @@ declare interface Config {
     ppsspppath: string,
     rauser: string,
     rakey: string,
+    rauseemudir: boolean,
     exportachdata: boolean,
     colorprofile: "none" | "srgb" | "display-p3-d65" | "color-spin-gamma24" | "scrgb-linear" | "hdr10",
     replaynotifyshortcut: string,
@@ -141,6 +142,7 @@ declare interface Config {
     notifymax: number,
     notifyspace: number,
     audiocooldown: number,
+    ssext: "png" | "jpg",
     customisation: {
         main: Customisation,
         semi: Customisation,
