@@ -248,7 +248,8 @@ export const translations = {
                 customtriggerusedisplaytime: "Use Display Time",
                 trophymode: "Trophy Mode",
                 notifymax: "Max Notifications",
-                notifyspace: "Notification Spacing"
+                notifyspace: "Notification Spacing",
+                notify1line: "Limit Text to 1 Line"
             }
         },
         games: {
@@ -554,7 +555,9 @@ export const translations = {
                 ],
                 synctheme: "Sync Theme",
                 syncedwith: "Synced with",
-                themeselect: "Selected Theme"
+                themeselect: "Selected Theme",
+                copytheme: "Copy Theme",
+                copythemesub: "Select the notification type(s) to copy the selected Theme to"
             }
         }
     },
@@ -842,8 +845,10 @@ export const translations = {
         notifymax: `Set the maximum number of simultaneous on-screen notifications<br><br><span class="ttdesc">Increasing the number of simultaneous on-screen notifications requires more resources and may result in reduced performance</span>`,
         notifyspace: "Set the distance between simultaneous on-screen notifications",
         audiocooldown: `Set the amount of time subsequent notifications wait before new audio can be played<br><br><span class="ttdesc">Audio will be unaffected if Max Notifications is set to 1</span>`,
-        rauseemudir: "Save screenshots unlocked via RetroAchievements into a subfolder for the current emulator within the specified Screenshot Path directory",
-        ssext: "Set the file format of screenshots generated via the Screenshot with Notification Overlay option"
+        rauseemudir: "Save Screenshots/Notification Images unlocked via RetroAchievements into a subfolder for the current emulator within the specified Screenshot/Image Path directory",
+        ssext: "Set the file format of screenshots generated via the Screenshot with Notification Overlay option",
+        notify1line: `Limit the number of lines of text displayed within all notifications to 1<br><br><span class="ttdesc">Overflowing text strings that cannot fit onto a single line will be truncated with "..."</span>`,
+        copytheme: "Copy the selected Theme to another notification type"
     },
     update: {
         updateavailable: "Update available",

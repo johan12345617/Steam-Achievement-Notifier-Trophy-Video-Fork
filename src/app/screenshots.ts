@@ -338,7 +338,9 @@ export const screenshot = {
                         screenshots,
                         gamearticon: icon,
                         gameartlibhero: libhero,
-                        gameartlogo: logo
+                        gameartlogo: logo,
+                        notify1line: config.get("notify1line"),
+                        ra: notify.ra
                     } as Info,
                     dims
                 })

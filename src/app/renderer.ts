@@ -757,6 +757,56 @@ const opencustomiser = () => {
         })
     }
 
+    document.getElementById("copytheme")!.onclick = async () => {
+        dialog.open({
+            title: await language.get("copytheme",["customiser","theme","content"]),
+            type: "default",
+            icon: sanhelper.setfilepath("icon","copy.svg"),
+            sub: await language.get("copythemesub",["customiser","theme","content"]),
+            addHTML: `
+                <button class="rect" id="copythememain">
+                    <span></span>
+                </button>
+                <button class="rect" id="copythemesemi">
+                    <span>${await language.get("trophysemi")}</span>
+                </button>
+                <button class="rect" id="copythemerare">
+                    <span></span>
+                </button>
+                <button class="rect" id="copythemeplat">
+                    <span></span>
+                </button>
+            `,
+            buttons: [{
+                id: "ok",
+                icon: "",
+                label: await language.get("ok"),
+                click: () => {
+                    const types: NotifyType[] = []
+
+                    for (const elem of document.querySelectorAll(`.addhtml:has(.rect[id^="copytheme"]) > .rect[selected]`)) {
+                        for (const type of (["main","semi","rare","plat"] as NotifyType[])) {
+                            elem.id.endsWith(type) && types.push(elem.id.replace("copytheme","") as NotifyType)
+                        }
+                    }
+                    
+                    console.log(types)
+                }
+            }]
+        })
+
+        for (const elem of document.querySelectorAll(`.addhtml:has(.rect[id^="copytheme"]) > .rect > span`)) {
+            for (const type of (["main","rare","plat"] as const)) {
+                elem.parentElement!.id.endsWith(type) && (elem.textContent = await language.get(`${config.get("trophymode") ? "trophy" : ""}${type}`))
+            }
+        }
+
+        for (const e of document.querySelectorAll(`.addhtml:has(.rect[id^="copytheme"]) > .rect`)) {
+            const elem = e as HTMLElement
+            elem.onclick = () => elem.toggleAttribute("selected",!elem.hasAttribute("selected"))
+        }
+    }
+
     document.getElementById("importtheme")!.onclick = () => usertheme.import()
     document.getElementById("exporttheme")!.onclick = () => usertheme.export()
 

@@ -329,6 +329,7 @@ export const sanconfig = {
                 notifyspace: -25,
                 audiocooldown: 1000,
                 ssext: "png",
+                notify1line: false,
                 customisation: {
                     main: {} as Customisation,
                     semi: {} as Customisation,

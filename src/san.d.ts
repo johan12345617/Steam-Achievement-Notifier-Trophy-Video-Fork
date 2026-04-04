@@ -143,6 +143,7 @@ declare interface Config {
     notifyspace: number,
     audiocooldown: number,
     ssext: "png" | "jpg",
+    notify1line: boolean,
     customisation: {
         main: Customisation,
         semi: Customisation,
@@ -395,6 +396,7 @@ declare interface Info {
     gamearticon: string,
     gameartlibhero: string,
     gameartlogo: string,
+    notify1line: boolean,
     ra?: boolean
 }
 

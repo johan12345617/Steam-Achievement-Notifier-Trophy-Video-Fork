@@ -326,7 +326,8 @@ body[nodecoration] .wrapper#achcontent > span {
     grid-column-start: 2;
 }
 
-#achcontent > span {
+#achcontent > span,
+#header > span {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
@@ -471,6 +472,21 @@ body:not([ss])[ssdisplay][topcenter] .wrapper#bg,
 body:not([ss])[ssdisplay][topright] .wrapper#achcont,
 body:not([ss])[ssdisplay][topright] .wrapper#bg {
     --ssbr: var(--roundness) var(--roundness) 0 0;
+}
+
+body[notify1line] .wrapper#achcontent span#unlockmsg,
+body[notify1line] .wrapper#header span#unlockmsg,
+body[notify1line] .wrapper#achcontent span#title,
+body[notify1line] .wrapper#achcontent span#desc {
+    -webkit-line-clamp: 1;
+    /*
+        `padding-block: calc(0.2rem)...` appears to work correctly when clamped to 2 lines, but not 1.
+        When Settings > Notifications > Limit Text to 1 Line is enabled, removing the `padding-block`
+        and replacing with `line-height: 1.5` appears to give the same spacing without displaying
+        overflowing high/low characters below - e.g.qtypdfghjklb etc.
+    */
+    line-height: 1.5;
+    padding-block: 0;
 }
 
 @keyframes ssslidein {

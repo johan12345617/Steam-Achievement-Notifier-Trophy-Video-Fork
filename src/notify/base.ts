@@ -267,7 +267,7 @@ try {
     document.body.addEventListener("animationend",({ animationName }) => animationName === "animend" && ipcRenderer.send(`animend_${notifyid}`,notifyid))
     
     ipcRenderer.on("notify", async (event,obj: Info,id: number) => {
-        const { info: { type, appid, steam3id, apiname, unlockmsg, title, desc, icon, percent, hidden }, customisation, iswebview, steampath, hqicon, temp, ssalldetails, screenshots, gamearticon, gameartlibhero, gameartlogo, ra } = obj
+        const { info: { type, appid, steam3id, apiname, unlockmsg, title, desc, icon, percent, hidden }, customisation, iswebview, steampath, hqicon, temp, ssalldetails, screenshots, gamearticon, gameartlibhero, gameartlogo, notify1line, ra } = obj
         notifyid = id // Store globally to access in "notifyfinished" IPC event
     
         try {
@@ -276,6 +276,7 @@ try {
     
             const ssdisplay = screenshots === "overlay" && customisation.ssdisplay
             document.body.toggleAttribute("ssdisplay",ssdisplay)
+            document.body.toggleAttribute("notify1line",notify1line)
     
             if (iswebview === "customiser") {
                 document.documentElement.style.scale = `0.${ssdisplay ? "" : 7}5`
