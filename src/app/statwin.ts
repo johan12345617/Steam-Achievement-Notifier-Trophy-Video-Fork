@@ -1,4 +1,4 @@
-import { ipcRenderer } from "electron"
+import { ipcRenderer, webFrame } from "electron"
 import fs from "fs"
 import path from "path"
 import { sanconfig } from "./config"
@@ -6,6 +6,13 @@ import { sanhelper } from "./sanhelper"
 import { log } from "./log"
 import { cssreplacemap, cssrevreplacemap } from "./keycodes"
 import Sortable from "sortablejs"
+
+const zoomlvl = localStorage.getItem("statwinzoomlvl")
+webFrame.setZoomLevel((zoomlvl && JSON.parse(zoomlvl)) || 0)
+
+// Remap "zoom in" to `CTRL+=`, instead of `CTRL+Shift+=`
+window.onkeydown = event => (event.code === "Equal" && (event.ctrlKey || event.metaKey)) ? (event.shiftKey ? event.preventDefault() : webFrame.setZoomLevel(webFrame.getZoomLevel() + 1)) : null
+window.addEventListener("beforeunload",() => localStorage.setItem("statwinzoomlvl",`${webFrame.getZoomLevel()}`))
 
 // Placeholder elements to ignore
 const ignore = [

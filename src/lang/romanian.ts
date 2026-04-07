@@ -248,7 +248,8 @@ export const translations = {
                 customtriggerusedisplaytime: "Folosește Timpul de Afișare",
                 trophymode: "Mod Trofeu",
                 notifymax: "Notificări Maxime", 
-                notifyspace: "Spațierea Notificărilor"
+                notifyspace: "Spațierea Notificărilor",
+                notify1line: "Limitează textul la 1 linie"
             }
         },
         games: {
@@ -283,7 +284,11 @@ export const translations = {
                 ssenabled: "Activare",
                 ssmode: "Mod Captură Ecran",
                 screen: "Ecran",
-                window: "Fereastră"
+                window: "Fereastră",
+                rauseemudir: "Salvează în subfolderul emulatorului",
+                ssext: "Format captură de ecran",
+                png: "PNG",
+                jpg: "JPG"
             }
         },
         streaming: {
@@ -369,7 +374,7 @@ export const translations = {
                 reset: "Resetare Aplicație"
             }
         }
-    },    
+    },
     customiser: {
         preset: {
             title: "Preconfigurare",
@@ -550,7 +555,9 @@ export const translations = {
                 ],
                 synctheme: "Sincronizează tema",
                 syncedwith: "Sincronizat cu",
-                themeselect: "Tema selectată"
+                themeselect: "Tema selectată",
+                copytheme: "Copiază tema",
+                copythemesub: "Selectează tipul/tipurile de notificare în care dorești să copiezi tema selectată"
             }
         }
     },
@@ -655,6 +662,7 @@ export const translations = {
         bgstyle: "Selectați stilul pentru fundalul notificării",
         gradientangle: "Setați unghiul gradientului",
         bgimg: "Încărcați un fișier de imagine care va fi utilizat ca fundal al notificării",
+        bgachicon: "Folosește pictograma realizării deblocate ca fundal pentru notificare",
         bgimgbrightness: "Setați luminozitatea imaginii folosite ca fundal pentru notificare",
         brightness: "Setați luminozitatea artei jocului utilizată ca fundal al notificării",
         blur: "Setați nivelul de estompare aplicat fundalului notificării",
@@ -836,7 +844,11 @@ export const translations = {
         listmode: `Setează comportamentul pentru <span class="hl">Lista de Excludere</span>/<span class="hl">Lista de Incluziune</span><br><br><span class="ttdesc">• <span class="hl">Excludere</span>: Ignoră doar jocurile specificate în listă<br>• <span class="hl">Incluziune</span>: Ignoră toate jocurile, cu excepția celor specificate în listă</span>`,
         notifymax: `Setează numărul maxim de notificări afișate simultan pe ecran<br><br><span class="ttdesc">Creșterea numărului de notificări simultane necesită mai multe resurse și poate duce la performanță redusă</span>`,
         notifyspace: "Setează distanța dintre notificările afișate simultan pe ecran",
-        audiocooldown: `Setează timpul de așteptare înainte ca notificările următoare să poată reda un nou sunet<br><br><span class="ttdesc">Audio nu va fi afectat dacă Notificări Maxime este setat la 1</span>`
+        audiocooldown: `Setează timpul de așteptare înainte ca notificările următoare să poată reda un nou sunet<br><br><span class="ttdesc">Audio nu va fi afectat dacă Notificări Maxime este setat la 1</span>`,
+        rauseemudir: "Salvează capturile de ecran/imaginile de notificare deblocate prin RetroAchievements într-un subfolder pentru emulatorul curent, în directorul specificat pentru calea capturilor de ecran/imaginilor",
+        ssext: "Setează formatul fișierului pentru capturile de ecran generate prin opțiunea Captură de ecran cu suprapunere de notificare",
+        notify1line: `Limitează numărul de linii de text afișate în toate notificările la 1<br><br><span class="ttdesc">Textele care nu încap pe o singură linie vor fi trunchiate cu "..."</span>`,
+        copytheme: "Copiază tema selectată într-un alt tip de notificare"
     },
     update: {
         updateavailable: "Actualizare disponibilă",

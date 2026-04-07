@@ -248,7 +248,8 @@ export const translations = {
                 customtriggerusedisplaytime: "Gebruik Weergavetijd",
                 trophymode: "Trofee-modus",
                 notifymax: "Maximaal aantal meldingen", 
-                notifyspace: "Meldingsafstand"
+                notifyspace: "Meldingsafstand",
+                notify1line: "Beperk tekst tot 1 regel"
             }
         },
         games: {
@@ -283,7 +284,11 @@ export const translations = {
                 ssenabled: "Inschakelen",
                 ssmode: "Schermafbeeldingmodus",
                 screen: "Scherm",
-                window: "Venster"
+                window: "Venster",
+                rauseemudir: "Opslaan in submap van emulator",
+                ssext: "Screenshotformaat",
+                png: "PNG",
+                jpg: "JPG"
             }
         },
         streaming: {
@@ -550,7 +555,9 @@ export const translations = {
                 ],  
                 synctheme: "Thema Synchroniseren",
                 syncedwith: "Gesynchroniseerd met",
-                themeselect: "Geselecteerd thema"
+                themeselect: "Geselecteerd thema",
+                copytheme: "Thema kopiëren",
+                copythemesub: "Selecteer het/de meldingstype(n) om het geselecteerde thema naartoe te kopiëren"
             }
         }
     },
@@ -837,7 +844,11 @@ export const translations = {
         listmode: `Stel het gedrag in van de <span class="hl">Uitsluiting</span>/<span class="hl">Inclusielijst</span><br><br><span class="ttdesc">• <span class="hl">Uitsluiting</span>: Negeer alleen de spellen die in de lijst staan<br>• <span class="hl">Inclusie</span>: Negeer alle spellen behalve die welke in de lijst staan</span>`,
         notifymax: `Stel het maximale aantal meldingen in dat gelijktijdig op het scherm kan worden weergegeven<br><br><span class="ttdesc">Het verhogen van het aantal gelijktijdige meldingen vereist meer systeembronnen en kan leiden tot lagere prestaties</span>`,
         notifyspace: "Stel de afstand tussen gelijktijdige meldingen op het scherm in",
-        audiocooldown: `Stel de wachttijd in voordat volgende meldingen een nieuw geluid kunnen afspelen<br><br><span class="ttdesc">Audio wordt niet beïnvloed als Maximaal aantal meldingen is ingesteld op 1</span>`
+        audiocooldown: `Stel de wachttijd in voordat volgende meldingen een nieuw geluid kunnen afspelen<br><br><span class="ttdesc">Audio wordt niet beïnvloed als Maximaal aantal meldingen is ingesteld op 1</span>`,
+        rauseemudir: "Sla screenshots/meldingsafbeeldingen die zijn ontgrendeld via RetroAchievements op in een submap voor de huidige emulator binnen de opgegeven map voor screenshots/afbeeldingen",
+        ssext: "Stel het bestandsformaat in van screenshots die worden gegenereerd via de optie Screenshot met meldingsoverlay",
+        notify1line: `Beperk het aantal tekstregels dat wordt weergegeven in alle meldingen tot 1<br><br><span class="ttdesc">Overlopende tekst die niet op één regel past, wordt afgekapt met "..."</span>`,
+        copytheme: "Kopieer het geselecteerde thema naar een ander meldingstype"
     },
     update: {
         updateavailable: "Update beschikbaar",

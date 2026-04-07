@@ -248,7 +248,8 @@ export const translations = {
                 customtriggerusedisplaytime: "Použít Čas Zobrazení",
                 trophymode: "Režim trofejí",
                 notifymax: "Maximální počet oznámení", 
-                notifyspace: "Rozestup mezi oznámeními"
+                notifyspace: "Rozestup mezi oznámeními",
+                notify1line: "Omezit text na 1 řádek"
             }
         },
         games: {
@@ -283,7 +284,11 @@ export const translations = {
                 ssenabled: "Povolit",
                 ssmode: "Režim snímku obrazovky",
                 screen: "Obrazovka",
-                window: "Okno"
+                window: "Okno",
+                rauseemudir: "Uložit do podsložky emulátoru",
+                ssext: "Formát snímku obrazovky",
+                png: "PNG",
+                jpg: "JPG"
             }
         },
         streaming: {
@@ -550,7 +555,9 @@ export const translations = {
                 ],
                 synctheme: "Synchronizace tématu",
                 syncedwith: "Synchronizováno s",
-                themeselect: "Vybrané téma"
+                themeselect: "Vybrané téma",
+                copytheme: "Kopírovat motiv",
+                copythemesub: "Vyberte typ(y) oznámení, do kterých chcete zkopírovat vybraný motiv"
             }
         }
     },
@@ -837,7 +844,11 @@ export const translations = {
         listmode: `Nastaví chování pro <span class="hl">Vyloučení</span>/<span class="hl">Seznam zahrnutí</span><br><br><span class="ttdesc">• <span class="hl">Vyloučení</span>: Ignoruje pouze hry uvedené v seznamu<br>• <span class="hl">Zahrnutí</span>: Ignoruje všechny hry kromě těch, které jsou uvedeny v seznamu</span>`,
         notifymax: `Nastaví maximální počet současně zobrazených oznámení na obrazovce<br><br><span class="ttdesc">Zvýšení počtu současně zobrazených oznámení vyžaduje více prostředků a může snížit výkon</span>`,
         notifyspace: "Nastaví vzdálenost mezi současně zobrazenými oznámeními na obrazovce",
-        audiocooldown: `Nastaví dobu, po kterou musí další oznámení čekat, než může být přehrán nový zvuk<br><br><span class="ttdesc">Zvuk nebude ovlivněn, pokud je Maximální počet oznámení nastaven na 1</span>`
+        audiocooldown: `Nastaví dobu, po kterou musí další oznámení čekat, než může být přehrán nový zvuk<br><br><span class="ttdesc">Zvuk nebude ovlivněn, pokud je Maximální počet oznámení nastaven na 1</span>`,
+        rauseemudir: "Uložit snímky obrazovky/obrázky oznámení odemčené prostřednictvím RetroAchievements do podsložky aktuálního emulátoru v rámci zadaného adresáře pro snímky/obrázky",
+        ssext: "Nastavit formát souboru snímků obrazovky generovaných pomocí možnosti snímku obrazovky s překrytím oznámení",
+        notify1line: `Omezit počet řádků textu zobrazovaných ve všech oznámeních na 1<br><br><span class="ttdesc">Přetékající textové řetězce, které se nevejdou na jeden řádek, budou zkráceny pomocí "..."</span>`,
+        copytheme: "Zkopírovat vybraný motiv do jiného typu oznámení"
     },
     update: {
         updateavailable: "Aktualizace je k dispozici",

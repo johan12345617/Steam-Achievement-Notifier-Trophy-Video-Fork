@@ -248,7 +248,8 @@ export const translations = {
                 customtriggerusedisplaytime: "使用顯示時間",
                 trophymode: "獎盃模式",
                 notifymax: "最大通知數量", 
-                notifyspace: "通知間距"
+                notifyspace: "通知間距",
+                notify1line: "將文字限制為一行"
             }
         },
         games: {
@@ -283,7 +284,11 @@ export const translations = {
                 ssenabled: "啟用",
                 ssmode: "截圖模式",
                 screen: "螢幕",
-                window: "視窗"
+                window: "視窗",
+                rauseemudir: "儲存到模擬器子資料夾",
+                ssext: "截圖格式",
+                png: "PNG",
+                jpg: "JPG"
             }
         },
         streaming: {
@@ -550,7 +555,9 @@ export const translations = {
                 ],
                 synctheme: "同步主題",
                 syncedwith: "已同步至",
-                themeselect: "已選擇的主題"
+                themeselect: "已選擇的主題",
+                copytheme: "複製主題",
+                copythemesub: "選擇要將所選主題複製到的通知類型"
             }
         }
     },
@@ -837,7 +844,11 @@ export const translations = {
         listmode: `設定 <span class="hl">排除</span>/<span class="hl">包含清單</span> 的行為<br><br><span class="ttdesc">• <span class="hl">排除</span>：只忽略清單中指定的遊戲<br>• <span class="hl">包含</span>：忽略所有遊戲，除了清單中指定的遊戲</span>`,
         notifymax: `設定同時在螢幕上顯示的最大通知數量<br><br><span class="ttdesc">增加同時顯示的通知數量會需要更多資源，並可能導致效能降低</span>`,
         notifyspace: "設定同時在螢幕上顯示的通知之間的距離",
-        audiocooldown: `設定後續通知在播放新音訊前需等待的時間<br><br><span class="ttdesc">若最大通知數量設為 1，音訊將不受影響</span>`
+        audiocooldown: `設定後續通知在播放新音訊前需等待的時間<br><br><span class="ttdesc">若最大通知數量設為 1，音訊將不受影響</span>`,
+        rauseemudir: "將透過 RetroAchievements 解鎖的截圖/通知影像儲存到指定截圖/影像路徑目錄中當前模擬器的子資料夾內",
+        ssext: "設定透過 Screenshot with Notification Overlay 選項產生的截圖檔案格式",
+        notify1line: `將所有通知中顯示的文字行數限制為 1<br><br><span class="ttdesc">無法容納於單行的文字字串將會以 "..." 截斷</span>`,
+        copytheme: "將所選主題複製到另一種通知類型"
     },
     update: {
         updateavailable: "有可用更新",

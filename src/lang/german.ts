@@ -248,7 +248,8 @@ export const translations = {
                 customtriggerusedisplaytime: "Anzeigezeit verwenden",
                 trophymode: "Trophäenmodus",
                 notifymax: "Maximale Benachrichtigungen", 
-                notifyspace: "Benachrichtigungsabstand"
+                notifyspace: "Benachrichtigungsabstand",
+                notify1line: "Text auf 1 Zeile begrenzen"
             }
         },
         games: {
@@ -283,7 +284,11 @@ export const translations = {
                 ssenabled: "Aktivieren",
                 ssmode: "Screenshot-Modus",
                 screen: "Bildschirm",
-                window: "Fenster"
+                window: "Fenster",
+                rauseemudir: "Im Emulator-Unterordner speichern",
+                ssext: "Screenshot-Format",
+                png: "PNG",
+                jpg: "JPG"
             }
         },
         streaming: {
@@ -550,7 +555,9 @@ export const translations = {
                 ],
                 synctheme: "Design synchronisieren",
                 syncedwith: "Synchronisiert mit",
-                themeselect: "Ausgewähltes Design"
+                themeselect: "Ausgewähltes Design",
+                copytheme: "Design kopieren",
+                copythemesub: "Wählen Sie die Benachrichtigungstyp(en), in die das ausgewählte Design kopiert werden soll"
             }
         }        
     },
@@ -837,7 +844,11 @@ export const translations = {
         listmode: `Lege das Verhalten der <span class="hl">Ausschlussliste</span>/<span class="hl">Einschlussliste</span> fest<br><br><span class="ttdesc">• <span class="hl">Ausschluss</span>: Ignoriere nur Spiele, die in der Liste angegeben sind<br>• <span class="hl">Einschluss</span>: Ignoriere alle Spiele außer denen, die in der Liste angegeben sind</span>`,
         notifymax: `Lege die maximale Anzahl gleichzeitiger Benachrichtigungen auf dem Bildschirm fest<br><br><span class="ttdesc">Das Erhöhen der Anzahl gleichzeitiger Benachrichtigungen erfordert mehr Ressourcen und kann die Leistung beeinträchtigen</span>`,
         notifyspace: "Lege den Abstand zwischen gleichzeitigen Benachrichtigungen auf dem Bildschirm fest",
-        audiocooldown: `Lege fest, wie lange nachfolgende Benachrichtigungen warten müssen, bevor neuer Ton abgespielt werden kann<br><br><span class="ttdesc">Audio wird nicht beeinflusst, wenn Maximale Benachrichtigungen auf 1 gesetzt ist</span>`
+        audiocooldown: `Lege fest, wie lange nachfolgende Benachrichtigungen warten müssen, bevor neuer Ton abgespielt werden kann<br><br><span class="ttdesc">Audio wird nicht beeinflusst, wenn Maximale Benachrichtigungen auf 1 gesetzt ist</span>`,
+        rauseemudir: "Screenshots/Benachrichtigungsbilder, die über RetroAchievements freigeschaltet wurden, in einem Unterordner für den aktuellen Emulator innerhalb des angegebenen Screenshot-/Bildpfadverzeichnisses speichern",
+        ssext: "Das Dateiformat für Screenshots festlegen, die über die Option Screenshot mit Benachrichtigungs-Overlay erstellt werden",
+        notify1line: `Die Anzahl der in allen Benachrichtigungen angezeigten Textzeilen auf 1 begrenzen<br><br><span class="ttdesc">Überlaufende Textzeichenfolgen, die nicht in eine einzelne Zeile passen, werden mit "..." gekürzt</span>`,
+        copytheme: "Das ausgewählte Design in einen anderen Benachrichtigungstyp kopieren"
     },
     update: {
         updateavailable: "Update verfügbar",

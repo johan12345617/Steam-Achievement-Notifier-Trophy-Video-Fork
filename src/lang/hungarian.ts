@@ -248,7 +248,8 @@ export const translations = {
                 customtriggerusedisplaytime: "Megjelenítési Idő Használata",
                 trophymode: "Trófea mód",
                 notifymax: "Maximális értesítések", 
-                notifyspace: "Értesítések közötti távolság"
+                notifyspace: "Értesítések közötti távolság",
+                notify1line: "Szöveg korlátozása 1 sorra"
             }
         },
         games: {
@@ -283,7 +284,11 @@ export const translations = {
                 ssenabled: "Engedélyezés",
                 ssmode: "Képernyőképfogó mód",
                 screen: "Képernyő",
-                window: "Ablak"
+                window: "Ablak",
+                rauseemudir: "Mentés az emulátor almappájába",
+                ssext: "Képernyőkép formátum",
+                png: "PNG",
+                jpg: "JPG"
             }
         },
         streaming: {
@@ -550,7 +555,9 @@ export const translations = {
                 ],
                 synctheme: "Téma szinkronizálása",
                 syncedwith: "Szinkronizálva ezzel:",
-                themeselect: "Kiválasztott téma"
+                themeselect: "Kiválasztott téma",
+                copytheme: "Téma másolása",
+                copythemesub: "Válaszd ki az értesítés típusát/típusait, ahová a kiválasztott témát másolni szeretnéd"
             }
         }
     },
@@ -837,7 +844,11 @@ export const translations = {
         listmode: `A <span class="hl">Kizárási lista</span>/<span class="hl">Belefoglalási lista</span> működésének beállítása<br><br><span class="ttdesc">• <span class="hl">Kizárás</span>: Csak a listában szereplő játékokat hagyja figyelmen kívül<br>• <span class="hl">Belefoglalás</span>: Minden játékot figyelmen kívül hagy, kivéve a listában szereplőket</span>`,
         notifymax: `A képernyőn egyszerre megjelenő értesítések maximális számának beállítása<br><br><span class="ttdesc">A több egyidejű értesítés több erőforrást igényelhet, és ronthatja a teljesítményt</span>`,
         notifyspace: "Az egyszerre megjelenő értesítések közötti távolság beállítása",
-        audiocooldown: `Annak az időnek a beállítása, amennyit a következő értesítéseknek várniuk kell, mielőtt új hang lejátszható<br><br><span class="ttdesc">A hangot nem érinti, ha a Maximális értesítések értéke 1</span>`
+        audiocooldown: `Annak az időnek a beállítása, amennyit a következő értesítéseknek várniuk kell, mielőtt új hang lejátszható<br><br><span class="ttdesc">A hangot nem érinti, ha a Maximális értesítések értéke 1</span>`,
+        rauseemudir: "A RetroAchievements által feloldott képernyőképek/értesítési képek mentése egy almappába az aktuális emulátor számára a megadott Képernyőkép/Kép elérési út könyvtárán belül",
+        ssext: "Állítsd be a képernyőképek fájlformátumát, amelyeket a Képernyőkép értesítési átfedéssel opció hoz létre",
+        notify1line: `Korlátozza az összes értesítésben megjelenített szövegsorok számát 1-re<br><br><span class="ttdesc">Azok a szövegek, amelyek nem férnek el egy sorban, "..." jellel lesznek levágva</span>`,
+        copytheme: "A kiválasztott téma másolása egy másik értesítési típushoz"
     },
     update: {
         updateavailable: "Frissítés elérhető",

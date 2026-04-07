@@ -248,7 +248,8 @@ export const translations = {
                 customtriggerusedisplaytime: "Gösterim Süresini Kullan",
                 trophymode: "Kupa Modu",
                 notifymax: "Maksimum Bildirim Sayısı", 
-                notifyspace: "Bildirim Aralığı"
+                notifyspace: "Bildirim Aralığı",
+                notify1line: "Metni 1 satırla sınırla"
             }
         },
         games: {
@@ -283,7 +284,11 @@ export const translations = {
                 ssenabled: "Etkinleştir",
                 ssmode: "Ekran Görüntüsü Modu",
                 screen: "Ekran",
-                window: "Pencere"
+                window: "Pencere",
+                rauseemudir: "Emülatör alt klasörüne kaydet",
+                ssext: "Ekran görüntüsü formatı",
+                png: "PNG",
+                jpg: "JPG"
             }
         },
         streaming: {
@@ -550,7 +555,9 @@ export const translations = {
                 ],
                 synctheme: "Tema Senkronizasyonu",
                 syncedwith: "Şu ile senkronize",
-                themeselect: "Seçilen Tema"
+                themeselect: "Seçilen Tema",
+                copytheme: "Temayı kopyala",
+                copythemesub: "Seçilen temanın kopyalanacağı bildirim tür(ler)ini seçin"
             }
         }
     },
@@ -837,7 +844,11 @@ export const translations = {
         listmode: `<span class="hl">Hariç Tutma</span>/<span class="hl">Dahil Etme Listesi</span> davranışını ayarla<br><br><span class="ttdesc">• <span class="hl">Hariç Tutma</span>: Yalnızca listede belirtilen oyunları yoksay<br>• <span class="hl">Dahil Etme</span>: Listede belirtilen oyunlar dışındaki tüm oyunları yoksay</span>`,
         notifymax: `Ekranda aynı anda gösterilebilecek maksimum bildirim sayısını ayarla<br><br><span class="ttdesc">Aynı anda gösterilen bildirim sayısını artırmak daha fazla kaynak kullanır ve performansın düşmesine neden olabilir</span>`,
         notifyspace: "Ekranda aynı anda gösterilen bildirimler arasındaki mesafeyi ayarla",
-        audiocooldown: `Yeni bir ses çalınmadan önce sonraki bildirimlerin beklemesi gereken süreyi ayarla<br><br><span class="ttdesc">Maksimum Bildirim Sayısı 1 olarak ayarlanmışsa ses etkilenmez</span>`
+        audiocooldown: `Yeni bir ses çalınmadan önce sonraki bildirimlerin beklemesi gereken süreyi ayarla<br><br><span class="ttdesc">Maksimum Bildirim Sayısı 1 olarak ayarlanmışsa ses etkilenmez</span>`,
+        rauseemudir: "RetroAchievements aracılığıyla açılan ekran görüntülerini/bildirim görsellerini, belirtilen Ekran Görüntüsü/Görsel Yolu dizini içinde mevcut emülatör için bir alt klasöre kaydet",
+        ssext: "Screenshot with Notification Overlay seçeneği ile oluşturulan ekran görüntülerinin dosya formatını ayarla",
+        notify1line: `Tüm bildirimlerde görüntülenen metin satırı sayısını 1 ile sınırla<br><br><span class="ttdesc">Tek bir satıra sığmayan metinler "..." ile kısaltılacaktır</span>`,
+        copytheme: "Seçilen temayı başka bir bildirim türüne kopyala"
     },
     update: {
         updateavailable: "Güncelleme mevcut",

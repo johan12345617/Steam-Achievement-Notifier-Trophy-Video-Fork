@@ -248,7 +248,8 @@ export const translations = {
                 customtriggerusedisplaytime: "Użyj Czasu Wyświetlania",
                 trophymode: "Tryb trofeów",
                 notifymax: "Maksymalna liczba powiadomień", 
-                notifyspace: "Odstęp między powiadomieniami"
+                notifyspace: "Odstęp między powiadomieniami",
+                notify1line: "Ogranicz tekst do 1 linii"
             }
         },
         games: {
@@ -283,7 +284,11 @@ export const translations = {
                 ssenabled: "Włącz",
                 ssmode: "Tryb zrzutu ekranu",
                 screen: "Ekran",
-                window: "Okno"
+                window: "Okno",
+                rauseemudir: "Zapisz w podfolderze emulatora",
+                ssext: "Format zrzutu ekranu",
+                png: "PNG",
+                jpg: "JPG"
             }
         },
         streaming: {
@@ -550,7 +555,9 @@ export const translations = {
                 ],
                 synctheme: "Synchronizuj motyw",
                 syncedwith: "Synchronizowane z",
-                themeselect: "Wybrany motyw"
+                themeselect: "Wybrany motyw",
+                copytheme: "Kopiuj motyw",
+                copythemesub: "Wybierz typ(y) powiadomień, do których chcesz skopiować wybrany motyw"
             }
         }
     },
@@ -837,7 +844,11 @@ export const translations = {
         listmode: `Ustaw zachowanie <span class="hl">Listy wykluczeń</span>/<span class="hl">Listy dołączania</span><br><br><span class="ttdesc">• <span class="hl">Wykluczenie</span>: Ignoruj tylko gry określone na liście<br>• <span class="hl">Dołączenie</span>: Ignoruj wszystkie gry oprócz tych określonych na liście</span>`,
         notifymax: `Ustaw maksymalną liczbę jednoczesnych powiadomień na ekranie<br><br><span class="ttdesc">Zwiększenie liczby jednoczesnych powiadomień wymaga więcej zasobów i może obniżyć wydajność</span>`,
         notifyspace: "Ustaw odstęp między jednoczesnymi powiadomieniami na ekranie",
-        audiocooldown: `Ustaw czas oczekiwania, zanim kolejne powiadomienia będą mogły odtworzyć nowy dźwięk<br><br><span class="ttdesc">Dźwięk nie będzie mieć wpływu, jeśli Maksymalna liczba powiadomień jest ustawiona na 1</span>`
+        audiocooldown: `Ustaw czas oczekiwania, zanim kolejne powiadomienia będą mogły odtworzyć nowy dźwięk<br><br><span class="ttdesc">Dźwięk nie będzie mieć wpływu, jeśli Maksymalna liczba powiadomień jest ustawiona na 1</span>`,
+        rauseemudir: "Zapisz zrzuty ekranu/obrazy powiadomień odblokowane przez RetroAchievements w podfolderze dla bieżącego emulatora w określonym katalogu ścieżki zrzutów ekranu/obrazów",
+        ssext: "Ustaw format pliku zrzutów ekranu generowanych przez opcję Zrzut ekranu z nakładką powiadomienia",
+        notify1line: `Ogranicza liczbę linii tekstu wyświetlanych we wszystkich powiadomieniach do 1<br><br><span class="ttdesc">Teksty, które nie mieszczą się w jednej linii, zostaną skrócone do "..."</span>`,
+        copytheme: "Kopiuje wybrany motyw do innego typu powiadomienia"
     },
     update: {
         updateavailable: "Dostępna aktualizacja",

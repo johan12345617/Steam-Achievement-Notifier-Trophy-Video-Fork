@@ -248,7 +248,8 @@ export const translations = {
                 customtriggerusedisplaytime: "Sử Dụng Thời Gian Hiển Thị",
                 trophymode: "Chế độ Cúp",
                 notifymax: "Số lượng thông báo tối đa", 
-                notifyspace: "Khoảng cách giữa các thông báo"
+                notifyspace: "Khoảng cách giữa các thông báo",
+                notify1line: "Giới hạn văn bản trong 1 dòng"
             }
         },
         games: {
@@ -283,7 +284,11 @@ export const translations = {
                 ssenabled: "Bật",
                 ssmode: "Chế độ Chụp màn hình",
                 screen: "Màn hình",
-                window: "Cửa sổ"
+                window: "Cửa sổ",
+                rauseemudir: "Lưu vào thư mục con của trình giả lập",
+                ssext: "Định dạng ảnh chụp màn hình",
+                png: "PNG",
+                jpg: "JPG"
             }
         },
         streaming: {
@@ -550,7 +555,9 @@ export const translations = {
                 ],
                 synctheme: "Đồng bộ chủ đề",
                 syncedwith: "Đã đồng bộ với",
-                themeselect: "Chủ đề đã chọn"
+                themeselect: "Chủ đề đã chọn",
+                copytheme: "Sao chép giao diện",
+                copythemesub: "Chọn (các) loại thông báo để sao chép giao diện đã chọn sang"
             }
         }
     },
@@ -837,7 +844,11 @@ export const translations = {
         listmode: `Đặt hành vi của <span class="hl">Danh sách loại trừ</span>/<span class="hl">Danh sách bao gồm</span><br><br><span class="ttdesc">• <span class="hl">Loại trừ</span>: Chỉ bỏ qua các trò chơi được chỉ định trong danh sách<br>• <span class="hl">Bao gồm</span>: Bỏ qua tất cả các trò chơi ngoại trừ những trò được chỉ định trong danh sách</span>`,
         notifymax: `Đặt số lượng thông báo tối đa có thể hiển thị cùng lúc trên màn hình<br><br><span class="ttdesc">Tăng số lượng thông báo hiển thị cùng lúc sẽ tiêu tốn nhiều tài nguyên hơn và có thể làm giảm hiệu suất</span>`,
         notifyspace: "Đặt khoảng cách giữa các thông báo hiển thị cùng lúc trên màn hình",
-        audiocooldown: `Đặt khoảng thời gian chờ trước khi thông báo tiếp theo có thể phát âm thanh mới<br><br><span class="ttdesc">Âm thanh sẽ không bị ảnh hưởng nếu Số lượng thông báo tối đa được đặt là 1</span>`
+        audiocooldown: `Đặt khoảng thời gian chờ trước khi thông báo tiếp theo có thể phát âm thanh mới<br><br><span class="ttdesc">Âm thanh sẽ không bị ảnh hưởng nếu Số lượng thông báo tối đa được đặt là 1</span>`,
+        rauseemudir: "Lưu ảnh chụp màn hình/hình ảnh thông báo mở khóa qua RetroAchievements vào thư mục con cho trình giả lập hiện tại trong thư mục đường dẫn ảnh/chụp màn hình đã chỉ định",
+        ssext: "Đặt định dạng tệp của ảnh chụp màn hình được tạo thông qua tùy chọn Screenshot with Notification Overlay",
+        notify1line: `Giới hạn số dòng văn bản hiển thị trong tất cả thông báo xuống 1<br><br><span class="ttdesc">Các chuỗi văn bản không thể vừa trong một dòng sẽ bị cắt ngắn bằng "..."</span>`,
+        copytheme: "Sao chép giao diện đã chọn sang loại thông báo khác"
     },
     update: {
         updateavailable: "Có bản cập nhật mới",

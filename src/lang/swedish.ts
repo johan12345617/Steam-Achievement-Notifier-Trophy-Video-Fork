@@ -248,7 +248,8 @@ export const translations = {
                 customtriggerusedisplaytime: "Använd Visningstid",
                 trophymode: "Trofyläge",
                 notifymax: "Maximalt antal aviseringar", 
-                notifyspace: "Aviseringsavstånd"
+                notifyspace: "Aviseringsavstånd",
+                notify1line: "Begränsa text till 1 rad"
             }
         },
         games: {
@@ -283,7 +284,11 @@ export const translations = {
                 ssenabled: "Aktivera",
                 ssmode: "Skärmdumpsläge",
                 screen: "Skärm",
-                window: "Fönster"
+                window: "Fönster",
+                rauseemudir: "Spara i emulatorns undermapp",
+                ssext: "Skärmbildsformat",
+                png: "PNG",
+                jpg: "JPG"
             }
         },
         streaming: {
@@ -550,7 +555,9 @@ export const translations = {
                 ],
                 synctheme: "Synkronisera tema",
                 syncedwith: "Synkroniserad med",
-                themeselect: "Valt tema"
+                themeselect: "Valt tema",
+                copytheme: "Kopiera tema",
+                copythemesub: "Välj vilka aviseringstyper som det valda temat ska kopieras till"
             }
         }
     },
@@ -837,7 +844,11 @@ export const translations = {
         listmode: `Ställ in beteendet för <span class="hl">Exklusionslista</span>/<span class="hl">Inklusionslista</span><br><br><span class="ttdesc">• <span class="hl">Exkludering</span>: Ignorera endast de spel som anges i listan<br>• <span class="hl">Inkludering</span>: Ignorera alla spel förutom de som anges i listan</span>`,
         notifymax: `Ställ in det maximala antalet aviseringar som kan visas samtidigt på skärmen<br><br><span class="ttdesc">Att öka antalet samtidiga aviseringar kräver mer resurser och kan påverka prestandan</span>`,
         notifyspace: "Ställ in avståndet mellan samtidiga aviseringar på skärmen",
-        audiocooldown: `Ställ in hur lång tid efterföljande aviseringar väntar innan nytt ljud kan spelas upp<br><br><span class="ttdesc">Ljudet påverkas inte om Maximalt antal aviseringar är satt till 1</span>`
+        audiocooldown: `Ställ in hur lång tid efterföljande aviseringar väntar innan nytt ljud kan spelas upp<br><br><span class="ttdesc">Ljudet påverkas inte om Maximalt antal aviseringar är satt till 1</span>`,
+        rauseemudir: "Spara skärmbilder/aviseringsbilder upplåsta via RetroAchievements i en undermapp för den aktuella emulatorn inom den angivna katalogen för skärmbilder/bilder",
+        ssext: "Ange filformat för skärmbilder som genereras via alternativet Screenshot with Notification Overlay",
+        notify1line: `Begränsa antalet textrader som visas i alla aviseringar till 1<br><br><span class="ttdesc">Textsträngar som inte får plats på en enda rad kommer att trunkeras med "..."</span>`,
+        copytheme: "Kopiera det valda temat till en annan aviseringstyp"
     },
     update: {
         updateavailable: "Uppdatering tillgänglig",

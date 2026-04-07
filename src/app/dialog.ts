@@ -499,7 +499,7 @@ export const dialog = {
             btn.id = !isTheme ? `${id}btn` : `usertheme${id}`
             btn.onclick = (event: Event) => !isTheme ? (click && click()) : usertheme.set(id as number,event)
 
-            btn.style.setProperty("--icon",`url('${fs.existsSync(icon) ? icon : "../../img/sanlogotrophy.svg"}')`)
+            btn.style.setProperty("--icon",`url('${fs.existsSync(path.resolve(__dirname,icon)) ? path.resolve(__dirname,icon).replace(/\\/g,"/") : fs.existsSync(icon) ? icon : "../../img/sanlogotrophy.svg"}')`)
 
             if (menutype === "default") {
                 btn.textContent = label

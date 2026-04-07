@@ -248,7 +248,8 @@ export const translations = {
                 customtriggerusedisplaytime: "Brug Visningstid",
                 trophymode: "Trofætilstand",
                 notifymax: "Maksimalt antal notifikationer", 
-                notifyspace: "Afstand mellem notifikationer"
+                notifyspace: "Afstand mellem notifikationer",
+                notify1line: "Begræns tekst til 1 linje"
             }
         },
         games: {
@@ -283,7 +284,11 @@ export const translations = {
                 ssenabled: "Aktiver",
                 ssmode: "Skærmbilledetilstand",
                 screen: "Skærm",
-                window: "Vindue"
+                window: "Vindue",
+                rauseemudir: "Gem i emulatorens undermappe",
+                ssext: "Skærmbilledeformat",
+                png: "PNG",
+                jpg: "JPG"
             }
         },
         streaming: {
@@ -550,7 +555,9 @@ export const translations = {
                 ],
                 synctheme: "Synkroniser tema",
                 syncedwith: "Synkroniseret med",
-                themeselect: "Valgt tema"
+                themeselect: "Valgt tema",
+                copytheme: "Kopiér tema",
+                copythemesub: "Vælg den/de notifikationstype(r), som det valgte tema skal kopieres til"
             }
         }
     },
@@ -837,7 +844,11 @@ export const translations = {
         listmode: `Angiver adfærden for <span class="hl">Ekskludering</span>/<span class="hl">Inklusionsliste</span><br><br><span class="ttdesc">• <span class="hl">Ekskludering</span>: Ignorer kun de spil, der er angivet på listen<br>• <span class="hl">Inkludering</span>: Ignorer alle spil undtagen dem, der er angivet på listen</span>`,
         notifymax: `Indstil det maksimale antal notifikationer, der kan vises samtidigt på skærmen<br><br><span class="ttdesc">Øgning af antallet af samtidige notifikationer kræver flere ressourcer og kan reducere ydeevnen</span>`,
         notifyspace: "Indstil afstanden mellem samtidige notifikationer på skærmen",
-        audiocooldown: `Indstil hvor lang tid efterfølgende notifikationer skal vente, før ny lyd kan afspilles<br><br><span class="ttdesc">Lyden påvirkes ikke, hvis Maksimalt antal notifikationer er sat til 1</span>`
+        audiocooldown: `Indstil hvor lang tid efterfølgende notifikationer skal vente, før ny lyd kan afspilles<br><br><span class="ttdesc">Lyden påvirkes ikke, hvis Maksimalt antal notifikationer er sat til 1</span>`,
+        rauseemudir: "Gem skærmbilleder/notifikationsbilleder, der er låst op via RetroAchievements, i en undermappe for den aktuelle emulator inden for den angivne mappe til skærmbilleder/billeder",
+        ssext: "Angiv filformatet for skærmbilleder, der genereres via indstillingen for skærmbillede med notifikationsoverlay",
+        notify1line: `Begræns antallet af tekstlinjer, der vises i alle notifikationer, til 1<br><br><span class="ttdesc">Tekststrenge, der ikke kan være på én linje, vil blive afkortet med "..."</span>`,
+        copytheme: "Kopiér det valgte tema til en anden notifikationstype"
     },
     update: {
         updateavailable: "Opdatering tilgængelig",

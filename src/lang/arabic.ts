@@ -248,7 +248,8 @@ export const translations = {
                 customtriggerusedisplaytime: "استخدم وقت العرض",
                 trophymode: "وضع الجوائز",
                 notifymax: "أقصى عدد للإشعارات",
-                notifyspace: "مسافة الإشعارات"
+                notifyspace: "مسافة الإشعارات",
+                notify1line: "تقييد النص إلى سطر واحد"
             }
         },
         games: {
@@ -283,7 +284,11 @@ export const translations = {
                 ssenabled: "تمكين",
                 ssmode: "وضع لقطة الشاشة",
                 screen: "الشاشة",
-                window: "النافذة"
+                window: "النافذة",
+                rauseemudir: "الحفظ في مجلد فرعي للمحاكي",
+                ssext: "تنسيق لقطة الشاشة",
+                png: "PNG",
+                jpg: "JPG"
             }
         },
         streaming: {
@@ -550,7 +555,9 @@ export const translations = {
                 ],
                 synctheme: "مزامنة الثيم",
                 syncedwith: "مزامن مع",
-                themeselect: "الثيم المختار"
+                themeselect: "الثيم المختار",
+                copytheme: "نسخ السمة",
+                copythemesub: "حدد نوع (أنواع) الإشعارات لنسخ السمة المحددة إليها"
             }
         }
     },
@@ -837,7 +844,11 @@ export const translations = {
         listmode: `تعيين سلوك <span class="hl">قائمة الاستبعاد</span>/<span class="hl">قائمة الإدراج</span><br><br><span class="ttdesc">• <span class="hl">الاستبعاد</span>: تجاهل فقط الألعاب المحددة في القائمة<br>• <span class="hl">الإدراج</span>: تجاهل جميع الألعاب باستثناء تلك المحددة في القائمة</span>`,
         notifymax: `تعيين الحد الأقصى لعدد الإشعارات المتزامنة على الشاشة<br><br><span class="ttdesc">زيادة عدد الإشعارات المتزامنة على الشاشة يتطلب المزيد من الموارد وقد يؤدي إلى تقليل الأداء</span>`,
         notifyspace: "تعيين المسافة بين الإشعارات المتزامنة على الشاشة",
-        audiocooldown: `تعيين مقدار الوقت الذي تنتظره الإشعارات التالية قبل أن يتم تشغيل صوت جديد<br><br><span class="ttdesc">لن يتأثر الصوت إذا تم تعيين عدد الإشعارات المتزامنة إلى 1</span>`
+        audiocooldown: `تعيين مقدار الوقت الذي تنتظره الإشعارات التالية قبل أن يتم تشغيل صوت جديد<br><br><span class="ttdesc">لن يتأثر الصوت إذا تم تعيين عدد الإشعارات المتزامنة إلى 1</span>`,
+        rauseemudir: "احفظ لقطات الشاشة/صور الإشعارات التي تم فتحها عبر RetroAchievements في مجلد فرعي للمحاكي الحالي داخل دليل مسار لقطات الشاشة/الصور المحدد",
+        ssext: "حدد تنسيق الملف للقطات الشاشة التي يتم إنشاؤها عبر خيار لقطة الشاشة مع تراكب الإشعارات",
+        notify1line: `قم بتقييد عدد أسطر النص المعروضة داخل جميع الإشعارات إلى سطر واحد<br><br><span class="ttdesc">سيتم اقتطاع سلاسل النصوص الزائدة التي لا يمكن أن تتسع في سطر واحد باستخدام "..."</span>`,
+        copytheme: "انسخ السمة المحددة إلى نوع إشعار آخر"
     },
     update: {
         updateavailable: "تحديث متاح",

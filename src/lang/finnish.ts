@@ -248,7 +248,8 @@ export const translations = {
                 customtriggerusedisplaytime: "Käytä Näyttöaikaa",
                 trophymode: "Trophymoodi",
                 notifymax: "Ilmoitusten enimmäismäärä", 
-                notifyspace: "Ilmoitusten väli"
+                notifyspace: "Ilmoitusten väli",
+                notify1line: "Rajoita teksti yhteen riviin"
             }
         },
         games: {
@@ -283,7 +284,11 @@ export const translations = {
                 ssenabled: "Ota käyttöön",
                 ssmode: "Näyttökuvatila",
                 screen: "Näyttö",
-                window: "Ikkuna"
+                window: "Ikkuna",
+                rauseemudir: "Tallenna emulaattorin alikansioon",
+                ssext: "Kuvakaappauksen muoto",
+                png: "PNG",
+                jpg: "JPG"
             }
         },
         streaming: {
@@ -550,7 +555,9 @@ export const translations = {
                 ],
                 synctheme: "Synkronoi teema",
                 syncedwith: "Synkronoitu kanssa",
-                themeselect: "Valittu teema"
+                themeselect: "Valittu teema",
+                copytheme: "Kopioi teema",
+                copythemesub: "Valitse ilmoitustyyppi(t), joihin valittu teema kopioidaan"
             }
         }
     },
@@ -837,7 +844,11 @@ export const translations = {
         listmode: `Määrittää <span class="hl">Poissulkeminen</span>/<span class="hl">Sisällysluettelo</span> -toiminnan<br><br><span class="ttdesc">• <span class="hl">Poissulkeminen</span>: Ohittaa vain luetteloon merkityt pelit<br>• <span class="hl">Sisällyttäminen</span>: Ohittaa kaikki pelit paitsi ne, jotka on lisätty luetteloon</span>`,
         notifymax: `Määrittää, kuinka monta ilmoitusta voi näkyä samanaikaisesti näytöllä<br><br><span class="ttdesc">Samanaikaisten ilmoitusten määrän kasvattaminen vaatii enemmän resursseja ja voi heikentää suorituskykyä</span>`,
         notifyspace: "Määrittää etäisyyden samanaikaisesti näkyvien ilmoitusten välillä näytöllä",
-        audiocooldown: `Määrittää ajan, jonka seuraavat ilmoitukset odottavat ennen kuin uusi ääni voidaan toistaa<br><br><span class="ttdesc">Ääni ei muutu, jos Ilmoitusten enimmäismäärä on asetettu arvoon 1</span>`
+        audiocooldown: `Määrittää ajan, jonka seuraavat ilmoitukset odottavat ennen kuin uusi ääni voidaan toistaa<br><br><span class="ttdesc">Ääni ei muutu, jos Ilmoitusten enimmäismäärä on asetettu arvoon 1</span>`,
+        rauseemudir: "Tallenna kuvakaappaukset/ilmoituskuvat, jotka on avattu RetroAchievementsin kautta, nykyisen emulaattorin alikansioon määritellyn kuvakaappaus-/kuvapolun hakemiston sisällä",
+        ssext: "Määritä tiedostomuoto kuvakaappauksille, jotka luodaan kuvakaappaus ilmoituspeitteellä -asetuksella",
+        notify1line: `Rajoita kaikissa ilmoituksissa näytettävien tekstirivien määrä yhteen<br><br><span class="ttdesc">Yhteen riviin mahtumattomat tekstit katkaistaan merkillä "..."</span>`,
+        copytheme: "Kopioi valittu teema toiseen ilmoitustyyppiin"
     },
     update: {
         updateavailable: "Päivitys saatavilla",

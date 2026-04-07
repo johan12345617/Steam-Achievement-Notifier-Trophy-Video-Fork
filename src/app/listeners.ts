@@ -831,12 +831,12 @@ export const listeners = {
 
             statwin.on("moved",() => setwinbounds(config,"stat",statwin!))
 
-            statwin.once("close", () => {
+            statwin.once("close",() => {
                 setwinbounds(config,"stat",statwin!)
                 reopenonlaunch = false
             })
 
-            statwin.once("closed", () => {
+            statwin.once("closed",() => {
                 setwinclosevalue(config,"stat",reopenonlaunch)
                 statwin = null
             })

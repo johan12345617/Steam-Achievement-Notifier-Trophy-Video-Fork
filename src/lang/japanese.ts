@@ -248,7 +248,8 @@ export const translations = {
                 customtriggerusedisplaytime: "表示時間を使用",
                 trophymode: "トロフィーモード",
                 notifymax: "最大通知数", 
-                notifyspace: "通知間の間隔"
+                notifyspace: "通知間の間隔",
+                notify1line: "テキストを1行に制限"
             }
         },
         games: {
@@ -283,7 +284,11 @@ export const translations = {
                 ssenabled: "有効化",
                 ssmode: "スクリーンショットモード",
                 screen: "スクリーン",
-                window: "ウィンドウ"
+                window: "ウィンドウ",
+                rauseemudir: "エミュレーターのサブフォルダに保存",
+                ssext: "スクリーンショット形式",
+                png: "PNG",
+                jpg: "JPG"
             }
         },
         streaming: {
@@ -550,7 +555,9 @@ export const translations = {
                 ],
                 synctheme: "テーマを同期",
                 syncedwith: "同期中",
-                themeselect: "選択されたテーマ"
+                themeselect: "選択されたテーマ",
+                copytheme: "テーマをコピー",
+                copythemesub: "選択したテーマをコピーする通知タイプを選択"
             }
         }
     },
@@ -837,7 +844,11 @@ export const translations = {
         listmode: `<span class="hl">除外リスト</span>/<span class="hl">インクルージョンリスト</span> の動作を設定します<br><br><span class="ttdesc">• <span class="hl">除外</span>: リストに指定されたゲームのみを無視する<br>• <span class="hl">含める</span>: リストに指定されたゲーム以外をすべて無視する</span>`,
         notifymax: `画面上に同時に表示される通知の最大数を設定します<br><br><span class="ttdesc">同時通知数を増やすと、より多くのリソースを必要とし、パフォーマンスが低下する可能性があります</span>`,
         notifyspace: "画面上で同時に表示される通知間の距離を設定します",
-        audiocooldown: `次の通知が新しいオーディオを再生できるようになるまでの待機時間を設定します<br><br><span class="ttdesc">最大通知数が 1 に設定されている場合、オーディオには影響しません</span>`
+        audiocooldown: `次の通知が新しいオーディオを再生できるようになるまでの待機時間を設定します<br><br><span class="ttdesc">最大通知数が 1 に設定されている場合、オーディオには影響しません</span>`,
+        rauseemudir: "RetroAchievementsで解除されたスクリーンショット/通知画像を、指定されたスクリーンショット/画像パスディレクトリ内の現在のエミュレーター用サブフォルダに保存します",
+        ssext: "通知オーバーレイ付きスクリーンショットオプションで生成されるスクリーンショットのファイル形式を設定します",
+        notify1line: `すべての通知に表示されるテキストの行数を1行に制限します<br><br><span class="ttdesc">1行に収まらないテキストは「...」で切り捨てられます</span>`,
+        copytheme: "選択したテーマを別の通知タイプにコピーします"
     },
     update: {
         updateavailable: "アップデートが利用可能です",

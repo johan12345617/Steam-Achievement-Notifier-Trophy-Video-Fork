@@ -248,7 +248,8 @@ export const translations = {
                 customtriggerusedisplaytime: "Usar Tiempo de Visualización",
                 trophymode: "Modo Trofeo",
                 notifymax: "Notificaciones Máximas", 
-                notifyspace: "Espaciado de Notificaciones"
+                notifyspace: "Espaciado de Notificaciones",
+                notify1line: "Limitar el texto a 1 línea"
             }
         },
         games: {
@@ -283,7 +284,11 @@ export const translations = {
                 ssenabled: "Habilitar",
                 ssmode: "Modo de Captura de Pantalla",
                 screen: "Pantalla",
-                window: "Ventana"
+                window: "Ventana",
+                rauseemudir: "Guardar en la subcarpeta del emulador",
+                ssext: "Formato de captura",
+                png: "PNG",
+                jpg: "JPG"
             }
         },
         streaming: {
@@ -550,7 +555,9 @@ export const translations = {
                 ],
                 synctheme: "Sincronizar tema",
                 syncedwith: "Sincronizado con",
-                themeselect: "Tema seleccionado"
+                themeselect: "Tema seleccionado",
+                copytheme: "Copiar tema",
+                copythemesub: "Selecciona el/los tipo(s) de notificación a los que copiar el tema seleccionado"
             }
         }
     },
@@ -837,7 +844,11 @@ export const translations = {
         listmode: `Configura el comportamiento de la <span class="hl">Lista de Exclusión</span>/<span class="hl">Lista de Inclusión</span><br><br><span class="ttdesc">• <span class="hl">Exclusión</span>: Ignora solo los juegos especificados en la lista<br>• <span class="hl">Inclusión</span>: Ignora todos los juegos excepto los especificados en la lista</span>`,
         notifymax: `Establece el número máximo de notificaciones simultáneas en pantalla<br><br><span class="ttdesc">Aumentar el número de notificaciones simultáneas requiere más recursos y puede reducir el rendimiento</span>`,
         notifyspace: "Establece la distancia entre notificaciones simultáneas en pantalla",
-        audiocooldown: `Establece el tiempo de espera que las notificaciones posteriores deben cumplir antes de reproducir un nuevo audio<br><br><span class="ttdesc">El audio no se verá afectado si Notificaciones Máximas está establecido en 1</span>`
+        audiocooldown: `Establece el tiempo de espera que las notificaciones posteriores deben cumplir antes de reproducir un nuevo audio<br><br><span class="ttdesc">El audio no se verá afectado si Notificaciones Máximas está establecido en 1</span>`,
+        rauseemudir: "Guardar capturas de pantalla/imágenes de notificación desbloqueadas a través de RetroAchievements en una subcarpeta para el emulador actual dentro del directorio de ruta de capturas/imágenes especificado",
+        ssext: "Establecer el formato de archivo de las capturas de pantalla generadas mediante la opción Screenshot with Notification Overlay",
+        notify1line: `Limitar el número de líneas de texto mostradas en todas las notificaciones a 1<br><br><span class="ttdesc">Las cadenas de texto que no quepan en una sola línea se truncarán con "..."</span>`,
+        copytheme: "Copiar el tema seleccionado a otro tipo de notificación"
     },
     update: {
         updateavailable: "Actualización disponible",

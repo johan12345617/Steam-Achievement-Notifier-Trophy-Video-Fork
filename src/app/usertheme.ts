@@ -63,15 +63,15 @@ const converttoobject = (obj: Record<string,any>) => {
 }
 
 export const usertheme = {
-    data: () => {
+    data: (newtype?: NotifyType) => {
         const config = sanconfig.get()
-        const type = sanhelper.type as NotifyType
+        const type = newtype || sanhelper.type as NotifyType
         const userthemes = config.get(`customisation.${type}.usertheme`) as UserTheme[]
 
         return { config, type, userthemes }
     },
-    update: () => {
-        let { config, type, userthemes } = usertheme.data()
+    update: (newtype?: NotifyType) => {
+        let { config, type, userthemes } = usertheme.data(newtype)
         let enabled = userthemes.find(theme => theme.enabled)!.id as number
 
         // If no theme is enabled, enable the first one
@@ -150,8 +150,8 @@ export const usertheme = {
 
         return synced
     },
-    set: (id: number,event?: Event) => {
-        const { config, type, userthemes } = usertheme.data()
+    set: (id: number,event?: Event,newtype?: NotifyType) => {
+        const { config, type, userthemes } = usertheme.data(newtype)
         const dialogelem = document.querySelector("dialog")
         if (event && (event.target as HTMLElement).classList.contains(`userthemedelbtn`)) return usertheme.delete(type,event.target!)
         
@@ -192,8 +192,8 @@ export const usertheme = {
         dialogelem && dialog.close()
         usertheme.update()
     },
-    create: (label: string,icon: string,customobj?: Customisation,update?: string,userthemedir?: string,usecustomfiles?: boolean) => {
-        const { config, type, userthemes } = usertheme.data()
+    create: (label: string,icon: string,customobj?: Customisation,update?: string,userthemedir?: string,usecustomfiles?: boolean,newtype?: NotifyType) => {
+        const { config, type, userthemes } = usertheme.data(newtype)
         const ids = userthemes.map(theme => theme.id)
         const labelmatch = userthemes.find(theme => theme.label === label)
 
@@ -212,7 +212,7 @@ export const usertheme = {
             id: newid,
             label,
             icon: icon.replace(/^(url\(["']?)|(["']?\))$/g,""),
-            customisation: customisation,
+            customisation,
             enabled: true,
             userthemedir: (userthemedir || "").replace(/\\/g,"/")
         }
@@ -225,24 +225,29 @@ export const usertheme = {
         if (customobj) {
             (async () => await sanconfig.validatecustomicons(type))()
             usertheme.set(theme.id as number)
-            return window.dispatchEvent(new CustomEvent("tabchanged",{ detail: { type: type } }))
+            window.dispatchEvent(new CustomEvent("tabchanged",{ detail: { type: type } }))
+            return theme.id as number
         }
 
-        usertheme.update()
-        !update && dialog.close()
-
-        if (update) {
-            const updatedbtn = document.getElementById(update)
-
-            if (updatedbtn) {
-                updatedbtn.removeAttribute("updated")
-                updatedbtn.addEventListener("animationend",({ animationName }: AnimationEvent) => {
-                    if (!config.get("noanim")) return updatedbtn.removeAttribute("updated")
-                    animationName === "updated" && updatedbtn.removeAttribute("updated")
-                },{ once: true })
-                requestAnimationFrame(() => updatedbtn.setAttribute("updated",""))
-            }
+        usertheme.update(newtype)
+        
+        if (!update) {
+            dialog.close()
+            return theme.id as number
         }
+
+        const updatedbtn = document.getElementById(update)
+
+        if (updatedbtn) {
+            updatedbtn.removeAttribute("updated")
+            updatedbtn.addEventListener("animationend",({ animationName }: AnimationEvent) => {
+                if (!config.get("noanim")) return updatedbtn.removeAttribute("updated")
+                animationName === "updated" && updatedbtn.removeAttribute("updated")
+            },{ once: true })
+            requestAnimationFrame(() => updatedbtn.setAttribute("updated",""))
+        }
+
+        return theme.id as number
     },
     delete: (type: string,target: EventTarget) => {
         const { config } = usertheme.data()

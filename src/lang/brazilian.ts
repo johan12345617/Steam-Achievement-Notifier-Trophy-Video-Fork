@@ -248,7 +248,8 @@ export const translations = {
                 customtriggerusedisplaytime: "Usar Tempo de Exibição",
                 trophymode: "Modo Troféu",
                 notifymax: "Máximo de Notificações", 
-                notifyspace: "Espaçamento das Notificações"
+                notifyspace: "Espaçamento das Notificações",
+                notify1line: "Limitar texto a 1 linha"
             }
         },
         games: {
@@ -283,7 +284,11 @@ export const translations = {
                 ssenabled: "Ativar",
                 ssmode: "Modo Captura de Tela",
                 screen: "Tela",
-                window: "Janela"
+                window: "Janela",
+                rauseemudir: "Salvar em subpasta do emulador",
+                ssext: "Formato da captura de tela",
+                png: "PNG",
+                jpg: "JPG"
             }
         },
         streaming: {
@@ -550,7 +555,9 @@ export const translations = {
                 ],
                 synctheme: "Sincronizar Tema",
                 syncedwith: "Sincronizado com",
-                themeselect: "Tema Selecionado"
+                themeselect: "Tema Selecionado",
+                copytheme: "Copiar tema",
+                copythemesub: "Selecione o(s) tipo(s) de notificação para copiar o tema selecionado"
             }
         }
     },
@@ -837,7 +844,11 @@ export const translations = {
         listmode: `Define o comportamento da <span class="hl">Exclusão</span>/<span class="hl">Lista de Inclusão</span><br><br><span class="ttdesc">• <span class="hl">Exclusão</span>: Ignora apenas os jogos especificados na lista<br>• <span class="hl">Inclusão</span>: Ignora todos os jogos, exceto os especificados na lista</span>`,
         notifymax: `Define o número máximo de notificações simultâneas exibidas na tela<br><br><span class="ttdesc">Aumentar o número de notificações simultâneas requer mais recursos e pode resultar em desempenho reduzido</span>`,
         notifyspace: "Define a distância entre notificações simultâneas exibidas na tela",
-        audiocooldown: `Define o tempo de espera que as próximas notificações devem aguardar antes que um novo som possa ser reproduzido<br><br><span class="ttdesc">O áudio não será afetado se Máximo de Notificações estiver definido como 1</span>`
+        audiocooldown: `Define o tempo de espera que as próximas notificações devem aguardar antes que um novo som possa ser reproduzido<br><br><span class="ttdesc">O áudio não será afetado se Máximo de Notificações estiver definido como 1</span>`,
+        rauseemudir: "Salvar capturas de tela/imagens de notificações desbloqueadas via RetroAchievements em uma subpasta do emulador atual dentro do diretório de caminho de capturas de tela/imagens especificado",
+        ssext: "Definir o formato de arquivo das capturas de tela geradas pela opção de captura de tela com sobreposição de notificação",
+        notify1line: `Limitar o número de linhas de texto exibidas em todas as notificações a 1<br><br><span class="ttdesc">Textos excedentes que não couberem em uma única linha serão truncados com "..."</span>`,
+        copytheme: "Copiar o tema selecionado para outro tipo de notificação"
     },
     update: {
         updateavailable: "Atualização disponível",

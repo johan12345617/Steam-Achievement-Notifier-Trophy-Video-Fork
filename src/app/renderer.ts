@@ -782,6 +782,14 @@ const opencustomiser = () => {
                 icon: "",
                 label: await language.get("ok"),
                 click: () => {
+                    const selectedtype = sanhelper.type as NotifyType
+                    const selectedtheme = (config.get(`customisation.${selectedtype}.usertheme`) as UserTheme[]).find(theme => theme.enabled)
+                    
+                    if (!selectedtheme) {
+                        log.write("ERROR",`Unable to find enabled Theme for ${selectedtype}`)
+                        return dialog.close()
+                    }
+                    
                     const types: NotifyType[] = []
 
                     for (const elem of document.querySelectorAll(`.addhtml:has(.rect[id^="copytheme"]) > .rect[selected]`)) {
@@ -790,7 +798,12 @@ const opencustomiser = () => {
                         }
                     }
                     
-                    console.log(types)
+                    if (!types.length) return log.write("WARN",`No types selected to copy Theme to`)
+
+                    for (const type of types) {
+                        const id = usertheme.create(selectedtheme.label,selectedtheme.icon,selectedtheme.customisation,undefined,selectedtheme.userthemedir,false,type)
+                        usertheme.set(id,undefined,type)
+                    }
                 }
             }]
         })
@@ -801,9 +814,16 @@ const opencustomiser = () => {
             }
         }
 
+        const okbtn = document.querySelector(`dialog .contentwrapper:has(.addhtml > .rect[id^="copytheme"]) > .btnwrapper > button#okbtn`) as HTMLButtonElement
+        okbtn.tabIndex = -1
+
         for (const e of document.querySelectorAll(`.addhtml:has(.rect[id^="copytheme"]) > .rect`)) {
             const elem = e as HTMLElement
-            elem.onclick = () => elem.toggleAttribute("selected",!elem.hasAttribute("selected"))
+            
+            elem.onclick = () => {
+                elem.toggleAttribute("selected",!elem.hasAttribute("selected"))
+                okbtn.tabIndex = !document.querySelectorAll(`.addhtml:has(.rect[id^="copytheme"]) > .rect[selected]`).length ? -1 : 0
+            }
         }
     }
 

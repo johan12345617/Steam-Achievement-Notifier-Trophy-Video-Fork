@@ -248,7 +248,8 @@ export const translations = {
                 customtriggerusedisplaytime: "使用显示时间",
                 trophymode: "奖杯模式",
                 notifymax: "最大通知数", 
-                notifyspace: "通知间距"
+                notifyspace: "通知间距",
+                notify1line: "将文本限制为一行"
             }
         },
         games: {
@@ -283,7 +284,11 @@ export const translations = {
                 ssenabled: "启用",
                 ssmode: "截图模式",
                 screen: "屏幕",
-                window: "窗口"
+                window: "窗口",
+                rauseemudir: "保存到模拟器子文件夹",
+                ssext: "截图格式",
+                png: "PNG",
+                jpg: "JPG"
             }
         },
         streaming: {
@@ -550,7 +555,9 @@ export const translations = {
                 ],
                 synctheme: "同步主题",
                 syncedwith: "已同步至",
-                themeselect: "已选择的主题"
+                themeselect: "已选择的主题",
+                copytheme: "复制主题",
+                copythemesub: "选择要将所选主题复制到的通知类型"
             }
         }
     },
@@ -837,7 +844,11 @@ export const translations = {
         listmode: `设置 <span class="hl">排除列表</span>/<span class="hl">包含列表</span> 的行为<br><br><span class="ttdesc">• <span class="hl">排除</span>：仅忽略列表中指定的游戏<br>• <span class="hl">包含</span>：忽略除列表中指定的游戏之外的所有游戏</span>`,
         notifymax: `设置屏幕上可同时显示的最大通知数量<br><br><span class="ttdesc">增加同时显示的通知数量会占用更多资源，并可能导致性能下降</span>`,
         notifyspace: "设置屏幕上同时显示的通知之间的距离",
-        audiocooldown: `设置后续通知在播放新音频前需等待的时间<br><br><span class="ttdesc">如果最大通知数设置为 1，音频不会受到影响</span>`
+        audiocooldown: `设置后续通知在播放新音频前需等待的时间<br><br><span class="ttdesc">如果最大通知数设置为 1，音频不会受到影响</span>`,
+        rauseemudir: "将通过 RetroAchievements 解锁的截图/通知图像保存到指定截图/图像路径目录中当前模拟器的子文件夹内",
+        ssext: "设置通过 Screenshot with Notification Overlay 选项生成的截图文件格式",
+        notify1line: `将所有通知中显示的文本行数限制为 1<br><br><span class="ttdesc">无法适应单行的文本字符串将被截断并显示为 "..."</span>`,
+        copytheme: "将所选主题复制到另一种通知类型"
     },
     update: {
         updateavailable: "有可用更新",

@@ -1,6 +1,6 @@
 body[customiser][soundonly] .wrapper#customiser > .wrapper#webview,
 body[customiser][soundonly] #customisercontent > #customiseropts > .cont:not(:has(.title#sound)),
-#customiser[customfiles] .opt:has(#importtheme,#exporttheme),
+#customiser[customfiles] .opt:has(#copytheme,#importtheme,#exporttheme),
 .optcont:has(.opt > input[type="checkbox"]#glowrarity:checked) > .opt:has(#glow) > .opt:has(#glowcolor),
 .optcont:has(.opt > input[type="checkbox"]#iconborderrarity:checked) > .opt:has(#iconborderimg),
 .optcont:has(.sub > input[type="checkbox"]#bgachicon:checked) > .opt > .opt:has(.img#bgimg) {
@@ -629,14 +629,30 @@ button[updated] > #confirm {
     cursor: pointer;
 }
 
+dialog .contentwrapper:has(.addhtml > .rect[id^="copytheme"]) > .btnwrapper > button#okbtn {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+dialog .contentwrapper:has(.addhtml > .rect[id^="copytheme"][selected]) > .btnwrapper > button#okbtn {
+    opacity: 1;
+    pointer-events: auto;
+}
+
 .addhtml:has(.rect[id^="copytheme"]) > .rect::before {
     width: 1.25rem;
     height: 1.25rem;
 }
 
+.addhtml:has(.rect[id^="copytheme"]) > .rect > span {
+    transition: color var(--transition);
+}
+
+.addhtml:has(.rect[id^="copytheme"]) > .rect:hover > span,
 .addhtml:has(.rect[id^="copytheme"]) > .rect:hover::before,
 .addhtml:has(.rect[id^="copytheme"]) > .rect[selected]:hover > span {
     filter: none;
+    color: black;
 }
 
 .addhtml:has(.rect[id^="copytheme"]) > .rect[selected] {

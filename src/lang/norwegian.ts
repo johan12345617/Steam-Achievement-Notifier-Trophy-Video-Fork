@@ -248,7 +248,8 @@ export const translations = {
                 customtriggerusedisplaytime: "Bruk visningstid",
                 trophymode: "Trofémodus",
                 notifymax: "Maksimalt antall varsler", 
-                notifyspace: "Avstand mellom varsler"
+                notifyspace: "Avstand mellom varsler",
+                notify1line: "Begrens tekst til 1 linje"
             }
         },
         games: {
@@ -283,7 +284,11 @@ export const translations = {
                 ssenabled: "Aktiver",
                 ssmode: "Skjermbilde-modus",
                 screen: "Skjerm",
-                window: "Vindu"
+                window: "Vindu",
+                rauseemudir: "Lagre i emulatorens undermappe",
+                ssext: "Skjermbildeformat",
+                png: "PNG",
+                jpg: "JPG"
             }
         },
         streaming: {
@@ -550,7 +555,9 @@ export const translations = {
                 ],
                 synctheme: "Synkroniser tema",
                 syncedwith: "Synkronisert med",
-                themeselect: "Valgt tema"
+                themeselect: "Valgt tema",
+                copytheme: "Kopier tema",
+                copythemesub: "Velg varslingstype(r) du vil kopiere det valgte temaet til"
             }
         }
     },
@@ -837,7 +844,11 @@ export const translations = {
         listmode: `Angi oppførselen til <span class="hl">Utelukkelsesliste</span>/<span class="hl">Inkluderingsliste</span><br><br><span class="ttdesc">• <span class="hl">Utelukkelse</span>: Ignorer bare spill som er spesifisert i listen<br>• <span class="hl">Inkludering</span>: Ignorer alle spill unntatt de som er spesifisert i listen</span>`,
         notifymax: `Angi maksimalt antall varsler som kan vises samtidig på skjermen<br><br><span class="ttdesc">Å øke antall samtidige varsler krever mer ressurser og kan redusere ytelsen</span>`,
         notifyspace: "Angi avstanden mellom varsler som vises samtidig på skjermen",
-        audiocooldown: `Angi hvor lang tid det skal gå før påfølgende varsler kan spille ny lyd<br><br><span class="ttdesc">Lyden påvirkes ikke hvis Maksimalt antall varsler er satt til 1</span>`
+        audiocooldown: `Angi hvor lang tid det skal gå før påfølgende varsler kan spille ny lyd<br><br><span class="ttdesc">Lyden påvirkes ikke hvis Maksimalt antall varsler er satt til 1</span>`,
+        rauseemudir: "Lagre skjermbilder/varslingsbilder låst opp via RetroAchievements i en undermappe for gjeldende emulator i den angitte katalogen for skjermbilde-/bildefilbane",
+        ssext: "Angi filformatet for skjermbilder generert via alternativet Skjermbilde med varslingsoverlay",
+        notify1line: `Begrens antall tekstlinjer som vises i alle varsler til 1<br><br><span class="ttdesc">Tekststrenger som ikke får plass på én linje vil bli avkortet med "..."</span>`,
+        copytheme: "Kopier det valgte temaet til en annen varslingstype"
     },
     update: {
         updateavailable: "Oppdatering tilgjengelig",

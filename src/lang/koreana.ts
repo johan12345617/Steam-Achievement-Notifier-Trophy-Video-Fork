@@ -248,7 +248,8 @@ export const translations = {
                 customtriggerusedisplaytime: "표시 시간 사용",
                 trophymode: "트로피 모드",
                 notifymax: "최대 알림 수", 
-                notifyspace: "알림 간격"
+                notifyspace: "알림 간격",
+                notify1line: "텍스트를 1줄로 제한"
             }
         },
         games: {
@@ -283,7 +284,11 @@ export const translations = {
                 ssenabled: "활성화",
                 ssmode: "스크린샷 모드",
                 screen: "화면",
-                window: "창"
+                window: "창",
+                rauseemudir: "에뮬레이터 하위 폴더에 저장",
+                ssext: "스크린샷 형식",
+                png: "PNG",
+                jpg: "JPG"
             }
         },
         streaming: {
@@ -550,7 +555,9 @@ export const translations = {
                 ],
                 synctheme: "테마 동기화",
                 syncedwith: "동기화됨",
-                themeselect: "선택된 테마"
+                themeselect: "선택된 테마",
+                copytheme: "테마 복사",
+                copythemesub: "선택한 테마를 복사할 알림 유형을 선택하세요"
             }
         }
     },
@@ -837,7 +844,11 @@ export const translations = {
         listmode: `<span class="hl">제외 목록</span>/<span class="hl">포함 목록</span>의 동작을 설정합니다<br><br><span class="ttdesc">• <span class="hl">제외</span>: 목록에 지정된 게임만 무시<br>• <span class="hl">포함</span>: 목록에 지정된 게임을 제외한 모든 게임을 무시</span>`,
         notifymax: `화면에 동시에 표시될 수 있는 최대 알림 수를 설정합니다<br><br><span class="ttdesc">동시에 표시되는 알림 수를 늘리면 더 많은 리소스가 필요하며 성능이 저하될 수 있습니다</span>`,
         notifyspace: "화면에 동시에 표시되는 알림 간의 거리를 설정합니다",
-        audiocooldown: `다음 알림이 새로운 오디오를 재생하기 전에 대기해야 하는 시간을 설정합니다<br><br><span class="ttdesc">최대 알림 수가 1로 설정된 경우 오디오는 영향을 받지 않습니다</span>`
+        audiocooldown: `다음 알림이 새로운 오디오를 재생하기 전에 대기해야 하는 시간을 설정합니다<br><br><span class="ttdesc">최대 알림 수가 1로 설정된 경우 오디오는 영향을 받지 않습니다</span>`,
+        rauseemudir: "RetroAchievements를 통해 획득한 스크린샷/알림 이미지를 지정된 스크린샷/이미지 경로 디렉터리 내 현재 에뮬레이터용 하위 폴더에 저장합니다",
+        ssext: "알림 오버레이가 포함된 스크린샷 옵션으로 생성되는 스크린샷의 파일 형식을 설정합니다",
+        notify1line: `모든 알림에 표시되는 텍스트 줄 수를 1줄로 제한합니다<br><br><span class="ttdesc">한 줄에 표시할 수 없는 긴 텍스트는 "..."로 잘립니다</span>`,
+        copytheme: "선택한 테마를 다른 알림 유형으로 복사합니다"
     },
     update: {
         updateavailable: "업데이트 가능",
