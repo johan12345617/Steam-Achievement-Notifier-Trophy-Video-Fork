@@ -1,3 +1,4 @@
+// ⚠ Use of `clipboard` API may be deprecated in renderer processes in future
 import { ipcRenderer, clipboard } from "electron"
 import fs from "fs"
 import path from "path"

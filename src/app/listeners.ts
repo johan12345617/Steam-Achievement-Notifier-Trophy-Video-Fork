@@ -1,4 +1,4 @@
-import { app, ipcMain, BrowserWindow, Tray, Menu, nativeImage, dialog, Notification, screen, globalShortcut, BrowserWindowConstructorOptions, NotificationConstructorOptions, desktopCapturer, clipboard, ipcRenderer } from "electron"
+import { app, ipcMain, BrowserWindow, Tray, Menu, nativeImage, dialog, Notification, screen, globalShortcut, BrowserWindowConstructorOptions, NotificationConstructorOptions, clipboard } from "electron"
 import path from "path"
 import fs from "fs"
 import Store from "electron-store"

@@ -1,4 +1,4 @@
-import { ipcRenderer, clipboard } from "electron"
+import { ipcRenderer } from "electron"
 
 const getdebuginfo = (debuginfo: DebugInfo) => {
     const { appid, gamename, pollrate, releasedelay, maxretries, steam3id, steam64id, username, userust, status } = debuginfo
