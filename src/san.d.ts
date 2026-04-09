@@ -10,7 +10,9 @@ declare interface Monitor {
         width: number,
         height: number
     },
-    scaleFactor: number
+    scaleFactor: number,
+    frequency?: number,
+    rotation?: number
 }
 
 declare interface Res {

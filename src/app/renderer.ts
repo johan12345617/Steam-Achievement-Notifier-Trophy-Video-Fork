@@ -10,6 +10,7 @@ import { language } from "./language"
 import { update } from "./update"
 import { sendwebhook } from "./webhook"
 import { rasupported } from "./ra"
+import { monitors } from "./monitors"
 
 declare global {
     interface Window {
@@ -79,130 +80,17 @@ config.set("logtype","san") // Reset App Log to "san.log" on launch
 
 sanhelper.beta && sanhelper.checkbetastatus()
 
-const getmonitors = async () => {
-    try {
-        const displays: Display[] = await sanhelper.getdisplays()
-        const lsmons = localStorage.getItem("monitors")
-        const prevmons: Monitor[] = lsmons ? JSON.parse(lsmons) : null
-    
-        const monitors: Monitor[] = displays.map(display => {
-            return {
-                id: display.id,
-                label: display.label,
-                primary: display.primary,
-                bounds: {
-                    width: Math.round(display.bounds.width * display.scaleFactor),
-                    height: Math.round(display.bounds.height * display.scaleFactor)
-                },
-                scaleFactor: display.scaleFactor
-            } as Monitor
-        })
-
-        config.set("monitors",monitors)
-        window.monitors = monitors
-
-        const currentmonitor = monitors.find(monitor => monitor.id === config.get("monitor")) || monitors[0]
-        !config.get("lastknownmonitorlbl") && config.set("lastknownmonitorlbl",currentmonitor.label)
-
-        refreshmonitors(monitors,prevmons)
-        sanhelper.devmode && monitors.forEach(monitor => ipcRenderer.send("montest",monitor.id))
-    
-        return `Successfully updated "monitors" array`
-    } catch (err) {
-        throw `Error updating "monitors" array: ${err}`
-    }
-}
-
-const setmonitors = async () => {
-    try {
-        const msg = await getmonitors()
-        log.write("INFO",msg)
-    } catch (err) {
-        log.write("WARN",err as string)
-    }
-}
-
-const refreshmonitors = (monitors: Monitor[],prevmons: Monitor[]) => {
-    const getmonid = (type: "id" | "themeswitch",id: number,str: string) => {str
-        try {
-            const match = monitors.find(monitor => config.get("lastknownmonitorlbl") === monitor.label) || monitors.find(monitor => monitor.id === id)
-
-            if (match) {
-                log.write("INFO", `Monitor found in "monitors" array for "${match.label}" (${match.id}) used as ${str}`)
-                return match.id
-            }
-    
-            const prevmon = prevmons.find(prevmon => prevmon.id === id)
-            if (!prevmon) throw new Error(`[MONERR] Monitor "id" (${id}) not found in previous "monitors" object for ${str}`)
-                
-            const newmon = monitors.find(monitor => monitor.label === prevmon.label)
-            if (!newmon) throw new Error(`[MONERR] No monitor matching "${prevmon.label}" found in "monitors" array`)
-    
-            if (prevmon.id !== newmon.id) {
-                log.write("INFO",`"id" for "${prevmon.label}" updated from "${prevmon.id}" to "${newmon.id}" for ${str}`)
-                return newmon.id
-            }
-
-            return id
-        } catch (e) {
-            const err = e as Error
-
-            if (err.message.startsWith(`[MONERR]`)) {
-                const primarymon = monitors.find(monitor => monitor.primary)
-
-                if (primarymon) {
-                    log.write("WARN",`Monitor "id" (${id}) not found in previous "monitors" object for ${str} - resetting to primary monitor...`)
-                    return primarymon.id
-                }
-            }
-
-            log.write("ERROR",err.message.replace(/^\[MONERR\]\s/,""))
-            return type === "id" ? -1 : id
-        }
-    }
-
-    const checkmonitor = (id: number) => getmonid("id",id,`"monitor" in config`)
-
-    const checkthemeswitch = (themeswitch: { [key: string]: ThemeSwitch }) => {    
-        return Object.fromEntries(Object.entries(themeswitch).map(([key,value]) => {
-            const src = getmonid("themeswitch",value.src,`"src" in "themeswitch" for AppID ${key}`)
-            
-            if (src !== value.src) return [key,{ themes: { ...value.themes }, src } as ThemeSwitch]
-            return [key,value]
-        }))
-    }
-
-    const newmon = checkmonitor(config.get("monitor"))
-
-    if (newmon !== -1) {
-        config.set("monitor",newmon)
-    } else {
-        const primarymon = monitors.find(monitor => monitor.primary)
-
-        if (primarymon) {
-            config.set("monitor",primarymon.id)
-            log.write("WARN",`Unable to find matching monitor by "id" in "monitors" array. "monitor" value was reset to primary display in config`)
-        } else {
-            log.write("ERROR",`Unable to find primary monitor in "monitors" array. "monitor" value cannot be updated or reset in config`)
-        }
-    }
-
-    localStorage.setItem("monitors",JSON.stringify(monitors))
-    log.write("INFO",`"monitors" localStorage object updated`)
-
-    const newswitchmon = checkthemeswitch(JSON.parse(localStorage.getItem("themeswitch")!) as { [key: string]: ThemeSwitch })
-    localStorage.setItem("themeswitch",JSON.stringify(newswitchmon))
-}
-
-window.addEventListener("DOMContentLoaded", () => setTimeout(() => {
-    setmonitors()
+window.addEventListener("DOMContentLoaded",() => setTimeout(async () => {
+    const monitorslist = await monitors.get()
+    sanhelper.devmode && console.log(monitorslist)
 
     // Init renderer shortcuts on launch
     ipcRenderer.send("shortcut",true)
 },100))
 
-ipcRenderer.on("displaysupdated", () => {
-    setmonitors()
+ipcRenderer.on("displaysupdated",async () => {
+    const monitorslist = await monitors.get()
+    sanhelper.devmode && console.log(monitorslist)
 
     ipcRenderer.once("monitorsupdated", () => sanhelper.updatetabs())
     ipcRenderer.send("monitorsupdated")
