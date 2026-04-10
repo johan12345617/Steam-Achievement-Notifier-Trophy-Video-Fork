@@ -1059,7 +1059,7 @@ export const listeners = {
             }
 
             worker && worker.webContents.send("steam3id")
-            preset !== "os" && notify.customisation.ssenabled && screenshot.configuresrc(notify,monitorid)
+            preset !== "os" && notify.customisation.ssenabled && await screenshot.configuresrc(notify,monitorid)
 
             win.webContents.send("queue",queue)
             checkifrunning(info,monitorid)
