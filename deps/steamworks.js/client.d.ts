@@ -39,19 +39,7 @@ export namespace apps {
 }
 export namespace callback {
   export const enum SteamCallback {
-    PersonaStateChange = 0,
-    SteamServersConnected = 1,
-    SteamServersDisconnected = 2,
-    SteamServerConnectFailure = 3,
-    LobbyDataUpdate = 4,
-    LobbyChatUpdate = 5,
-    P2PSessionRequest = 6,
-    P2PSessionConnectFail = 7,
-    GameLobbyJoinRequested = 8,
-    MicroTxnAuthorizationResponse = 9
-  }
-  export class Handle {
-    disconnect(): void
+    Dummy = 0
   }
 }
 export namespace localplayer {
@@ -65,6 +53,9 @@ export namespace localplayer {
 export namespace log {
   export function initLogger(appData: string): string
   export function testPanic(): void
+}
+export namespace screenshots {
+  export function addScreenshotToLibrary(filename: string, width: number, height: number): number
 }
 export namespace utils {
   export function getAppId(): number

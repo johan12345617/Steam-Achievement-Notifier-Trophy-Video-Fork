@@ -370,6 +370,10 @@ export const screenshot = {
                         fs.writeFileSync(ssimg,img.toPNG())
 
                         log.write("INFO",`${sswintype.replace(" Window","")} written to "${ssimg}" successfully`)
+
+                        const { width, height } = img.getSize()
+                        
+                        !notify.istestnotification && config.get("ssaddtosteam") && screenshot.addtosteam(ssimg,width,height)
                     } catch (err) {
                         log.write("ERROR",`Error capturing screenshot for "${info.apiname}": ${err as Error}`)
                     }
@@ -427,6 +431,7 @@ export const screenshot = {
             screenshot.clearsswin(notify.id)
         }
     },
+    addtosteam: (imgpath: string,width: number,height: number) => ipcMain.emit("addtosteam",null,imgpath,Math.round(width),Math.round(height)),
     clearsswin: (id: number) => {
         const sswin = sswins.get(id)
 

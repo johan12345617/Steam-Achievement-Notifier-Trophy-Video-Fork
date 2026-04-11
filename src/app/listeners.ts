@@ -1748,6 +1748,11 @@ export const listeners = {
             updatetray(tray,undefined,undefined,true)
         })
 
+        ipcMain.on("addtosteam",(event,imgpath: string,width: number,height: number) => {
+            if (!fs.existsSync(imgpath)) return log.write("WARN",`Unable to add media to Steam: "${imgpath}" does not exist`)
+            worker && worker.webContents.send("addtosteam",imgpath,width,height)
+        })
+
         return
     }
 }

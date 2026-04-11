@@ -877,7 +877,7 @@ span#raloghelp {
     display: none;
 }
 
-#settingscontent:has(.title#ra + .optcont > .opt > .multiselect#raemuswrapper input[type="checkbox"]:checked) > .cont:has(.title#media) > .optcont > .opt:has(input[type="checkbox"]#rauseemudir) {
+#settingscontent:has(.title#ra + .optcont > .opt > .multiselect#raemuswrapper input[type="checkbox"]:checked) > .cont:has(.title#media) > .optcont:has(select#screenshots > option[value="off"]:not(:checked)) > .opt:has(input[type="checkbox"]#rauseemudir) {
     display: grid;
 }
 

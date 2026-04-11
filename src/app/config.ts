@@ -330,6 +330,7 @@ export const sanconfig = {
                 audiocooldown: 1000,
                 ssext: "png",
                 notify1line: false,
+                ssaddtosteam: false,
                 customisation: {
                     main: {} as Customisation,
                     semi: {} as Customisation,

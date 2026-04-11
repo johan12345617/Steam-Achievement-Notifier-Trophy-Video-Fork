@@ -198,6 +198,14 @@ const startsan = async (appinfo: AppInfo) => {
         const processes: ProcessInfo[] = []
 
         ipcRenderer.on("windowtitles",() => ipcRenderer.send("windowtitles",processes.map(({ pid }) => client.processes.getWindowTitle(pid))))
+        ipcRenderer.on("addtosteam",(event,imgpath: string,width: number,height: number) => {
+            try {
+                client.screenshots.addScreenshotToLibrary(imgpath,width,height)
+                log.write("INFO",`"${imgpath}" added to Steam successfully`)
+            } catch (err) {
+                log.write("WARN",`Unable to add media to Steam: ${(err as Error).message}`)
+            }
+        })
     
         const initgameloop = () => {
             processes.forEach(({ pid,exe }: ProcessInfo) => log.write("INFO",creategameinfo(gamename || "???",appid,exe,pid,pollrate || 250)))

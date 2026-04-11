@@ -15,7 +15,8 @@ _backup/
 notify/_template.html
 notify/**/*.png
 notify/**/*.mp3
-**/*.old
+**/*.old*
+**/*_old*
 gh_token.txt
 deps/_linux/
 desktop.ini

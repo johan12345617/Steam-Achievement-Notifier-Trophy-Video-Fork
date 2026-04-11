@@ -146,6 +146,7 @@ declare interface Config {
     audiocooldown: number,
     ssext: "png" | "jpg",
     notify1line: boolean,
+    ssaddtosteam: boolean,
     customisation: {
         main: Customisation,
         semi: Customisation,
