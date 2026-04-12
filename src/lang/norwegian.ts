@@ -288,7 +288,8 @@ export const translations = {
                 rauseemudir: "Lagre i emulatorens undermappe",
                 ssext: "Skjermbildeformat",
                 png: "PNG",
-                jpg: "JPG"
+                jpg: "JPG",
+                ssaddtosteam: "Legg til i Steam"
             }
         },
         streaming: {
@@ -848,7 +849,8 @@ export const translations = {
         rauseemudir: "Lagre skjermbilder/varslingsbilder låst opp via RetroAchievements i en undermappe for gjeldende emulator i den angitte katalogen for skjermbilde-/bildefilbane",
         ssext: "Angi filformatet for skjermbilder generert via alternativet Skjermbilde med varslingsoverlay",
         notify1line: `Begrens antall tekstlinjer som vises i alle varsler til 1<br><br><span class="ttdesc">Tekststrenger som ikke får plass på én linje vil bli avkortet med "..."</span>`,
-        copytheme: "Kopier det valgte temaet til en annen varslingstype"
+        copytheme: "Kopier det valgte temaet til en annen varslingstype",
+        ssaddtosteam: "Legg automatisk til generert media i det nåværende spillets opptak og skjermbilder i Steam"
     },
     update: {
         updateavailable: "Oppdatering tilgjengelig",

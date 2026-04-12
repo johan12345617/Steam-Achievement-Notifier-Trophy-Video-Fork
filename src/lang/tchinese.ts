@@ -288,7 +288,8 @@ export const translations = {
                 rauseemudir: "儲存到模擬器子資料夾",
                 ssext: "截圖格式",
                 png: "PNG",
-                jpg: "JPG"
+                jpg: "JPG",
+                ssaddtosteam: "新增至 Steam"
             }
         },
         streaming: {
@@ -848,7 +849,8 @@ export const translations = {
         rauseemudir: "將透過 RetroAchievements 解鎖的截圖/通知影像儲存到指定截圖/影像路徑目錄中當前模擬器的子資料夾內",
         ssext: "設定透過 Screenshot with Notification Overlay 選項產生的截圖檔案格式",
         notify1line: `將所有通知中顯示的文字行數限制為 1<br><br><span class="ttdesc">無法容納於單行的文字字串將會以 "..." 截斷</span>`,
-        copytheme: "將所選主題複製到另一種通知類型"
+        copytheme: "將所選主題複製到另一種通知類型",
+        ssaddtosteam: "自動將產生的媒體新增至目前遊戲在 Steam 中的錄製與截圖"
     },
     update: {
         updateavailable: "有可用更新",

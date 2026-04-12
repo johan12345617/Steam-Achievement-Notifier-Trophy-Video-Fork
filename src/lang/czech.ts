@@ -288,7 +288,8 @@ export const translations = {
                 rauseemudir: "Uložit do podsložky emulátoru",
                 ssext: "Formát snímku obrazovky",
                 png: "PNG",
-                jpg: "JPG"
+                jpg: "JPG",
+                ssaddtosteam: "Přidat do Steam"
             }
         },
         streaming: {
@@ -848,7 +849,8 @@ export const translations = {
         rauseemudir: "Uložit snímky obrazovky/obrázky oznámení odemčené prostřednictvím RetroAchievements do podsložky aktuálního emulátoru v rámci zadaného adresáře pro snímky/obrázky",
         ssext: "Nastavit formát souboru snímků obrazovky generovaných pomocí možnosti snímku obrazovky s překrytím oznámení",
         notify1line: `Omezit počet řádků textu zobrazovaných ve všech oznámeních na 1<br><br><span class="ttdesc">Přetékající textové řetězce, které se nevejdou na jeden řádek, budou zkráceny pomocí "..."</span>`,
-        copytheme: "Zkopírovat vybraný motiv do jiného typu oznámení"
+        copytheme: "Zkopírovat vybraný motiv do jiného typu oznámení",
+        ssaddtosteam: "Automaticky přidat vygenerovaná média do záznamů a snímků obrazovky aktuální hry ve Steam"
     },
     update: {
         updateavailable: "Aktualizace je k dispozici",

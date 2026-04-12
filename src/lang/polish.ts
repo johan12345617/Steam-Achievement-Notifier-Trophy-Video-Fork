@@ -288,7 +288,8 @@ export const translations = {
                 rauseemudir: "Zapisz w podfolderze emulatora",
                 ssext: "Format zrzutu ekranu",
                 png: "PNG",
-                jpg: "JPG"
+                jpg: "JPG",
+                ssaddtosteam: "Dodaj do Steam"
             }
         },
         streaming: {
@@ -848,7 +849,8 @@ export const translations = {
         rauseemudir: "Zapisz zrzuty ekranu/obrazy powiadomień odblokowane przez RetroAchievements w podfolderze dla bieżącego emulatora w określonym katalogu ścieżki zrzutów ekranu/obrazów",
         ssext: "Ustaw format pliku zrzutów ekranu generowanych przez opcję Zrzut ekranu z nakładką powiadomienia",
         notify1line: `Ogranicza liczbę linii tekstu wyświetlanych we wszystkich powiadomieniach do 1<br><br><span class="ttdesc">Teksty, które nie mieszczą się w jednej linii, zostaną skrócone do "..."</span>`,
-        copytheme: "Kopiuje wybrany motyw do innego typu powiadomienia"
+        copytheme: "Kopiuje wybrany motyw do innego typu powiadomienia",
+        ssaddtosteam: "Automatycznie dodaj wygenerowane media do nagrań i zrzutów ekranu bieżącej gry w Steam"
     },
     update: {
         updateavailable: "Dostępna aktualizacja",

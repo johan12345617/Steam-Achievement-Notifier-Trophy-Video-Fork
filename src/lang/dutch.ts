@@ -288,7 +288,8 @@ export const translations = {
                 rauseemudir: "Opslaan in submap van emulator",
                 ssext: "Screenshotformaat",
                 png: "PNG",
-                jpg: "JPG"
+                jpg: "JPG",
+                ssaddtosteam: "Toevoegen aan Steam"
             }
         },
         streaming: {
@@ -848,7 +849,8 @@ export const translations = {
         rauseemudir: "Sla screenshots/meldingsafbeeldingen die zijn ontgrendeld via RetroAchievements op in een submap voor de huidige emulator binnen de opgegeven map voor screenshots/afbeeldingen",
         ssext: "Stel het bestandsformaat in van screenshots die worden gegenereerd via de optie Screenshot met meldingsoverlay",
         notify1line: `Beperk het aantal tekstregels dat wordt weergegeven in alle meldingen tot 1<br><br><span class="ttdesc">Overlopende tekst die niet op één regel past, wordt afgekapt met "..."</span>`,
-        copytheme: "Kopieer het geselecteerde thema naar een ander meldingstype"
+        copytheme: "Kopieer het geselecteerde thema naar een ander meldingstype",
+        ssaddtosteam: "Automatisch gegenereerde media toevoegen aan de Opnamen en Screenshots van de huidige game in Steam"
     },
     update: {
         updateavailable: "Update beschikbaar",

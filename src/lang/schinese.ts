@@ -288,7 +288,8 @@ export const translations = {
                 rauseemudir: "保存到模拟器子文件夹",
                 ssext: "截图格式",
                 png: "PNG",
-                jpg: "JPG"
+                jpg: "JPG",
+                ssaddtosteam: "添加到 Steam"
             }
         },
         streaming: {
@@ -848,7 +849,8 @@ export const translations = {
         rauseemudir: "将通过 RetroAchievements 解锁的截图/通知图像保存到指定截图/图像路径目录中当前模拟器的子文件夹内",
         ssext: "设置通过 Screenshot with Notification Overlay 选项生成的截图文件格式",
         notify1line: `将所有通知中显示的文本行数限制为 1<br><br><span class="ttdesc">无法适应单行的文本字符串将被截断并显示为 "..."</span>`,
-        copytheme: "将所选主题复制到另一种通知类型"
+        copytheme: "将所选主题复制到另一种通知类型",
+        ssaddtosteam: "自动将生成的媒体添加到当前游戏在 Steam 中的录制和截图"
     },
     update: {
         updateavailable: "有可用更新",

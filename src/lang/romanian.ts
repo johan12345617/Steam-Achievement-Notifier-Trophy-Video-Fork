@@ -288,7 +288,8 @@ export const translations = {
                 rauseemudir: "Salvează în subfolderul emulatorului",
                 ssext: "Format captură de ecran",
                 png: "PNG",
-                jpg: "JPG"
+                jpg: "JPG",
+                ssaddtosteam: "Adaugă în Steam"
             }
         },
         streaming: {
@@ -848,7 +849,8 @@ export const translations = {
         rauseemudir: "Salvează capturile de ecran/imaginile de notificare deblocate prin RetroAchievements într-un subfolder pentru emulatorul curent, în directorul specificat pentru calea capturilor de ecran/imaginilor",
         ssext: "Setează formatul fișierului pentru capturile de ecran generate prin opțiunea Captură de ecran cu suprapunere de notificare",
         notify1line: `Limitează numărul de linii de text afișate în toate notificările la 1<br><br><span class="ttdesc">Textele care nu încap pe o singură linie vor fi trunchiate cu "..."</span>`,
-        copytheme: "Copiază tema selectată într-un alt tip de notificare"
+        copytheme: "Copiază tema selectată într-un alt tip de notificare",
+        ssaddtosteam: "Adaugă automat media generată la Înregistrările și Capturile de ecran ale jocului curent în Steam"
     },
     update: {
         updateavailable: "Actualizare disponibilă",

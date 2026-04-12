@@ -288,7 +288,8 @@ export const translations = {
                 rauseemudir: "Im Emulator-Unterordner speichern",
                 ssext: "Screenshot-Format",
                 png: "PNG",
-                jpg: "JPG"
+                jpg: "JPG",
+                ssaddtosteam: "Zu Steam hinzufügen"
             }
         },
         streaming: {
@@ -848,7 +849,8 @@ export const translations = {
         rauseemudir: "Screenshots/Benachrichtigungsbilder, die über RetroAchievements freigeschaltet wurden, in einem Unterordner für den aktuellen Emulator innerhalb des angegebenen Screenshot-/Bildpfadverzeichnisses speichern",
         ssext: "Das Dateiformat für Screenshots festlegen, die über die Option Screenshot mit Benachrichtigungs-Overlay erstellt werden",
         notify1line: `Die Anzahl der in allen Benachrichtigungen angezeigten Textzeilen auf 1 begrenzen<br><br><span class="ttdesc">Überlaufende Textzeichenfolgen, die nicht in eine einzelne Zeile passen, werden mit "..." gekürzt</span>`,
-        copytheme: "Das ausgewählte Design in einen anderen Benachrichtigungstyp kopieren"
+        copytheme: "Das ausgewählte Design in einen anderen Benachrichtigungstyp kopieren",
+        ssaddtosteam: "Generierte Medien automatisch zu den Aufnahmen und Screenshots des aktuellen Spiels in Steam hinzufügen"
     },
     update: {
         updateavailable: "Update verfügbar",

@@ -288,7 +288,8 @@ export const translations = {
                 rauseemudir: "Gem i emulatorens undermappe",
                 ssext: "Skærmbilledeformat",
                 png: "PNG",
-                jpg: "JPG"
+                jpg: "JPG",
+                ssaddtosteam: "Tilføj til Steam"
             }
         },
         streaming: {
@@ -848,7 +849,8 @@ export const translations = {
         rauseemudir: "Gem skærmbilleder/notifikationsbilleder, der er låst op via RetroAchievements, i en undermappe for den aktuelle emulator inden for den angivne mappe til skærmbilleder/billeder",
         ssext: "Angiv filformatet for skærmbilleder, der genereres via indstillingen for skærmbillede med notifikationsoverlay",
         notify1line: `Begræns antallet af tekstlinjer, der vises i alle notifikationer, til 1<br><br><span class="ttdesc">Tekststrenge, der ikke kan være på én linje, vil blive afkortet med "..."</span>`,
-        copytheme: "Kopiér det valgte tema til en anden notifikationstype"
+        copytheme: "Kopiér det valgte tema til en anden notifikationstype",
+        ssaddtosteam: "Tilføj automatisk genereret medie til den aktuelle spils Optagelser og Skærmbilleder i Steam"
     },
     update: {
         updateavailable: "Opdatering tilgængelig",

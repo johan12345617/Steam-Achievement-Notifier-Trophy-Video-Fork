@@ -288,7 +288,8 @@ export const translations = {
                 rauseemudir: "Spara i emulatorns undermapp",
                 ssext: "Skärmbildsformat",
                 png: "PNG",
-                jpg: "JPG"
+                jpg: "JPG",
+                ssaddtosteam: "Lägg till i Steam"
             }
         },
         streaming: {
@@ -848,7 +849,8 @@ export const translations = {
         rauseemudir: "Spara skärmbilder/aviseringsbilder upplåsta via RetroAchievements i en undermapp för den aktuella emulatorn inom den angivna katalogen för skärmbilder/bilder",
         ssext: "Ange filformat för skärmbilder som genereras via alternativet Screenshot with Notification Overlay",
         notify1line: `Begränsa antalet textrader som visas i alla aviseringar till 1<br><br><span class="ttdesc">Textsträngar som inte får plats på en enda rad kommer att trunkeras med "..."</span>`,
-        copytheme: "Kopiera det valda temat till en annan aviseringstyp"
+        copytheme: "Kopiera det valda temat till en annan aviseringstyp",
+        ssaddtosteam: "Lägg automatiskt till genererat media i det aktuella spelets inspelningar och skärmbilder i Steam"
     },
     update: {
         updateavailable: "Uppdatering tillgänglig",

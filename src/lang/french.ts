@@ -288,7 +288,8 @@ export const translations = {
                 rauseemudir: "Enregistrer dans un sous-dossier de l'émulateur",
                 ssext: "Format de capture d'écran",
                 png: "PNG",
-                jpg: "JPG"
+                jpg: "JPG",
+                ssaddtosteam: "Ajouter à Steam"
             }
         },
         streaming: {
@@ -848,7 +849,8 @@ export const translations = {
         rauseemudir: "Enregistrer les captures d'écran/images de notification débloquées via RetroAchievements dans un sous-dossier pour l'émulateur actuel dans le répertoire de chemin des captures/images spécifié",
         ssext: "Définir le format de fichier des captures d'écran générées via l'option de capture d'écran avec superposition de notification",
         notify1line: `Limiter le nombre de lignes de texte affichées dans toutes les notifications à 1<br><br><span class="ttdesc">Les chaînes de texte dépassant la longueur d'une ligne seront tronquées avec "..."</span>`,
-        copytheme: "Copier le thème sélectionné vers un autre type de notification"
+        copytheme: "Copier le thème sélectionné vers un autre type de notification",
+        ssaddtosteam: "Ajouter automatiquement les médias générés aux Enregistrements et Captures d’écran du jeu actuel dans Steam"
     },
     update: {
         updateavailable: "Mise à jour disponible",

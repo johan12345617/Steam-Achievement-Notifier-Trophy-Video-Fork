@@ -288,7 +288,8 @@ export const translations = {
                 rauseemudir: "Salva nella sottocartella dell'emulatore",
                 ssext: "Formato screenshot",
                 png: "PNG",
-                jpg: "JPG"
+                jpg: "JPG",
+                ssaddtosteam: "Aggiungi a Steam"
             }
         },
         streaming: {
@@ -848,7 +849,8 @@ export const translations = {
         rauseemudir: "Salva gli screenshot/immagini di notifica sbloccati tramite RetroAchievements in una sottocartella per l'emulatore corrente all'interno della directory del percorso Screenshot/Immagine specificato",
         ssext: "Imposta il formato file degli screenshot generati tramite l'opzione Screenshot con sovrapposizione di notifica",
         notify1line: `Limita il numero di righe di testo visualizzate in tutte le notifiche a 1<br><br><span class="ttdesc">Le stringhe di testo troppo lunghe per una singola riga verranno troncate con "..."</span>`,
-        copytheme: "Copia il tema selezionato in un altro tipo di notifica"
+        copytheme: "Copia il tema selezionato in un altro tipo di notifica",
+        ssaddtosteam: "Aggiungi automaticamente i contenuti generati alle Registrazioni e agli Screenshot del gioco corrente su Steam"
     },
     update: {
         updateavailable: "Aggiornamento disponibile",

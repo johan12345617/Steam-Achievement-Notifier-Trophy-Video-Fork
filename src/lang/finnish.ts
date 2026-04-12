@@ -288,7 +288,8 @@ export const translations = {
                 rauseemudir: "Tallenna emulaattorin alikansioon",
                 ssext: "Kuvakaappauksen muoto",
                 png: "PNG",
-                jpg: "JPG"
+                jpg: "JPG",
+                ssaddtosteam: "Lisää Steamiin"
             }
         },
         streaming: {
@@ -848,7 +849,8 @@ export const translations = {
         rauseemudir: "Tallenna kuvakaappaukset/ilmoituskuvat, jotka on avattu RetroAchievementsin kautta, nykyisen emulaattorin alikansioon määritellyn kuvakaappaus-/kuvapolun hakemiston sisällä",
         ssext: "Määritä tiedostomuoto kuvakaappauksille, jotka luodaan kuvakaappaus ilmoituspeitteellä -asetuksella",
         notify1line: `Rajoita kaikissa ilmoituksissa näytettävien tekstirivien määrä yhteen<br><br><span class="ttdesc">Yhteen riviin mahtumattomat tekstit katkaistaan merkillä "..."</span>`,
-        copytheme: "Kopioi valittu teema toiseen ilmoitustyyppiin"
+        copytheme: "Kopioi valittu teema toiseen ilmoitustyyppiin",
+        ssaddtosteam: "Lisää automaattisesti luotu media nykyisen pelin Tallenteisiin ja Kuvakaappauksiin Steamissa"
     },
     update: {
         updateavailable: "Päivitys saatavilla",

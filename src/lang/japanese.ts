@@ -288,7 +288,8 @@ export const translations = {
                 rauseemudir: "エミュレーターのサブフォルダに保存",
                 ssext: "スクリーンショット形式",
                 png: "PNG",
-                jpg: "JPG"
+                jpg: "JPG",
+                ssaddtosteam: "Steamに追加"
             }
         },
         streaming: {
@@ -848,7 +849,8 @@ export const translations = {
         rauseemudir: "RetroAchievementsで解除されたスクリーンショット/通知画像を、指定されたスクリーンショット/画像パスディレクトリ内の現在のエミュレーター用サブフォルダに保存します",
         ssext: "通知オーバーレイ付きスクリーンショットオプションで生成されるスクリーンショットのファイル形式を設定します",
         notify1line: `すべての通知に表示されるテキストの行数を1行に制限します<br><br><span class="ttdesc">1行に収まらないテキストは「...」で切り捨てられます</span>`,
-        copytheme: "選択したテーマを別の通知タイプにコピーします"
+        copytheme: "選択したテーマを別の通知タイプにコピーします",
+        ssaddtosteam: "生成されたメディアを現在のゲームのSteamの録画およびスクリーンショットに自動的に追加"
     },
     update: {
         updateavailable: "アップデートが利用可能です",

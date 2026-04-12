@@ -288,7 +288,8 @@ export const translations = {
                 rauseemudir: "에뮬레이터 하위 폴더에 저장",
                 ssext: "스크린샷 형식",
                 png: "PNG",
-                jpg: "JPG"
+                jpg: "JPG",
+                ssaddtosteam: "Steam에 추가"
             }
         },
         streaming: {
@@ -848,7 +849,8 @@ export const translations = {
         rauseemudir: "RetroAchievements를 통해 획득한 스크린샷/알림 이미지를 지정된 스크린샷/이미지 경로 디렉터리 내 현재 에뮬레이터용 하위 폴더에 저장합니다",
         ssext: "알림 오버레이가 포함된 스크린샷 옵션으로 생성되는 스크린샷의 파일 형식을 설정합니다",
         notify1line: `모든 알림에 표시되는 텍스트 줄 수를 1줄로 제한합니다<br><br><span class="ttdesc">한 줄에 표시할 수 없는 긴 텍스트는 "..."로 잘립니다</span>`,
-        copytheme: "선택한 테마를 다른 알림 유형으로 복사합니다"
+        copytheme: "선택한 테마를 다른 알림 유형으로 복사합니다",
+        ssaddtosteam: "생성된 미디어를 현재 게임의 Steam 녹화 및 스크린샷에 자동으로 추가"
     },
     update: {
         updateavailable: "업데이트 가능",

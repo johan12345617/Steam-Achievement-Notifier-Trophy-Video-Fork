@@ -371,8 +371,8 @@ export const screenshot = {
 
                         log.write("INFO",`${sswintype.replace(" Window","")} written to "${ssimg}" successfully`)
 
+                        // Add generated media to Steam's Recordings and Screenshots menu
                         const { width, height } = img.getSize()
-                        
                         !notify.istestnotification && config.get("ssaddtosteam") && screenshot.addtosteam(ssimg,width,height)
                     } catch (err) {
                         log.write("ERROR",`Error capturing screenshot for "${info.apiname}": ${err as Error}`)

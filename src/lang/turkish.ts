@@ -288,7 +288,8 @@ export const translations = {
                 rauseemudir: "Emülatör alt klasörüne kaydet",
                 ssext: "Ekran görüntüsü formatı",
                 png: "PNG",
-                jpg: "JPG"
+                jpg: "JPG",
+                ssaddtosteam: "Steam'e ekle"
             }
         },
         streaming: {
@@ -848,7 +849,8 @@ export const translations = {
         rauseemudir: "RetroAchievements aracılığıyla açılan ekran görüntülerini/bildirim görsellerini, belirtilen Ekran Görüntüsü/Görsel Yolu dizini içinde mevcut emülatör için bir alt klasöre kaydet",
         ssext: "Screenshot with Notification Overlay seçeneği ile oluşturulan ekran görüntülerinin dosya formatını ayarla",
         notify1line: `Tüm bildirimlerde görüntülenen metin satırı sayısını 1 ile sınırla<br><br><span class="ttdesc">Tek bir satıra sığmayan metinler "..." ile kısaltılacaktır</span>`,
-        copytheme: "Seçilen temayı başka bir bildirim türüne kopyala"
+        copytheme: "Seçilen temayı başka bir bildirim türüne kopyala",
+        ssaddtosteam: "Oluşturulan medyayı mevcut oyunun Steam'deki Kayıtlar ve Ekran Görüntülerine otomatik olarak ekle"
     },
     update: {
         updateavailable: "Güncelleme mevcut",

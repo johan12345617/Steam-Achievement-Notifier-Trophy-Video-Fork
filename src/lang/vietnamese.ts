@@ -288,7 +288,8 @@ export const translations = {
                 rauseemudir: "Lưu vào thư mục con của trình giả lập",
                 ssext: "Định dạng ảnh chụp màn hình",
                 png: "PNG",
-                jpg: "JPG"
+                jpg: "JPG",
+                ssaddtosteam: "Thêm vào Steam"
             }
         },
         streaming: {
@@ -848,7 +849,8 @@ export const translations = {
         rauseemudir: "Lưu ảnh chụp màn hình/hình ảnh thông báo mở khóa qua RetroAchievements vào thư mục con cho trình giả lập hiện tại trong thư mục đường dẫn ảnh/chụp màn hình đã chỉ định",
         ssext: "Đặt định dạng tệp của ảnh chụp màn hình được tạo thông qua tùy chọn Screenshot with Notification Overlay",
         notify1line: `Giới hạn số dòng văn bản hiển thị trong tất cả thông báo xuống 1<br><br><span class="ttdesc">Các chuỗi văn bản không thể vừa trong một dòng sẽ bị cắt ngắn bằng "..."</span>`,
-        copytheme: "Sao chép giao diện đã chọn sang loại thông báo khác"
+        copytheme: "Sao chép giao diện đã chọn sang loại thông báo khác",
+        ssaddtosteam: "Tự động thêm phương tiện đã tạo vào Bản ghi và Ảnh chụp màn hình của trò chơi hiện tại trong Steam"
     },
     update: {
         updateavailable: "Có bản cập nhật mới",

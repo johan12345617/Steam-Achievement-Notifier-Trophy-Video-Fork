@@ -288,7 +288,8 @@ export const translations = {
                 rauseemudir: "Mentés az emulátor almappájába",
                 ssext: "Képernyőkép formátum",
                 png: "PNG",
-                jpg: "JPG"
+                jpg: "JPG",
+                ssaddtosteam: "Hozzáadás a Steamhez"
             }
         },
         streaming: {
@@ -848,7 +849,8 @@ export const translations = {
         rauseemudir: "A RetroAchievements által feloldott képernyőképek/értesítési képek mentése egy almappába az aktuális emulátor számára a megadott Képernyőkép/Kép elérési út könyvtárán belül",
         ssext: "Állítsd be a képernyőképek fájlformátumát, amelyeket a Képernyőkép értesítési átfedéssel opció hoz létre",
         notify1line: `Korlátozza az összes értesítésben megjelenített szövegsorok számát 1-re<br><br><span class="ttdesc">Azok a szövegek, amelyek nem férnek el egy sorban, "..." jellel lesznek levágva</span>`,
-        copytheme: "A kiválasztott téma másolása egy másik értesítési típushoz"
+        copytheme: "A kiválasztott téma másolása egy másik értesítési típushoz",
+        ssaddtosteam: "A generált média automatikus hozzáadása az aktuális játék Felvételeihez és Képernyőképeihez a Steamen"
     },
     update: {
         updateavailable: "Frissítés elérhető",
