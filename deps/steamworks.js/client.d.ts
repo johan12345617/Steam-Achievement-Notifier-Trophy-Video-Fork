@@ -12,12 +12,12 @@ export namespace achievement {
   export function lock(achievement: string): boolean
   export function getAchievementDisplayAttribute(achievement: string, key: string): string
   export function getAchievementAchievedPercent(achievement: string): number
-  export interface Icon {
+  export interface AchievementIcon {
     handle: Array<number>
     width: number
     height: number
   }
-  export function getAchievementIcon(achievement: string): Icon | null
+  export function getAchievementIcon(achievement: string): AchievementIcon | null
   export function getNumAchievements(): number
   export function getAchievementNames(): Array<string>
 }
