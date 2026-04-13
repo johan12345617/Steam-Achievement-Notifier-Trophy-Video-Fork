@@ -270,6 +270,7 @@ export const translations = {
                 steamss: "Ta Steam-skärmdump",
                 screenshots: "Ytterligare media",
                 off: "Av",
+                ssonly: "Endast skärmbild",
                 overlay: "Skärmdump med aviseringens överlagring",
                 monitors: "Skärmdumpskälla",
                 hdrmode: "HDR-läge",

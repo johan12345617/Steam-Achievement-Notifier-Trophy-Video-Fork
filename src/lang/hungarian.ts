@@ -270,6 +270,7 @@ export const translations = {
                 steamss: "Steam képernyőkép készítése",
                 screenshots: "További média",
                 off: "Ki",
+                ssonly: "Csak képernyőkép",
                 overlay: "Képernyőkép értesítési átfedéssel",
                 monitors: "Képernyőkép forrás",
                 hdrmode: "HDR mód",

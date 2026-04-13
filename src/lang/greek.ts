@@ -270,6 +270,7 @@ export const translations = {
                 steamss: "Λήψη στιγμιότυπου Steam",
                 screenshots: "Πρόσθετα μέσα",
                 off: "Απενεργοποίηση",
+                ssonly: "Μόνο στιγμιότυπο οθόνης",
                 overlay: "Στιγμιότυπο με επικάλυψη ειδοποιήσεων",
                 monitors: "Πηγή στιγμιοτύπου",
                 hdrmode: "Λειτουργία HDR",

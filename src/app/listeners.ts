@@ -1219,7 +1219,7 @@ export const listeners = {
                 const offscreenwin = offscreenwins.get(notify.id)! as BrowserWindow
 
                 notifywin.loadFile(basehtml)
-                config.get("screenshots") !== "off" && config.get("ssdelay") > 0 && notifywin.setContentProtection(true)
+                config.get("screenshots") !== "off" && config.get("ssdelay") > 0 && notifywin.setContentProtection(true) // If `ssdelay` > 0, prevents on-screen notification from being captured to prevent duplicate notifications in screenshots
                 notifywin.setIgnoreMouseEvents(true)
                 notifywin.setAlwaysOnTop(true,"screen-saver",1000)
 

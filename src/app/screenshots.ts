@@ -1,4 +1,4 @@
-import { ipcMain, BrowserWindow, desktopCapturer, screen } from "electron"
+import { ipcMain, BrowserWindow, desktopCapturer, screen, nativeImage } from "electron"
 import path from "path"
 import fs from "fs"
 import { sanconfig } from "./config"
@@ -6,8 +6,9 @@ import { log } from "./log"
 import { __root, sanhelper } from "./sanhelper"
 
 // Used in `dialog.ts`/`renderer.ts` to close "sswin", and in `renderer.ts` to spawn the Preview window
-ipcMain.on("sswin", (event,notify?: Notify,src?: number) => {
+ipcMain.on("sswin",(event,notify?: Notify,src?: number) => {
     const { screenshots, monitor } = sanconfig.get().store
+    if (screenshots === "off") return
 
     if (!notify) {
         for (const [id,sswin] of sswins) {
@@ -28,7 +29,7 @@ ipcMain.on("sswin", (event,notify?: Notify,src?: number) => {
         haswarned: false
     })
 
-    screenshot.createsswin(screenshots === "notifyimg" ? "img" : "ss",notify,true)
+    screenshot.createsswin(screenshots === "notifyimg" ? "img" : (screenshots === "overlay" ? "ss" : "ssonly"),notify,true)
 })
 
 const sswins = new Map<number,SSWin>()
@@ -74,7 +75,7 @@ export const screenshot = {
     checksrcimg: (notify: Notify,windowtitle: string | null,retries = 0) => {
         const tempimgpath = path.join(sanhelper.temp,`${notify.id}.png`)
         const sswin = sswins.get(notify.id)
-        const { ssdelay } = sanconfig.get().store
+        const { ssdelay, screenshots } = sanconfig.get().store
         const interval = 250
         const max = Math.ceil((5000 + ((ssdelay * 1000) * 2)) / interval)
 
@@ -103,7 +104,7 @@ export const screenshot = {
         }
 
         log.write("INFO",`Total retries: ${retries}/${max}`)
-        screenshot.createsswin("ss",notify)
+        screenshot.createsswin(`ss${screenshots === "ssonly" ? "only" : ""}`,notify)
     },
     checkwindowtitle: (ssmode: "screen" | "window",notify: Notify) => {
         const sswin = sswins.get(notify.id)
@@ -134,11 +135,9 @@ export const screenshot = {
                 haswarned: false
             }
 
-            if (screenshots !== "overlay") {
-                if (screenshots === "notifyimg") {
-                    sswins.set(notify.id,sswinsobj)
-                    screenshot.createsswin("img",notify)
-                }
+            if (screenshots === "notifyimg") {
+                sswins.set(notify.id,sswinsobj)
+                screenshot.createsswin("img",notify)
                 
                 return
             }
@@ -250,16 +249,35 @@ export const screenshot = {
             return screenshot.clearsswin(notify.id)
         }
     },
-    createsswin: async (type: "ss" | "img",notify: Notify,ispreview?: boolean) => {
+    sspathinfo: (config: any,type: "ssonly" | "ss" | "img",notify: Notify,info: BuildNotifyInfo,imgpath: string) => {
+        const regex = /[^a-zA-Z0-9 _()\-\[\]]/g
+        const ssdir = path.join(imgpath,(!notify.istestnotification && info.gamename ? info.gamename : "Steam Achievement Notifier").replace(regex,"").replace(/\.$/,"").trim()).replace(/\\/g,"/")
+        const ssbasename = `${info.title.replace(regex,"").trim()}${type === "img" ? " - Notification" : ""}`
+        const ssext: ".png" | ".jpg" = `.${config.get("screenshots") === "notifyimg" ? "png" : config.get("ssext") as "png" | "jpg"}`
+
+        let sscounter = 0
+        let ssimg = path.join(ssdir,`${ssbasename}${ssext}`).replace(/\\/g,"/")
+
+        while (!notify.istestnotification && fs.existsSync(ssimg)) {
+            sscounter++
+            ssimg = path.join(ssdir,`${ssbasename}_${sscounter}${ssext}`).replace(/\\/g,"/")
+        }
+
+        !fs.existsSync(ssdir) && fs.mkdirSync(ssdir,{ recursive: true })
+
+        return ssimg
+    },
+    createsswin: async (type: "ssonly" | "ss" | "img",notify: Notify,ispreview?: boolean) => {
         try {
             const config = sanconfig.get()
-            const sswintype = `${type === "ss" ? "Screenshot" : "Notification Image"}${ispreview ? " Preview" : ""} Window`
+            const isss = type === "ss" || type === "ssonly"
+            const sswintype = `${isss ? "Screenshot" : "Notification Image"}${ispreview ? " Preview" : ""} Window`
             
             // Screenshots are disabled in `ipcMain.on("notify")` event and shouldn't reach here anyway, but added as a logical fallback
             if (!config.get(`customisation.${notify.type}.ssenabled`)) return log.write("INFO",`${type === "ss" ? "Screenshots" : "Notification Images"} disabled for "${notify.type}" type`)
             
-            const imgpath: string = path.join(config.get(`${type === "ss" ? "ov" : "img"}path`),await screenshot.rapath(notify,config.get("rauseemudir"))) as string
-            const srcpath: string | null = type === "ss" ? (!ispreview ? screenshot.srcpath(notify.id) : sanhelper.setfilepath("img","santextlogobg.png")) : null
+            const imgpath: string = path.join(config.get(`${isss ? "ov" : "img"}path`),await screenshot.rapath(notify,config.get("rauseemudir"))) as string
+            const srcpath: string | null = isss ? (!ispreview ? screenshot.srcpath(notify.id) : sanhelper.setfilepath("img","santextlogobg.png")) : null
 
             try {
                 !fs.existsSync(imgpath) && fs.mkdirSync(imgpath, { recursive: true })
@@ -271,109 +289,116 @@ export const screenshot = {
 
             const info = await screenshot.buildnotify(notify)
 
+            // If "ssonly", just copy "src" screenshot from "temp" dir and return
+            if (isss && type === "ssonly" && !ispreview) {
+                try {
+                    const ssimg = screenshot.sspathinfo(config,type,notify,info,imgpath)
+                    fs.copyFileSync(srcpath as string,ssimg)
+                    log.write("INFO",`"${srcpath}" copied to "${ssimg}" successfully`)
+                    
+                    // Add generated media to Steam's Recordings and Screenshots menu
+                    screenshot.addtosteam(!notify.istestnotification && config.get("ssaddtosteam"),ssimg,nativeImage.createFromPath(ssimg))
+                } catch (err) {
+                    log.write("ERROR",`Unable to copy "${srcpath}" to "${imgpath}": ${err as Error}`)
+                }
+                
+                return screenshot.clearsswin(notify.id)
+            }
+
             const sswin = sswins.get(notify.id)
             if (!sswin) return log.write("ERROR",`Error creating ${sswintype} for ID ${notify.id}: Entry not found in "sswins" Map`)
 
             ipcMain.once(`${type}winready_${notify.id}`,async event => {
-                if (!sswin.win) return log.write("WARN",`Error sending ${type === "ss" ? `screenshot "src"` : "notification data"} for ID ${notify.id}: "${type}win" not found`)
+                if (!sswin.win) return log.write("WARN",`Error sending ${isss ? `screenshot "src"` : "notification data"} for ID ${notify.id}: "${type}win" not found`)
 
-                if (type === "ss") {
+                if (isss) {
                     log.write("INFO",!ispreview ? `Sending "src" for ID ${notify.id}` : "Screenshot not taken for preview")
                     sswin.win.webContents.send(`src_${notify.id}`,srcpath)
                 }
 
                 ;(process.platform !== "linux" || ispreview) && sswin.win.show() // Prevent the window from showing, which still captures the contents but hides the window in "Window" and "Notification Image" modes
 
-                const [appid,gameartobj] = await Promise.all((["appid","gameartobj"] as const).map(lv => screenshot.getlistenersvar(lv))) as [number,GameArtObj]
-                const { usecustomfiles, ssalldetails, screenshots } = config.store
-                const { icon, libhero, logo } = gameartobj
+                let eventinfo = undefined
 
-                const html = fs.readFileSync(path.join(__root,"notify","presets",notify.customisation.preset,"index.html")).toString()
-                if (!html) throw new Error(`Error parsing HTML for "${notify.customisation.preset}" preset`)
-
-                const meta = {
-                    width: html.match(/width="(\d+)"/i)?.[1] || "0",
-                    height: html.match(/height="(\d+)"/i)?.[1] || "0",
-                    offset: html.match(/offset="(-?\d+)"/i)?.[1] || "20"
-                }
-
-                const dims = {
-                    width: parseInt(meta.width),
-                    height: parseInt(meta.height),
-                    offset: parseInt(meta.offset),
-                    scalefactor: 1
-                }
-
-                try {
-                    const { width, height } = await screenshot.setnotifybounds({ width: dims.width, height: dims.height },notify.type,dims.offset,"sswin",notify.customisation)
-
-                    if (type === "img") {
-                        const scale = notify.customisation.scale / 100
-                        const bordersize = 50
-                        const glowsize = Math.round(bordersize * scale)
-                        
-                        sswin.win.setSize(Math.round((width * scale) * 1.075) + glowsize,Math.round(height * scale) + glowsize)
-                        sswin.win.center()
+                if (type !== "ssonly") {
+                    const [appid,gameartobj] = await Promise.all((["appid","gameartobj"] as const).map(lv => screenshot.getlistenersvar(lv))) as [number,GameArtObj]
+                    const { usecustomfiles, ssalldetails, screenshots } = config.store
+                    const { icon, libhero, logo } = gameartobj
+    
+                    const html = fs.readFileSync(path.join(__root,"notify","presets",notify.customisation.preset,"index.html")).toString()
+                    if (!html) throw new Error(`Error parsing HTML for "${notify.customisation.preset}" preset`)
+    
+                    const meta = {
+                        width: html.match(/width="(\d+)"/i)?.[1] || "0",
+                        height: html.match(/height="(\d+)"/i)?.[1] || "0",
+                        offset: html.match(/offset="(-?\d+)"/i)?.[1] || "20"
                     }
+    
+                    const dims = {
+                        width: parseInt(meta.width),
+                        height: parseInt(meta.height),
+                        offset: parseInt(meta.offset),
+                        scalefactor: 1
+                    }
+    
+                    try {
+                        const { width, height } = await screenshot.setnotifybounds({ width: dims.width, height: dims.height },notify.type,dims.offset,"sswin",notify.customisation)
+    
+                        if (type === "img") {
+                            const scale = notify.customisation.scale / 100
+                            const bordersize = 50
+                            const glowsize = Math.round(bordersize * scale)
+                            
+                            sswin.win.setSize(Math.round((width * scale) * 1.075) + glowsize,Math.round(height * scale) + glowsize)
+                            sswin.win.center()
+                        }
+    
+                        const monitor = (type !== "img" && screen.getAllDisplays().find(monitor => monitor.id === (sswin.src || config.get("monitor")))) || screen.getPrimaryDisplay()
+                        dims.scalefactor = monitor.scaleFactor
+    
+                        sswin.win.setResizable(false)
 
-                    const monitor = (type !== "img" && screen.getAllDisplays().find(monitor => monitor.id === (sswin.src || config.get("monitor")))) || screen.getPrimaryDisplay()
-                    dims.scalefactor = monitor.scaleFactor
-
-                    sswin.win.setResizable(false)
-                } catch (err) {
-                    return log.write("ERROR",`Error creating ${sswintype} for ID ${notify.id} dimensions: ${err as Error}`)
+                        eventinfo = {
+                            info: {
+                                info,
+                                customisation: notify.customisation,
+                                iswebview: ispreview ? "sspreview" : "ss",
+                                steampath: sanhelper.steampath,
+                                skipaudio: true,
+                                customfiles: usecustomfiles ? path.join(sanhelper.appdata,"customfiles","notify","base.html") : undefined,
+                                hqicon: sanhelper.gethqicon(appid),
+                                temp: sanhelper.temp,
+                                ssalldetails,
+                                screenshots,
+                                gamearticon: icon,
+                                gameartlibhero: libhero,
+                                gameartlogo: logo,
+                                notify1line: config.get("notify1line"),
+                                ra: notify.ra
+                            } as Info,
+                            dims
+                        }
+                    } catch (err) {
+                        return log.write("ERROR",`Error creating ${sswintype} for ID ${notify.id} dimensions: ${err as Error}`)
+                    }
                 }
         
-                event.reply(`${type}winready_${notify.id}`,{
-                    info: {
-                        info: info,
-                        customisation: notify.customisation,
-                        iswebview: ispreview ? "sspreview" : "ss",
-                        steampath: sanhelper.steampath,
-                        skipaudio: true,
-                        customfiles: usecustomfiles ? path.join(sanhelper.appdata,"customfiles","notify","base.html") : undefined,
-                        hqicon: sanhelper.gethqicon(appid),
-                        temp: sanhelper.temp,
-                        ssalldetails,
-                        screenshots,
-                        gamearticon: icon,
-                        gameartlibhero: libhero,
-                        gameartlogo: logo,
-                        notify1line: config.get("notify1line"),
-                        ra: notify.ra
-                    } as Info,
-                    dims
-                })
+                event.reply(`${type}winready_${notify.id}`,eventinfo)
 
-                !ispreview && ipcMain.once(`sscapture_${notify.id}`,async () => {
+                !ispreview && type !== "ssonly" && ipcMain.once(`sscapture_${notify.id}`,async () => {
                     if (!sswin?.win) return log.write("WARN",`${sswintype} for ID ${notify.id} was closed before image file could be written to "${imgpath}"`)
-
-                    const regex = /[^a-zA-Z0-9 _()\-\[\]]/g
-                    const ssdir = path.join(imgpath,(!notify.istestnotification && info.gamename ? info.gamename : "Steam Achievement Notifier").replace(regex,"").replace(/\.$/,"").trim()).replace(/\\/g,"/")
-                    const ssbasename = `${info.title.replace(regex,"").trim()}${type === "img" ? " - Notification" : ""}`
-                    const ssext: ".png" | ".jpg" = `.${config.get("screenshots") === "notifyimg" ? "png" : config.get("ssext")}`
-
-                    let sscounter = 0
-                    let ssimg = path.join(ssdir,`${ssbasename}${ssext}`).replace(/\\/g,"/")
-
-                    while (!notify.istestnotification && fs.existsSync(ssimg)) {
-                        sscounter++
-                        ssimg = path.join(ssdir,`${ssbasename}_${sscounter}${ssext}`).replace(/\\/g,"/")
-                    }
-
+                    
                     try {
+                        const ssimg = screenshot.sspathinfo(config,type,notify,info,imgpath)
                         await new Promise(resolve => setTimeout(resolve,250)) // Allow additional frames for window to fully render before capturing
 
                         const img = await sswin.win.capturePage()
-                        
-                        !fs.existsSync(ssimg) && fs.mkdirSync(ssdir,{ recursive: true })
                         fs.writeFileSync(ssimg,img.toPNG())
 
                         log.write("INFO",`${sswintype.replace(" Window","")} written to "${ssimg}" successfully`)
 
                         // Add generated media to Steam's Recordings and Screenshots menu
-                        const { width, height } = img.getSize()
-                        !notify.istestnotification && config.get("ssaddtosteam") && screenshot.addtosteam(ssimg,width,height)
+                        screenshot.addtosteam(!notify.istestnotification && config.get("ssaddtosteam"),ssimg,img) // Send the `<filename>_STEAM.<png|jpg>` copy to Steam
                     } catch (err) {
                         log.write("ERROR",`Error capturing screenshot for "${info.apiname}": ${err as Error}`)
                     }
@@ -390,16 +415,16 @@ export const screenshot = {
             const offscreenpx = 10000
 
             // On Linux, attempts to get `monitor.bounds`, falls back to `display.bounds` and falls back again to default 1080p values if both are undefined
-            const { fbw, fbh } = process.platform === "linux" && type === "ss" ? { fbw: monitor.bounds.width ?? display.bounds.width ?? 1920, fbh: monitor.bounds.height ?? display.bounds.height ?? 1080 } : { fbw: undefined, fbh: undefined }
+            const { fbw, fbh } = process.platform === "linux" && isss ? { fbw: monitor.bounds.width ?? display.bounds.width ?? 1920, fbh: monitor.bounds.height ?? display.bounds.height ?? 1080 } : { fbw: undefined, fbh: undefined }
             const { x, y } = display.bounds
             const { bounds: { width, height } } = screenshot.sswinbounds
             const ssmode: "screen" | "window" = config.get("ssmode") === "window" && sswin.windowtitle ? "window" : "screen"
 
             sswin.win = new BrowserWindow({
-                title: `Steam Achievement Notifier (V${sanhelper.version}): ${type === "ss" ? "Screenshot" : "Notification Image"} ${ispreview ? "Preview" : "Window"}`,
-                fullscreen: type === "ss" && ssmode !== "window" && (process.platform !== "linux" || ispreview), // On Linux, prevents `fullscreen` from being activated when not a preview
-                x: type === "ss" && ssmode !== "window" ? x : undefined,
-                y: (process.platform === "linux" && type === "ss") ? offscreenpx : (type === "ss" && ssmode !== "window" ? y : undefined), // On Linux, sets the `y` value to `offscreenpx` in "Screen" mode, moving it far offscreen
+                title: `Steam Achievement Notifier (V${sanhelper.version}): ${isss ? "Screenshot" : "Notification Image"} ${ispreview ? "Preview" : "Window"}`,
+                fullscreen: isss && ssmode !== "window" && (process.platform !== "linux" || ispreview), // On Linux, prevents `fullscreen` from being activated when not a preview
+                x: isss && ssmode !== "window" ? x : undefined,
+                y: (process.platform === "linux" && isss) ? offscreenpx : (isss && ssmode !== "window" ? y : undefined), // On Linux, sets the `y` value to `offscreenpx` in "Screen" mode, moving it far offscreen
                 width: width || fbw,
                 height: height || fbh,
                 autoHideMenuBar: true,
@@ -416,13 +441,16 @@ export const screenshot = {
                     nodeIntegration: true,
                     contextIsolation: false,
                     webviewTag: true,
-                    additionalArguments: [`--notifyid=${notify.id}`]
+                    additionalArguments: [
+                        `--notifyid=${notify.id}`,
+                        `--sstype=${type}`
+                    ]
                 }
             })
 
             !ispreview && sswin.win.setOpacity(sanhelper.devmode ? 0.5 : 0)
             sswin.win.setIgnoreMouseEvents(!ispreview)
-            sswin.win.loadFile(path.join(__root,"dist","app",`${type}win.html`))
+            sswin.win.loadFile(path.join(__root,"dist","app",`${type.replace("only","")}win.html`))
             sanhelper.devmode && sanhelper.setdevtools(sswin.win)
 
             sswin.win.once("closed",() => log.write("INFO",`${sswintype} for ID ${notify.id} closed`))
@@ -431,7 +459,28 @@ export const screenshot = {
             screenshot.clearsswin(notify.id)
         }
     },
-    addtosteam: (imgpath: string,width: number,height: number) => ipcMain.emit("addtosteam",null,imgpath,Math.round(width),Math.round(height)),
+    // createsteamimg: (ssimg: string) => {
+    //     const ext = path.extname(ssimg)
+
+    //     // Create a copy of the image named `<filename>_STEAM.<png|jpg>`
+    //     // `client.screenshot.addScreenshotToLibrary()` deletes the original file after deleting in Steam
+    //     const steamimg = path.join(path.dirname(ssimg),`${path.basename(ssimg,ext)}_STEAM${ext}`).replace(/\\/g,"/")
+    //     fs.copyFileSync(ssimg,steamimg)
+        
+    //     log.write("INFO",`"${ssimg}" successfully copied to "${steamimg}"`)
+
+    //     return steamimg
+    // },
+    addtosteam: (shouldadd: boolean,imgpath: string,img: Electron.NativeImage) => {
+        if (!shouldadd) return
+        if (!fs.existsSync(imgpath)) throw new Error(`Unable to add media to Steam: "${imgpath}" does not exist`)
+        
+        // const steamimg = screenshot.createsteamimg(imgpath)
+        const { width, height } = img.getSize()
+        
+        // ipcMain.emit("addtosteam",null,steamimg,Math.round(width),Math.round(height))
+        ipcMain.emit("addtosteam",null,imgpath,Math.round(width),Math.round(height))
+    },
     clearsswin: (id: number) => {
         const sswin = sswins.get(id)
 

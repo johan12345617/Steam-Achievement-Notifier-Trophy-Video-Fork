@@ -270,6 +270,7 @@ export const translations = {
                 steamss: "Steam 스크린 샷 찍기",
                 screenshots: "추가 미디어",
                 off: "끔",
+                ssonly: "스크린샷만",
                 overlay: "알림 오버레이가있는 스크린 샷",
                 monitors: "스크린 샷 소스",
                 hdrmode: "HDR 모드",

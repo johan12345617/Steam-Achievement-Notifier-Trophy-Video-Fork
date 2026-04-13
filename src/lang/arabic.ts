@@ -270,6 +270,7 @@ export const translations = {
                 steamss: "التقاط لقطة شاشة Steam",
                 screenshots: "وسائط إضافية",
                 off: "إيقاف",
+                ssonly: "لقطة شاشة فقط",
                 overlay: "التقاط لقطة شاشة مع تراكب الإشعار",
                 monitors: "مصدر اللقطة الشاشة",
                 hdrmode: "وضع HDR",

@@ -270,6 +270,7 @@ export const translations = {
                 steamss: "Zrób zrzut ekranu Steam",
                 screenshots: "Dodatkowe media",
                 off: "Wyłączone",
+                ssonly: "Tylko zrzut ekranu",
                 overlay: "Zrzut ekranu z nakładką powiadomienia",
                 monitors: "Źródło zrzutu ekranu",
                 hdrmode: "Tryb HDR",

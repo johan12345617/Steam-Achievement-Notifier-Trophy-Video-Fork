@@ -270,6 +270,7 @@ export const translations = {
                 steamss: "Зробити знімок екрану Steam",
                 screenshots: "Додаткове медіа",
                 off: "Вимкн.",
+                ssonly: "Тільки знімок екрана",
                 overlay: "Снимок екрана з наложенням сповіщення",
                 monitors: "Джерело знімка екрана",
                 hdrmode: "Режим HDR",

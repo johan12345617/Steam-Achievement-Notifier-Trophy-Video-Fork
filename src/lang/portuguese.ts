@@ -270,6 +270,7 @@ export const translations = {
                 steamss: "Tirar Captura de Tela do Steam",
                 screenshots: "Mídia Adicional",
                 off: "Desligado",
+                ssonly: "Apenas Captura de Ecrã",
                 overlay: "Captura de Tela com Overlay de Notificação",
                 monitors: "Fonte da Captura de Tela",
                 hdrmode: "Modo HDR",

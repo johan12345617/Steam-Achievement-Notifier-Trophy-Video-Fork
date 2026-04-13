@@ -270,6 +270,7 @@ export const translations = {
                 steamss: "Chụp Ảnh Màn hình Steam",
                 screenshots: "Phương tiện Bổ sung",
                 off: "Tắt",
+                ssonly: "Chỉ Ảnh Chụp Màn hình",
                 overlay: "Chụp Ảnh Màn hình với Chồng Lên Thông báo",
                 monitors: "Nguồn Chụp Ảnh Màn hình",
                 hdrmode: "Chế độ HDR",

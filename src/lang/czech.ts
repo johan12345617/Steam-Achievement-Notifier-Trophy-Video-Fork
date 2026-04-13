@@ -270,6 +270,7 @@ export const translations = {
                 steamss: "Pořídit screenshot z Steamu",
                 screenshots: "Další média",
                 off: "Vypnuto",
+                ssonly: "Pouze Snímek Obrazovky",
                 overlay: "Screenshot s překryvem upozornění",
                 monitors: "Zdroj screenshotu",
                 hdrmode: "Režim HDR",

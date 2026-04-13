@@ -55,7 +55,7 @@ declare interface Config {
     nowtrackingpos: "bottomcenter" | "topcenter" | "topleft" | "topright" | "bottomleft" | "bottomright",
     shortcuts: boolean,
     steamss: boolean,
-    screenshots: "off" | "overlay" | "notifyimg",
+    screenshots: "off" | "ssonly" | "overlay" | "notifyimg",
     ssmode: "screen" | "window",
     hdrmode: boolean,
     monitor: number,

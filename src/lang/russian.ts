@@ -270,6 +270,7 @@ export const translations = {
                 steamss: "Сделать скриншот Steam",
                 screenshots: "Дополнительные медиа",
                 off: "Отключено",
+                ssonly: "Только скриншот",
                 overlay: "Скриншот с наложением уведомления",
                 monitors: "Источник скриншота",
                 hdrmode: "Режим HDR",

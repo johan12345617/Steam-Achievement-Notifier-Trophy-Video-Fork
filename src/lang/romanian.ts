@@ -270,6 +270,7 @@ export const translations = {
                 steamss: "Fă Captură Steam",
                 screenshots: "Media Suplimentară",
                 off: "Oprit",
+                ssonly: "Doar Captură de Ecran",
                 overlay: "Captură cu Suprapunere Notificare",
                 monitors: "Sursă Captură",
                 hdrmode: "Mod HDR",

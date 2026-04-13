@@ -270,6 +270,7 @@ export const translations = {
                 steamss: "Stoom screenshot nemen",
                 screenshots: "Extra media",
                 off: "Uit",
+                ssonly: "Alleen screenshot",
                 overlay: "Screenshot met meldingen-overlay",
                 monitors: "Screenshot bron",
                 hdrmode: "HDR-modus",

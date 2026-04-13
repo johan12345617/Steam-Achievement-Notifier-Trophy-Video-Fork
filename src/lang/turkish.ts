@@ -270,6 +270,7 @@ export const translations = {
                 steamss: "Steam Ekran Görüntüsü Al",
                 screenshots: "Ek Medya",
                 off: "Kapalı",
+                ssonly: "Yalnızca Ekran Görüntüsü",
                 overlay: "Bildirim Üzerine Ekran Görüntüsü",
                 monitors: "Görüntü Kaynağı",
                 hdrmode: "HDR Modu",

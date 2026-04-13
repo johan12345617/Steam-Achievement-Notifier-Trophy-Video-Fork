@@ -270,6 +270,7 @@ export const translations = {
                 steamss: "Ota Steam-ruutukaappaus",
                 screenshots: "Lisämedia",
                 off: "Pois päältä",
+                ssonly: "Vain kuvakaappaus",
                 overlay: "Ruutukaappaus ilmoituksen päällekkäisyydellä",
                 monitors: "Ruutukaappauksen lähde",
                 hdrmode: "HDR-tila",

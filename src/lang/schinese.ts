@@ -270,6 +270,7 @@ export const translations = {
                 steamss: "进行Steam截图",
                 screenshots: "其他媒体",
                 off: "关闭",
+                ssonly: "仅截图",
                 overlay: "带通知叠加的截图",
                 monitors: "截图来源",
                 hdrmode: "HDR 模式",

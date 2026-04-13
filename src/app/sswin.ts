@@ -1,6 +1,7 @@
 import { ipcRenderer } from "electron"
 
 const notifyid = process.argv.find(arg => arg.startsWith("--notifyid="))!.split("=")[1]
+const sstype = process.argv.find(arg => arg.startsWith("--sstype="))!.split("=")[1] as "ss" | "ssonly"
 
 const checkimgload = (img: HTMLImageElement): boolean => {
     if (!img.complete) return false
@@ -46,9 +47,17 @@ ipcRenderer.once(`src_${notifyid}`,(event,path: string) => {
     }
 })
 
-ipcRenderer.once(`sswinready_${notifyid}`,async (event,obj: { info: Info, dims: { width: number, height: number, offset: number, scalefactor: number } }) => {
-    const { customisation, iswebview, info: { type }, customfiles } = obj.info
+ipcRenderer.once(`${sstype}winready_${notifyid}`,async (event,obj?: { info: Info, dims: { width: number, height: number, offset: number, scalefactor: number } }) => {
     const webview = document.querySelector("webview")! as Electron.WebviewTag
+    
+    // No `obj` is sent when `sstype === "ssonly"`, so the `webview` element is not needed
+    if (!obj) {
+        webview && webview.remove()
+        document.documentElement.style.setProperty("--opacity","1")
+        return
+    }
+    
+    const { customisation, iswebview, info: { type }, customfiles } = obj.info
 
     webview.src = customfiles || "../../notify/base.html"
     !iswebview || iswebview === "ss" && (document.querySelector(".menubtn#close") as HTMLButtonElement)!.remove()
@@ -125,4 +134,4 @@ ipcRenderer.once(`sswinready_${notifyid}`,async (event,obj: { info: Info, dims: 
     })
 })
 
-window.addEventListener("DOMContentLoaded",() => ipcRenderer.send(`sswinready_${notifyid}`))
+window.addEventListener("DOMContentLoaded",() => ipcRenderer.send(`${sstype}winready_${notifyid}`))
