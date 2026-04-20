@@ -8,7 +8,7 @@ This repository is a custom fork of **Steam Achievement Notifier** focused on on
 
 - save an OBS replay clip automatically when a Steam achievement unlocks
 - I tried steam and game bar recorded but that apps doesnt record the SAN notification , so thats why use obs
-- The obs replay buffer has a hit on the gpu so it would take a decent fps if ure game is gpu limit (Test with a 5070ti on re4 remake and get 20fps in avg)
+- The obs replay buffer has a hit on the gpu so it would take a decent fps if the game is gpu limit (Test with a 5070ti on re4 remake and get 20fps hit in avg)
 
 The original project is here:
 
