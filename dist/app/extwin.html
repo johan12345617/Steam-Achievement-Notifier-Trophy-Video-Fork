@@ -15,6 +15,7 @@
 
             :root {
                 --transition: 0.2s;
+                --chromakey: #00ff00;
             }
 
             html,
@@ -23,7 +24,7 @@
                 place-items: center;
                 width: 100vw;
                 height: 100vh;
-                background-color: transparent;
+                background-color: var(--chromakey);
                 isolation: isolate;
                 overflow: hidden;
             }
@@ -38,7 +39,7 @@
                 left: 0;
                 width: 100vw;
                 height: 100vh;
-                background-color: transparent;
+                background-color: var(--chromakey);
                 transition: background-color var(--transition);
                 z-index: -1;
                 -webkit-app-region: drag;

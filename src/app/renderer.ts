@@ -746,10 +746,12 @@ const notifyinfo = async (type: NotifyType,customobj: Customisation) => {
     const notify: Notify = {
         id: Math.round(Date.now() / Math.random() * 1000),
         customisation: customisation,
+        appid: window.appid || 0,
         gamename: globalgamename || null,
         steam3id: window.steam3id,
         type,
         apiname: `${type.toUpperCase()}_TEST_NOTIFICATION`,
+        englishname: `${type.toUpperCase()} TEST NOTIFICATION`,
         name: type === "plat" ? "" : `Steam Achievement Notifier`,
         desc: type === "plat" ? "" : await language.get("achievementdesc"),
         unlocked: true,

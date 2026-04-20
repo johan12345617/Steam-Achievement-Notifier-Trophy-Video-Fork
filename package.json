@@ -40,6 +40,7 @@
         "fs-extra": "^11.2.0",
         "icojs": "^0.20.1",
         "jpeg-js": "^0.4.4",
+        "obs-websocket-js": "^5.0.7",
         "sanhelper.rs": "./deps/sanhelper.rs",
         "simple-vdf": "^1.1.1",
         "sortablejs": "^1.15.6",

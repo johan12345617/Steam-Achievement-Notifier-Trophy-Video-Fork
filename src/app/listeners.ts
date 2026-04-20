@@ -10,6 +10,7 @@ import { update } from "./update"
 import { gameart } from "./gameart"
 import { screenshot } from "./screenshots"
 import { audio } from "./audio"
+import { trophyvideo } from "./trophyvideo"
 
 let appid: number = 0
 let gameid: number = 0 // RetroAchievements GameID
@@ -18,10 +19,13 @@ let statwin: BrowserWindow | null = null
 let replay: { queueobj: WinType, src?: number } | null = null
 const gameartfiles: string[] = []
 let emu: string | null = null
+let appExiting = false
 
 export const listeners = {
     setexit: () => {
         ipcMain.on("exit",(event,reason) => {
+            appExiting = true
+
             if (extwin) {
                 extwin.destroy()
                 extwin = null
@@ -724,7 +728,7 @@ export const listeners = {
                 movable: true,
                 frame: false,
                 transparent: true,
-                skipTaskbar: false,
+                skipTaskbar: type === "ext",
                 alwaysOnTop: type === "stat" && config.get("statwinaot"),
                 webPreferences: {
                     nodeIntegration: true,
@@ -801,7 +805,7 @@ export const listeners = {
 
             extwin.once("close", () => {
                 setwinbounds(config,"ext",extwin!)
-                reopenonlaunch = false
+                !appExiting && (reopenonlaunch = false)
             })
 
             extwin.once("closed", () => {
@@ -833,7 +837,7 @@ export const listeners = {
 
             statwin.once("close",() => {
                 setwinbounds(config,"stat",statwin!)
-                reopenonlaunch = false
+                !appExiting && (reopenonlaunch = false)
             })
 
             statwin.once("closed",() => {
@@ -936,6 +940,8 @@ export const listeners = {
 
         ipcMain.on("notify",async (event,notify: Notify,iswebview?: "customiser" | "sspreview" | null,monitorid?: number) => {
             const config = sanconfig.get()
+
+            !iswebview && void trophyvideo.capture(notify)
             
             if (config.get("soundonly")) {
                 if (!iswebview) {
