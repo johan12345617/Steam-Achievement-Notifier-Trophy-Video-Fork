@@ -12,6 +12,7 @@ deps/steamworks_build_instructions.md
 temp/
 _release/
 _backup/
+_tools/
 notify/_template.html
 notify/**/*.png
 notify/**/*.mp3
