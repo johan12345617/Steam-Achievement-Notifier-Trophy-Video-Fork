@@ -1,6 +1,7 @@
 import { ipcRenderer } from "electron"
 import path from "path"
 import fs from "fs"
+import { spawnSync } from "child_process"
 import { sanhelper } from "./sanhelper"
 import { log } from "./log"
 import { sanconfig } from "./config"
@@ -38,6 +39,126 @@ const resolvefilepath = (dir: string,file: string) => {
     return null
 }
 
+const normalisepath = (value: string) => value.replace(/\\/g,"/").toLowerCase()
+const appRoot = path.resolve(__dirname,"..","..")
+const recentReleaseKey = "san_recently_released_app"
+const recentReleaseCooldownMs = 10000
+
+const ensureSteamworksRuntime = () => {
+    if (process.platform !== "win32")
+        return
+
+    try {
+        const runtimeDir = sanhelper.devmode
+            ? path.join(appRoot,"node_modules","steamworks.js","dist","win64")
+            : path.join(process.resourcesPath,"app.asar.unpacked","node_modules","steamworks.js","dist","win64")
+
+        if (!fs.existsSync(path.join(runtimeDir,"steam_api64.dll")))
+            return
+
+        const currentPath = process.env.PATH || ""
+        const pathParts = currentPath.split(";").filter(Boolean)
+        const normalisedRuntimeDir = normalisepath(runtimeDir)
+
+        if (pathParts.some(entry => normalisepath(entry) === normalisedRuntimeDir))
+            return
+
+        process.env.PATH = `${runtimeDir};${currentPath}`
+        log.write("INFO",`Added Steamworks runtime path "${runtimeDir}" to PATH`)
+    } catch (err) {
+        log.write("WARN",`Unable to prepare Steamworks runtime path: ${(err as Error).message}`)
+    }
+}
+
+const getprocessinfobyexepath = (filepath: string): ProcessInfo[] => {
+    if (process.platform !== "win32" || !filepath)
+        return []
+
+    const exename = path.basename(filepath)
+    const escapedname = exename.replace(/'/g,"''")
+    const script = [
+        `$procs = Get-CimInstance Win32_Process -Filter "Name = '${escapedname}'" | Select-Object ProcessId, ExecutablePath`,
+        `if ($procs) { $procs | ConvertTo-Json -Compress }`
+    ].join("; ")
+
+    try {
+        const result = spawnSync("powershell.exe",["-NoProfile","-Command",script],{
+            encoding: "utf8",
+            windowsHide: true
+        })
+
+        if (result.error) {
+            log.write("WARN",`Error checking running process path for "${filepath}": ${result.error.message}`)
+            return []
+        }
+
+        if (result.status !== 0 || !result.stdout.trim())
+            return []
+
+        const parsed = JSON.parse(result.stdout.trim()) as { ProcessId?: number, ExecutablePath?: string } | { ProcessId?: number, ExecutablePath?: string }[]
+        const entries = Array.isArray(parsed) ? parsed : [parsed]
+        const target = normalisepath(filepath)
+
+        return entries
+            .filter(entry => !!entry.ProcessId && !!entry.ExecutablePath && normalisepath(entry.ExecutablePath) === target)
+            .map(entry => ({
+                pid: entry.ProcessId as number,
+                exe: entry.ExecutablePath as string
+            } as ProcessInfo))
+    } catch (err) {
+        log.write("WARN",`Unable to scan running processes for "${filepath}": ${err as Error}`)
+        return []
+    }
+}
+
+const getrecentrelease = (): { appid: number, releasedAt: number } | null => {
+    try {
+        const raw = localStorage.getItem(recentReleaseKey)
+        if (!raw)
+            return null
+
+        const parsed = JSON.parse(raw) as { appid?: number, releasedAt?: number }
+
+        if (typeof parsed.appid !== "number" || typeof parsed.releasedAt !== "number")
+            return null
+
+        return {
+            appid: parsed.appid,
+            releasedAt: parsed.releasedAt
+        }
+    } catch {
+        return null
+    }
+}
+
+const clearecentrelease = () => localStorage.removeItem(recentReleaseKey)
+
+const setrecentrelease = (appid: number) => {
+    localStorage.setItem(recentReleaseKey,JSON.stringify({
+        appid,
+        releasedAt: Date.now()
+    }))
+}
+
+const shouldskiprecentrelease = (appid: number): boolean => {
+    const recent = getrecentrelease()
+    if (!recent || recent.appid !== appid)
+        return false
+
+    if ((Date.now() - recent.releasedAt) > recentReleaseCooldownMs) {
+        clearecentrelease()
+        return false
+    }
+
+    const linkedgame = Object.entries(JSON.parse(localStorage.getItem("linkgame") || "{}")).find(item => parseInt(item[0]) === appid)?.[1] as string | undefined
+    if (linkedgame && getprocessinfobyexepath(linkedgame).length) {
+        clearecentrelease()
+        return false
+    }
+
+    return true
+}
+
 const startidle = () => {
     try {
         log.write("INFO","Idle loop started")
@@ -51,6 +172,7 @@ const startidle = () => {
             const { appid, gamename } = sanhelper.gameinfo as AppInfo
     
             if (!appid) return
+            if (shouldskiprecentrelease(appid)) return
 
             const match = inclusionlist ? !exclusions.includes(appid) : exclusions.includes(appid)
     
@@ -159,6 +281,7 @@ const startsan = async (appinfo: AppInfo) => {
         globallocalised.clear()
 
         const { appid, gamename, pollrate, maxretries, userust, noiconcache } = appinfo
+        ensureSteamworksRuntime()
         const { init } = await import("steamworks.js")
     
         const client = init(appid)
@@ -189,6 +312,12 @@ const startsan = async (appinfo: AppInfo) => {
                     exe
                 } as ProcessInfo)
             })
+
+            if (!processinfo.length && linkedgame) {
+                const fallback = getprocessinfobyexepath(linkedgame)
+                fallback.length && log.write("INFO",`Windows process-path fallback matched ${fallback.length} running process${fallback.length === 1 ? "" : "es"} for "${linkedgame}"`)
+                processinfo.push(...fallback)
+            }
     
             return processinfo
         }
@@ -226,6 +355,7 @@ const startsan = async (appinfo: AppInfo) => {
                 if (processes.every(({ pid }: ProcessInfo) => pid !== -1 && !isprocessrunning(pid))) {
                     clearInterval(timer!)
                     log.write("INFO","Game loop stopped")
+                    setrecentrelease(appid)
         
                     ipcRenderer.send("validateworker")
 

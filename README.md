@@ -8,7 +8,8 @@ This repository is a custom fork of **Steam Achievement Notifier** focused on on
 
 - save an OBS replay clip automatically when a Steam achievement unlocks
 - I tried steam and game bar recorded but that apps doesnt record the SAN notification , so thats why use obs
-- The obs replay buffer has a hit on the gpu so it would take a decent fps if ure game is gpu limit (Test with a 5070ti on re4 remake and get 20fps in avg)
+- The obs replay buffer has a hit on the gpu so if u have a weak gpu maybe can impact performance of the game
+- open OBS only while a tracked game is active, then close it again when the game is released
 
 The original project is here:
 
@@ -52,6 +53,7 @@ Test notifications are also supported and are saved under:
 - OBS Replay Buffer enabled
 - a Replay Buffer length set in OBS
 - a scene that captures what you want to save
+- for clean automatic OBS shutdown without crash/safe-mode popups: install the [Shutdown Plugin](https://github.com/noris-plugins-for-obs/shutdown-plugin/releases/tag/0.3.0)
 
 If you want the popup itself inside the video, use SAN's `Stream Notifications` window as an OBS source.
 
@@ -62,6 +64,7 @@ For full-screen desktop capture:
 - add a `Display Capture` source
 - enable `Replay Buffer`
 - set your preferred replay length and quality
+- if you want SAN to close OBS cleanly when the game ends, install the `obs31` shutdown-plugin build for OBS 31.1+ / OBS 32 and make sure OBS loads `shutdown-plugin.dll`
 
 For capturing the SAN popup in the saved video:
 
@@ -74,8 +77,9 @@ This fork currently uses a green chroma-key background for the stream-notificati
 
 ## Important Notes
 
-- OBS must be running for replay saving to work
-- this fork can try to launch OBS automatically if it is installed in common Windows locations
+- this fork can start OBS automatically when SAN detects a tracked game
+- this fork can stop Replay Buffer and close OBS again when the game is released
+- without the shutdown plugin, OBS may still need a fallback shutdown path that can show an unclean-close popup
 - replay clips currently target Steam achievements, not RetroAchievements
 - this fork is tailored around OBS-based capture, not Steam Game Recording
 
@@ -88,9 +92,21 @@ Basic flow:
 1. Install and set up OBS.
 2. Enable OBS WebSocket.
 3. Enable Replay Buffer.
-4. Start SAN.
-5. Unlock an achievement.
-6. Check `%USERPROFILE%\Videos\trophies-videos`.
+4. Install the OBS Shutdown Plugin if you want clean automatic OBS exit.
+5. Start SAN.
+6. Launch a tracked game.
+7. Unlock an achievement.
+8. Check `%USERPROFILE%\Videos\trophies-videos`.
+
+## Shutdown Plugin
+
+This fork supports the OBS shutdown plugin so it can ask OBS to exit cleanly after the tracked game closes.
+
+- Plugin project: [noris-plugins-for-obs/shutdown-plugin](https://github.com/noris-plugins-for-obs/shutdown-plugin)
+- For OBS `32.1.1`, use the `obs31` Windows build from the plugin release page
+- If the plugin is missing, SAN falls back to a Windows-side shutdown path
+
+When the plugin is loaded correctly, SAN should log that it requested OBS shutdown through `shutdown-plugin` instead of using the fallback path.
 
 ## Upstream Project
 

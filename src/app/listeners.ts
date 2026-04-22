@@ -23,7 +23,7 @@ let appExiting = false
 
 export const listeners = {
     setexit: () => {
-        ipcMain.on("exit",(event,reason) => {
+        ipcMain.on("exit",async (event,reason) => {
             appExiting = true
 
             if (extwin) {
@@ -34,6 +34,7 @@ export const listeners = {
             log.backup(sanconfig.get())
 
             log.write("EXIT",reason || `No exit reason provided.`)
+            await trophyvideo.shutdown()
             app.exit()
         })
     },
@@ -358,6 +359,7 @@ export const listeners = {
             appid = id
             win.webContents.send("appid",appid,gamename,steam3id,num)
             updatetray(tray!,gamename,num)
+            void trophyvideo.setGameDetected(!!appid)
         })
 
         ipcMain.on("runningappid",event => event.reply("runningappid",appid || 0))
@@ -420,7 +422,10 @@ export const listeners = {
             })
         })
 
-        ipcMain.on("workeractive", (event,value: boolean) => win.webContents.send("workeractive",value))
+        ipcMain.on("workeractive", async (event,value: boolean) => {
+            win.webContents.send("workeractive",value)
+            await trophyvideo.setTrackingActive(value)
+        })
 
         ipcMain.on("showtrack", (event,gamename: string,ra?: { icon: string, gameartlibhero: string }) => {
             const config = sanconfig.get()
@@ -691,6 +696,7 @@ export const listeners = {
                     console.log(err)
                 }
 
+                await trophyvideo.shutdown()
                 app.exit()
             })
         })

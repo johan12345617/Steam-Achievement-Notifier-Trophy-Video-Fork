@@ -6,7 +6,6 @@ import { log } from "./log"
 import { error } from "./error"
 import { sanconfig } from "./config"
 import { listeners } from "./listeners"
-import { trophyvideo } from "./trophyvideo"
 
 // Sets AppUserModelId for Native OS notifications
 app.setAppUserModelId(sanhelper.devmode ? process.execPath : "com.SteamAchievementNotifier.Jackson0ne")
@@ -87,7 +86,6 @@ export const main = async (starttime: string) => {
 
         win.once("ready-to-show", () => {
             listeners.set(win)
-            trophyvideo.prewarm()
             ipcMain.emit("validateworker")
             ;["ext","stat"].forEach(type => config.get(`${type}win`) && ipcMain.emit(`${type}win`,null,true))
             ipcMain.emit("shortcut",null,config.get("shortcuts"))
