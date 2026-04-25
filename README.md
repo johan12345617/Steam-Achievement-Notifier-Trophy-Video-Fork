@@ -23,7 +23,7 @@ This fork is not the official upstream project. It builds on top of it.
 - automatic saving of replay clips into per-game folders
 - filenames based on the achievement name
 - optional capture of the SAN stream notification inside OBS recordings
-- small stream-window quality-of-life fixes for this workflow
+- OBS auto-start and auto-close around tracked game sessions
 
 Saved clips go to:
 
@@ -71,9 +71,7 @@ For capturing the SAN popup in the saved video:
 - enable `Stream Notifications` in SAN
 - add that SAN window as an OBS `Window Capture` source
 - place it above `Display Capture`
-- add a `Chroma Key` filter in OBS
-
-This fork currently uses a green chroma-key background for the stream-notification window.
+- capture the transparent SAN window directly in OBS
 
 ## Important Notes
 

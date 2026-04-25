@@ -1018,6 +1018,23 @@ export const listeners = {
                 }
 
                 queue.push({ ...wintypeobj, order: queue.length } as WinType)
+
+                // Sort "plat" notifications to always display last
+                queue.sort((a,b) => {
+                    if (a.notify.type === "plat" && b.notify.type !== "plat") return 1
+                    if (a.notify.type !== "plat" && b.notify.type === "plat") return -1
+
+                    return a.order - b.order
+                }).forEach((obj,i) => obj.order = i)
+
+                // Safeguard to prevent duplicate `order` IDs if found
+                const orders = queue.map(obj => obj.order)
+                const duplicates = orders.some((order,i) => orders.indexOf(order) !== i)
+
+                if (duplicates) {
+                    log.write("WARN",`Notification queue contains duplicate order IDs - renormalising...`)
+                    queue.forEach((obj,i) => obj.order = i)
+                }
             }
 
             const info = await buildnotify(notify)
