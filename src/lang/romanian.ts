@@ -192,6 +192,7 @@ export const translations = {
             "Mulțumim că ai testat! 💜"
         ],
         betaghreleases: "Versiuni",
+        checkapplog: "Vă rugăm să verificați jurnalul aplicației pentru detalii."
     },
     app: {
         content: {
@@ -310,6 +311,20 @@ export const translations = {
                 max: "Maxim",
                 custom: "Personalizat...",
                 statwinshortcut: "Scurtătură Overlay",
+                gametimerwin: "Cronometru Finalizare Joc",
+                gametimerwinshortcut: "Scurtătură Cronometru",
+                gametimerwinaot: "Întotdeauna deasupra",
+                resetgametimer: "Resetează Cronometrul",
+                resetgametimersub: `
+                    <div class="wrapper resetsub">
+                        <span>Ești sigur?</span>
+                        <span>Aceasta va reseta Cronometrul de Finalizare a Jocului pentru jocul curent la 00:00:00.000.</span>
+                        <span class="noundo">🛑 Această acțiune nu poate fi anulată!</span>
+                    </div>
+                `,
+                resetgametimerfailed: "Nu s-a putut reseta cronometrul.",
+                resetgametimercomplete: "AppID-ul $appid a fost deja completat.",
+                extwinnotify: "Afișează Notificare pe Ecran"
             }
         },
         accessibility: {
@@ -320,7 +335,8 @@ export const translations = {
                 nvda: "Activează Suport NVDA",
                 tooltips: "Afișare Sfaturi Instrumente",
                 showsystrayopts: "Afișează opțiunile din zona de notificare",
-                releaseshortcut: "Scurtătură pentru a lansa jocul"
+                releaseshortcut: "Scurtătură pentru a lansa jocul",
+                noshortcuts: "Dezactivează Scurtăturile de la Tastatură"
             }
         },
         advanced: {
@@ -337,7 +353,23 @@ export const translations = {
                 lognum: "Fișiere de Jurnal Anterioare", 
                 audiocooldown: "Timp de Așteptare Audio",
                 usecustomfiles: "Utilizare Fișiere de Aplicație Personalizate",
-                showcustomfiles: "Afișare Fișiere de Aplicație Personalizate"
+                showcustomfiles: "Afișare Fișiere de Aplicație Personalizate",
+                appdatadir: "Afișează folderul AppData",
+                backup: "Backup",
+                backuppath: "Cale de backup",
+                backupsub: [
+                    "Faceți backup pentru conținutul folderului AppData al aplicației într-o locație aleasă",
+                    "Acest backup va servi ca punct de restaurare pentru starea curentă a aplicației",
+                    `Restabiliți orice backup anterior prin <span class="hl">Setări</span> > <span class="hl">Avansat</span> > <span class="hl">Restaurare</span>`
+                ],
+                backupfailed: "Nu s-a putut crea backup-ul.",
+                restore: "Restaurare",
+                restoresub: [
+                    "Restabiliți conținutul folderului AppData al aplicației dintr-un backup anterior",
+                    `Selectați un fișier de backup <span class="hl">.sanbak</span> pentru restaurare. Acest fișier va fi păstrat după finalizarea restaurării`,
+                    "❗ După confirmare, aplicația se va reporni pentru a restaura fișierul de backup selectat"
+                ],
+                restorefailed: "Nu s-a putut restaura backup-ul."
             }
         },
         ra: {
@@ -851,7 +883,16 @@ export const translations = {
         ssext: "Setează formatul fișierului pentru capturile de ecran generate prin opțiunea Captură de ecran cu suprapunere de notificare",
         notify1line: `Limitează numărul de linii de text afișate în toate notificările la 1<br><br><span class="ttdesc">Textele care nu încap pe o singură linie vor fi trunchiate cu "..."</span>`,
         copytheme: "Copiază tema selectată într-un alt tip de notificare",
-        ssaddtosteam: "Adaugă automat media generată la Înregistrările și Capturile de ecran ale jocului curent în Steam"
+        ssaddtosteam: "Adaugă automat media generată la Înregistrările și Capturile de ecran ale jocului curent în Steam",
+        appdatadir: "Deschideți locația folderului AppData al aplicației",
+        backup: "Faceți backup pentru conținutul folderului AppData al aplicației într-o locație aleasă, care va servi ca punct de restaurare pentru starea curentă a aplicației",
+        restore: "Restabiliți conținutul folderului AppData al aplicației dintr-un backup anterior",
+        gametimerwin: "Afișează un cronometru pe ecran care arată timpul necesar pentru a debloca toate achievement-urile jocului curent",
+        gametimerwinshortcut: "Comută Cronometrul de Finalizare a Jocului folosind scurtătura de la tastatură specificată",
+        gametimerwinaot: `Setează Cronometrul de Finalizare a Jocului în modul "Întotdeauna deasupra", permițând afișarea ferestrei deasupra ferestrei jocului<br><br><span class="ttdesc">Când este activat, Cronometrul de Finalizare a Jocului nu va mai înregistra interacțiunile utilizatorului, precum evenimentele "click". Pentru a reactiva interacțiunea cu fereastra, această opțiune trebuie dezactivată</span>`,
+        resetgametimer: "Resetează Cronometrul de Finalizare a Jocului pentru jocul curent",
+        noshortcuts: `Dezactivează toate scurtăturile de la tastatură din aplicație<br><br><span class="ttdesc">Când este activat, <u>toate scurtăturile din aplicație nu vor mai funcționa</u>. Toate opțiunile legate de scurtăturile de la tastatură vor fi, de asemenea, ascunse</span>`,
+        extwinnotify: "Comută vizibilitatea tuturor notificărilor pe ecran în timpul utilizării Stream Notifications"
     },
     update: {
         updateavailable: "Actualizare disponibilă",

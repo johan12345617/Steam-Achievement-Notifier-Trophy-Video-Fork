@@ -43,6 +43,10 @@ log.init("APP")
 
 sanconfig.get().store.nohwa && app.disableHardwareAcceleration()
 
+// Restores from backup on launch if `<appdatadir>/Temp/sanbak/` exists
+const sanbak = path.join(path.dirname(sanhelper.appdata),"Temp","sanbak")
+fs.existsSync(sanbak) && sanhelper.restorefrombackup(sanbak,log)
+
 // Legacy keys required to be removed if existing in config
 ;([
     "webhooktypes",
@@ -174,7 +178,10 @@ const ignore = [
     "RA.md",
     "README.md",
     "san.d.ts",
-    "tsconfig.json"
+    "tsconfig.json",
+    "_template",
+    "_template.html",
+    "afterpack.js"
 ]
 
 const copyrecursive = (src: string,dest: string,ignore: Set<string>) => {

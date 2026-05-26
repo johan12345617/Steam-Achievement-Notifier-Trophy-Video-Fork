@@ -192,6 +192,7 @@ export const translations = {
             "Dziękujemy za testowanie! 💜"
         ],
         betaghreleases: "Wydania",
+        checkapplog: "Sprawdź dziennik aplikacji, aby uzyskać szczegóły."
     },
     app: {
         content: {
@@ -310,6 +311,20 @@ export const translations = {
                 max: "Maksimum",
                 custom: "Niestandardowe...",
                 statwinshortcut: "Skrót Nakładki",
+                gametimerwin: "Timer Ukończenia Gry",
+                gametimerwinshortcut: "Skrót Timera",
+                gametimerwinaot: "Zawsze na Wierzchu",
+                resetgametimer: "Resetuj Timer",
+                resetgametimersub: `
+                    <div class="wrapper resetsub">
+                        <span>Czy na pewno?</span>
+                        <span>Spowoduje to zresetowanie Timera Ukończenia Gry dla bieżącej gry do wartości 00:00:00.000.</span>
+                        <span class="noundo">🛑 Tej operacji nie można cofnąć!</span>
+                    </div>
+                `,
+                resetgametimerfailed: "Nie można zresetować timera.",
+                resetgametimercomplete: "AppID $appid został już ukończony.",
+                extwinnotify: "Pokaż Powiadomienie na Ekranie"
             }
         },
         accessibility: {
@@ -320,7 +335,8 @@ export const translations = {
                 nvda: "Włącz obsługę NVDA",
                 tooltips: "Pokaż etykiety narzędzi",
                 showsystrayopts: "Pokaż opcje w zasobniku systemowym",
-                releaseshortcut: "Skrót do uwolnienia gry"
+                releaseshortcut: "Skrót do uwolnienia gry",
+                noshortcuts: "Wyłącz Skróty Klawiaturowe"
             }
         },
         advanced: {
@@ -337,7 +353,23 @@ export const translations = {
                 lognum: "Poprzednie pliki dziennika", 
                 audiocooldown: "Czas oczekiwania dźwięku",
                 usecustomfiles: "Użyj niestandardowych plików aplikacji",
-                showcustomfiles: "Pokaż niestandardowe pliki aplikacji"
+                showcustomfiles: "Pokaż niestandardowe pliki aplikacji",
+                appdatadir: "Pokaż folder AppData",
+                backup: "Kopia zapasowa",
+                backuppath: "Ścieżka kopii zapasowej",
+                backupsub: [
+                    "Utwórz kopię zapasową zawartości folderu AppData aplikacji w wybranej lokalizacji",
+                    "Ta kopia zapasowa będzie punktem przywracania dla bieżącego stanu aplikacji",
+                    `Przywróć dowolną wcześniejszą kopię zapasową przez <span class="hl">Ustawienia</span> > <span class="hl">Zaawansowane</span> > <span class="hl">Przywróć</span>`
+                ],
+                backupfailed: "Nie udało się utworzyć kopii zapasowej.",
+                restore: "Przywróć",
+                restoresub: [
+                    "Przywróć zawartość folderu AppData aplikacji z wcześniejszej kopii zapasowej",
+                    `Wybierz plik kopii zapasowej <span class="hl">.sanbak</span>, z którego chcesz przywrócić. Plik ten zostanie zachowany po zakończeniu przywracania`,
+                    "❗ Po potwierdzeniu aplikacja uruchomi się ponownie, aby przywrócić wybrany plik kopii zapasowej"
+                ],
+                restorefailed: "Nie udało się przywrócić kopii zapasowej."
             }
         },
         ra: {
@@ -851,7 +883,16 @@ export const translations = {
         ssext: "Ustaw format pliku zrzutów ekranu generowanych przez opcję Zrzut ekranu z nakładką powiadomienia",
         notify1line: `Ogranicza liczbę linii tekstu wyświetlanych we wszystkich powiadomieniach do 1<br><br><span class="ttdesc">Teksty, które nie mieszczą się w jednej linii, zostaną skrócone do "..."</span>`,
         copytheme: "Kopiuje wybrany motyw do innego typu powiadomienia",
-        ssaddtosteam: "Automatycznie dodaj wygenerowane media do nagrań i zrzutów ekranu bieżącej gry w Steam"
+        ssaddtosteam: "Automatycznie dodaj wygenerowane media do nagrań i zrzutów ekranu bieżącej gry w Steam",
+        appdatadir: "Otwórz lokalizację folderu AppData aplikacji",
+        backup: "Utwórz kopię zapasową zawartości folderu AppData aplikacji w wybranej lokalizacji, która będzie punktem przywracania dla bieżącego stanu aplikacji",
+        restore: "Przywróć zawartość folderu AppData aplikacji z wcześniejszej kopii zapasowej",
+        gametimerwin: "Wyświetl timer na ekranie pokazujący czas potrzebny do odblokowania wszystkich achievementów dla bieżącej gry",
+        gametimerwinshortcut: "Przełącz Timer Ukończenia Gry za pomocą określonego skrótu klawiaturowego",
+        gametimerwinaot: `Ustaw Timer Ukończenia Gry w trybie "Zawsze na Wierzchu", umożliwiając wyświetlanie okna nad oknem gry<br><br><span class="ttdesc">Po włączeniu Timer Ukończenia Gry nie będzie już rejestrować interakcji użytkownika, takich jak zdarzenia "click". Aby ponownie włączyć interakcję z oknem, należy wyłączyć tę opcję</span>`,
+        resetgametimer: "Resetuj Timer Ukończenia Gry dla bieżącej gry",
+        noshortcuts: `Wyłącza wszystkie skróty klawiaturowe w aplikacji<br><br><span class="ttdesc">Po włączeniu <u>wszystkie skróty w aplikacji przestaną działać</u>. Wszystkie opcje związane ze skrótami klawiaturowymi również zostaną ukryte</span>`,
+        extwinnotify: "Przełącz widoczność wszystkich powiadomień ekranowych podczas korzystania ze Stream Notifications"
     },
     update: {
         updateavailable: "Dostępna aktualizacja",

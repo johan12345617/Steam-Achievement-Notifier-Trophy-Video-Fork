@@ -191,7 +191,8 @@ export const translations = {
             `<u>This Beta version is now unsupported</u>. Please download and install the latest official release via Github using the <span class="hl">Releases</span> button below.`,
             "Thanks for testing! 💜"
         ],
-        betaghreleases: "Releases"
+        betaghreleases: "Releases",
+        checkapplog: "Please check the App Log for details."
     },
     app: {
         content: {
@@ -309,7 +310,21 @@ export const translations = {
                 startgame: "Start a game to show achievements!",
                 max: "Max",
                 custom: "Custom...",
-                statwinshortcut: "Overlay Shortcut"
+                statwinshortcut: "Overlay Shortcut",
+                gametimerwin: "Game Completion Timer",
+                gametimerwinshortcut: "Timer Shortcut",
+                gametimerwinaot: "Always on Top",
+                resetgametimer: "Reset Timer",
+                resetgametimersub: `
+                    <div class="wrapper resetsub">
+                        <span>Are you sure?</span>
+                        <span>This will reset the Game Completion Timer for the current game back to 00:00:00.000.</span>
+                        <span class="noundo">🛑 This cannot be undone!</span>
+                    </div>
+                `,
+                resetgametimerfailed: "Unable to reset timer.",
+                resetgametimercomplete: "AppID $appid has already been completed.",
+                extwinnotify: "Show Onscreen Notification"
             }
         },
         accessibility: {
@@ -320,7 +335,8 @@ export const translations = {
                 nvda: "Enable NVDA Support",
                 tooltips: "Show Tooltips",
                 showsystrayopts: "Show System Tray Options",
-                releaseshortcut: "Release Game Shortcut"
+                releaseshortcut: "Release Game Shortcut",
+                noshortcuts: "Disable Keyboard Shortcuts"
             }
         },
         advanced: {
@@ -337,7 +353,23 @@ export const translations = {
                 lognum: "Previous Log Files",
                 audiocooldown: "Audio Cooldown",
                 usecustomfiles: "Use Custom App Files",
-                showcustomfiles: "Show Custom App Files"
+                showcustomfiles: "Show Custom App Files",
+                appdatadir: "Show AppData Folder",
+                backup: "Backup",
+                backuppath: "Backup Path",
+                backupsub: [
+                    "Backup the contents of the app's AppData folder to a chosen location",
+                    "This backup will act as a restore point for the current state of the app",
+                    `Restore any previous backup via <span class="hl">Settings</span> > <span class="hl">Advanced</span> > <span class="hl">Restore</span>`
+                ],
+                backupfailed: "Unable to create backup.",
+                restore: "Restore",
+                restoresub: [
+                    "Restore the contents of the app's AppData folder from a previous backup",
+                    `Select a <span class="hl">.sanbak</span> backup file to restore from. This file will be preserved after the restore is complete`,
+                    "❗ Once confirmed, the app will restart in order to restore the selected backup file"
+                ],
+                restorefailed: "Unable to restore backup."
             }
         },
         ra: {
@@ -572,10 +604,10 @@ export const translations = {
     reset: {
         content: {
             sub: `
-                <div class="wrapper" id="resetsub">
+                <div class="wrapper resetsub">
                     <span>Are you sure?</span>
                     <span>All previously configured data, <u>including Customisations</u>, will be reset to default.</span>
-                    <span>🛑 This cannot be undone!</span>
+                    <span class="noundo">🛑 This cannot be undone!</span>
                 </div>
             `,
             reset: "Reset"
@@ -851,7 +883,16 @@ export const translations = {
         ssext: "Set the file format of screenshots generated via the Screenshot with Notification Overlay option",
         notify1line: `Limit the number of lines of text displayed within all notifications to 1<br><br><span class="ttdesc">Overflowing text strings that cannot fit onto a single line will be truncated with "..."</span>`,
         copytheme: "Copy the selected Theme to another notification type",
-        ssaddtosteam: "Automatically add generated media to the current game's Recordings and Screenshots in Steam"
+        ssaddtosteam: "Automatically add generated media to the current game's Recordings and Screenshots in Steam",
+        appdatadir: "Open the location of the app's AppData folder",
+        backup: "Backup the contents of the app's AppData folder to a chosen location, which will act as a restore point for the current state of the app",
+        restore: "Restore the contents of the app's AppData folder from a previous backup",
+        gametimerwin: "Display an on-screen timer showing the amount of time taken to unlock all achievements for the current game",
+        gametimerwinshortcut: "Toggle the Game Completion Timer using the specified keyboard shortcut",
+        gametimerwinaot: `Set the Game Completion Timer to "Always on Top" mode, allowing the window to be displayed above the game window<br><br><span class="ttdesc">When enabled, the Game Completion Timer will no longer register user interactions, such as "click" events. To re-enable interaction with the window, this option must be disabled</span>`,
+        resetgametimer: "Reset the Game Completion Timer for the current game",
+        noshortcuts: `Disables all in-app keyboard shortcuts<br><br><span class="ttdesc">When enabled, <u>all in-app shortcuts will no longer function</u>. All options related to keyboard shortcuts will also be hidden</span>`,
+        extwinnotify: "Toggle visibility of all onscreen notifications while using Stream Notifications"
     },
     update: {
         updateavailable: "Update available",

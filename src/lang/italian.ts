@@ -192,6 +192,7 @@ export const translations = {
             "Grazie per aver testato! 💜"
         ],
         betaghreleases: "Rilasci",
+        checkapplog: "Controlla il registro dell'app per i dettagli."
     },
     app: {
         content: {
@@ -310,6 +311,20 @@ export const translations = {
                 max: "Massimo",
                 custom: "Personalizzato...",
                 statwinshortcut: "Scorciatoia Overlay",
+                gametimerwin: "Timer Completamento Gioco",
+                gametimerwinshortcut: "Scorciatoia Timer",
+                gametimerwinaot: "Sempre in Primo Piano",
+                resetgametimer: "Reimposta Timer",
+                resetgametimersub: `
+                    <div class="wrapper resetsub">
+                        <span>Sei sicuro?</span>
+                        <span>Questo reimposterà il Timer Completamento Gioco per il gioco corrente a 00:00:00.000.</span>
+                        <span class="noundo">🛑 Questa azione non può essere annullata!</span>
+                    </div>
+                `,
+                resetgametimerfailed: "Impossibile reimpostare il timer.",
+                resetgametimercomplete: "L'AppID $appid è già stato completato.",
+                extwinnotify: "Mostra Notifica a Schermo"
             }
         },
         accessibility: {
@@ -320,7 +335,8 @@ export const translations = {
                 nvda: "Abilita supporto NVDA",
                 tooltips: "Mostra suggerimenti",
                 showsystrayopts: "Mostra opzioni della barra di sistema",
-                releaseshortcut: "Scorciatoia per Rilasciare il Gioco"
+                releaseshortcut: "Scorciatoia per Rilasciare il Gioco",
+                noshortcuts: "Disabilita Scorciatoie da Tastiera"
             }
         },
         advanced: {
@@ -337,7 +353,23 @@ export const translations = {
                 lognum: "File di registro precedenti", 
                 audiocooldown: "Tempo di attesa audio",
                 usecustomfiles: "Utilizza file personalizzati dell'applicazione",
-                showcustomfiles: "Mostra file personalizzati dell'applicazione"
+                showcustomfiles: "Mostra file personalizzati dell'applicazione",
+                appdatadir: "Mostra cartella AppData",
+                backup: "Backup",
+                backuppath: "Percorso di backup",
+                backupsub: [
+                    "Esegui il backup del contenuto della cartella AppData dell'app in una posizione scelta",
+                    "Questo backup fungerà da punto di ripristino per lo stato attuale dell'app",
+                    `Ripristina eventuali backup precedenti tramite <span class="hl">Impostazioni</span> > <span class="hl">Avanzate</span> > <span class="hl">Ripristina</span>`
+                ],
+                backupfailed: "Impossibile creare il backup.",
+                restore: "Ripristina",
+                restoresub: [
+                    "Ripristina il contenuto della cartella AppData dell'app da un backup precedente",
+                    `Seleziona un file di backup <span class="hl">.sanbak</span> da cui ripristinare. Questo file sarà preservato dopo il completamento del ripristino`,
+                    "❗ Una volta confermato, l'app si riavvierà per ripristinare il file di backup selezionato"
+                ],
+                restorefailed: "Impossibile ripristinare il backup."
             }
         },
         ra: {
@@ -851,7 +883,16 @@ export const translations = {
         ssext: "Imposta il formato file degli screenshot generati tramite l'opzione Screenshot con sovrapposizione di notifica",
         notify1line: `Limita il numero di righe di testo visualizzate in tutte le notifiche a 1<br><br><span class="ttdesc">Le stringhe di testo troppo lunghe per una singola riga verranno troncate con "..."</span>`,
         copytheme: "Copia il tema selezionato in un altro tipo di notifica",
-        ssaddtosteam: "Aggiungi automaticamente i contenuti generati alle Registrazioni e agli Screenshot del gioco corrente su Steam"
+        ssaddtosteam: "Aggiungi automaticamente i contenuti generati alle Registrazioni e agli Screenshot del gioco corrente su Steam",
+        appdatadir: "Apri la posizione della cartella AppData dell'app",
+        backup: "Esegui il backup del contenuto della cartella AppData dell'app in una posizione scelta, che fungerà da punto di ripristino per lo stato attuale dell'app",
+        restore: "Ripristina il contenuto della cartella AppData dell'app da un backup precedente",
+        gametimerwin: "Mostra un timer sullo schermo che indica il tempo impiegato per sbloccare tutti gli achievement del gioco corrente",
+        gametimerwinshortcut: "Attiva/disattiva il Timer Completamento Gioco utilizzando la scorciatoia da tastiera specificata",
+        gametimerwinaot: `Imposta il Timer Completamento Gioco in modalità "Sempre in Primo Piano", consentendo alla finestra di essere visualizzata sopra la finestra del gioco<br><br><span class="ttdesc">Quando abilitato, il Timer Completamento Gioco non registrerà più le interazioni dell'utente, come gli eventi "click". Per riabilitare l'interazione con la finestra, questa opzione deve essere disabilitata</span>`,
+        resetgametimer: "Reimposta il Timer Completamento Gioco per il gioco corrente",
+        noshortcuts: `Disabilita tutte le scorciatoie da tastiera dell'applicazione<br><br><span class="ttdesc">Quando abilitato, <u>tutte le scorciatoie dell'applicazione non funzioneranno più</u>. Verranno inoltre nascoste tutte le opzioni relative alle scorciatoie da tastiera</span>`,
+        extwinnotify: "Attiva/disattiva la visibilità di tutte le notifiche a schermo durante l'utilizzo delle Stream Notifications"
     },
     update: {
         updateavailable: "Aggiornamento disponibile",

@@ -192,6 +192,7 @@ export const translations = {
             "Obrigado por testar! 💜"
         ],
         betaghreleases: "Lançamentos",
+        checkapplog: "Por favor, verifique o Registo da App para detalhes."
     },
     app: {
         content: {
@@ -310,6 +311,20 @@ export const translations = {
                 max: "Máximo",
                 custom: "Personalizado...",
                 statwinshortcut: "Atalho da Sobreposição",
+                gametimerwin: "Temporizador de Conclusão do Jogo",
+                gametimerwinshortcut: "Atalho do Temporizador",
+                gametimerwinaot: "Sempre no Topo",
+                resetgametimer: "Redefinir Temporizador",
+                resetgametimersub: `
+                    <div class="wrapper resetsub">
+                        <span>Tem a certeza?</span>
+                        <span>Isto irá redefinir o Temporizador de Conclusão do Jogo do jogo atual para 00:00:00.000.</span>
+                        <span class="noundo">🛑 Esta ação não pode ser desfeita!</span>
+                    </div>
+                `,
+                resetgametimerfailed: "Não foi possível redefinir o temporizador.",
+                resetgametimercomplete: "O AppID $appid já foi concluído.",
+                extwinnotify: "Mostrar Notificação no Ecrã"
             }
         },
         accessibility: {
@@ -320,7 +335,8 @@ export const translations = {
                 nvda: "Ativar Suporte NVDA",
                 tooltips: "Mostrar Dicas de Ferramentas",
                 showsystrayopts: "Mostrar opções da área de notificação",
-                releaseshortcut: "Atalho para Liberar Jogo"
+                releaseshortcut: "Atalho para Liberar Jogo",
+                noshortcuts: "Desativar Atalhos de Teclado"
             }
         },
         advanced: {
@@ -337,7 +353,23 @@ export const translations = {
                 lognum: "Arquivos de Log Anteriores", 
                 audiocooldown: "Tempo de Espera do Áudio",
                 usecustomfiles: "Utilizar Arquivos Personalizados da Aplicação",
-                showcustomfiles: "Mostrar Arquivos Personalizados da Aplicação"
+                showcustomfiles: "Mostrar Arquivos Personalizados da Aplicação",
+                appdatadir: "Mostrar pasta AppData",
+                backup: "Backup",
+                backuppath: "Caminho do Backup",
+                backupsub: [
+                    "Faça backup do conteúdo da pasta AppData da app para um local à escolha",
+                    "Este backup servirá como ponto de restauração para o estado atual da app",
+                    `Restaure qualquer backup anterior através de <span class="hl">Definições</span> > <span class="hl">Avançadas</span> > <span class="hl">Restaurar</span>`
+                ],
+                backupfailed: "Não foi possível criar o backup.",
+                restore: "Restaurar",
+                restoresub: [
+                    "Restaure o conteúdo da pasta AppData da app a partir de um backup anterior",
+                    `Selecione um ficheiro de backup <span class="hl">.sanbak</span> para restaurar. Este ficheiro será preservado após a restauração`,
+                    "❗ Uma vez confirmado, a app será reiniciada para restaurar o ficheiro de backup selecionado"
+                ],
+                restorefailed: "Não foi possível restaurar o backup."
             }
         },
         ra: {
@@ -851,7 +883,16 @@ export const translations = {
         ssext: "Definir o formato de arquivo das capturas de tela geradas pela opção Captura de Tela com Sobreposição de Notificação",
         notify1line: `Limita o número de linhas de texto exibidas em todas as notificações a 1<br><br><span class="ttdesc">Textos que não cabem em uma única linha serão truncados com "..."</span>`,
         copytheme: "Copiar o tema selecionado para outro tipo de notificação",
-        ssaddtosteam: "Adicionar automaticamente a mídia gerada às Gravações e Capturas de Tela do jogo atual no Steam"
+        ssaddtosteam: "Adicionar automaticamente a mídia gerada às Gravações e Capturas de Tela do jogo atual no Steam",
+        appdatadir: "Abrir a localização da pasta AppData da app",
+        backup: "Faça backup do conteúdo da pasta AppData da app para um local à escolha, que servirá como ponto de restauração para o estado atual da app",
+        restore: "Restaure o conteúdo da pasta AppData da app a partir de um backup anterior",
+        gametimerwin: "Mostrar um temporizador no ecrã que indica o tempo necessário para desbloquear todos os achievements do jogo atual",
+        gametimerwinshortcut: "Alternar o Temporizador de Conclusão do Jogo utilizando o atalho de teclado especificado",
+        gametimerwinaot: `Definir o Temporizador de Conclusão do Jogo para o modo "Sempre no Topo", permitindo que a janela seja exibida acima da janela do jogo<br><br><span class="ttdesc">Quando ativado, o Temporizador de Conclusão do Jogo deixará de registar interações do utilizador, como eventos de "click". Para voltar a permitir a interação com a janela, esta opção deve ser desativada</span>`,
+        resetgametimer: "Redefinir o Temporizador de Conclusão do Jogo para o jogo atual",
+        noshortcuts: `Desativa todos os atalhos de teclado dentro da aplicação<br><br><span class="ttdesc">Quando ativado, <u>todos os atalhos da aplicação deixarão de funcionar</u>. Todas as opções relacionadas com atalhos de teclado também serão ocultadas</span>`,
+        extwinnotify: "Alternar a visibilidade de todas as notificações no ecrã ao utilizar Stream Notifications"
     },
     update: {
         updateavailable: "Atualização disponível",

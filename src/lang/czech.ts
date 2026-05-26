@@ -192,6 +192,7 @@ export const translations = {
             "Děkujeme za testování! 💜"
         ],
         betaghreleases: "Vydání",
+        checkapplog: "Zkontrolujte prosím protokol aplikace pro podrobnosti."
     },
     app: {
         content: {
@@ -310,6 +311,20 @@ export const translations = {
                 max: "Maximum",
                 custom: "Vlastní...",
                 statwinshortcut: "Zkratka pro překrytí",
+                gametimerwin: "Časovač dokončení hry",
+                gametimerwinshortcut: "Klávesová zkratka časovače",
+                gametimerwinaot: "Vždy navrchu",
+                resetgametimer: "Resetovat časovač",
+                resetgametimersub: `
+                    <div class="wrapper resetsub">
+                        <span>Jste si jisti?</span>
+                        <span>Tímto se časovač dokončení aktuální hry resetuje zpět na 00:00:00.000.</span>
+                        <span class="noundo">🛑 Toto nelze vrátit zpět!</span>
+                    </div>
+                `,
+                resetgametimerfailed: "Nepodařilo se resetovat časovač.",
+                resetgametimercomplete: "AppID $appid již byl dokončen.",
+                extwinnotify: "Zobrazit oznámení na obrazovce"
             }
         },
         accessibility: {
@@ -320,7 +335,8 @@ export const translations = {
                 nvda: "Povolit podporu NVDA",
                 tooltips: "Zobrazit tooltipy",
                 showsystrayopts: "Zobrazit možnosti systémové lišty",
-                releaseshortcut: "Klávesová zkratka pro uvolnění hry"
+                releaseshortcut: "Klávesová zkratka pro uvolnění hry",
+                noshortcuts: "Zakázat klávesové zkratky"
             }
         },
         advanced: {
@@ -337,7 +353,23 @@ export const translations = {
                 lognum: "Předchozí soubory protokolu", 
                 audiocooldown: "Časový odstup zvuku",
                 usecustomfiles: "Použít vlastní soubory aplikace",
-                showcustomfiles: "Zobrazit vlastní soubory aplikace"
+                showcustomfiles: "Zobrazit vlastní soubory aplikace",
+                appdatadir: "Zobrazit složku AppData",
+                backup: "Záloha",
+                backuppath: "Cesta zálohy",
+                backupsub: [
+                    "Zálohujte obsah složky AppData aplikace do vybraného umístění",
+                    "Tato záloha bude sloužit jako bod obnovení aktuálního stavu aplikace",
+                    `Obnovte jakoukoli předchozí zálohu přes <span class="hl">Nastavení</span> > <span class="hl">Pokročilé</span> > <span class="hl">Obnovit</span>`
+                ],
+                backupfailed: "Nepodařilo se vytvořit zálohu.",
+                restore: "Obnovit",
+                restoresub: [
+                    "Obnovte obsah složky AppData aplikace z předchozí zálohy",
+                    `Vyberte záložní soubor <span class="hl">.sanbak</span> pro obnovení. Tento soubor bude zachován po dokončení obnovení`,
+                    "❗ Po potvrzení se aplikace restartuje, aby obnovila vybraný záložní soubor"
+                ],
+                restorefailed: "Nepodařilo se obnovit zálohu."
             }
         },
         ra: {
@@ -851,7 +883,16 @@ export const translations = {
         ssext: "Nastavit formát souboru snímků obrazovky generovaných pomocí možnosti snímku obrazovky s překrytím oznámení",
         notify1line: `Omezit počet řádků textu zobrazovaných ve všech oznámeních na 1<br><br><span class="ttdesc">Přetékající textové řetězce, které se nevejdou na jeden řádek, budou zkráceny pomocí "..."</span>`,
         copytheme: "Zkopírovat vybraný motiv do jiného typu oznámení",
-        ssaddtosteam: "Automaticky přidat vygenerovaná média do záznamů a snímků obrazovky aktuální hry ve Steam"
+        ssaddtosteam: "Automaticky přidat vygenerovaná média do záznamů a snímků obrazovky aktuální hry ve Steam",
+        appdatadir: "Otevřít umístění složky AppData aplikace",
+        backup: "Zálohujte obsah složky AppData aplikace do vybraného umístění, které bude sloužit jako bod obnovení aktuálního stavu aplikace",
+        restore: "Obnovte obsah složky AppData aplikace z předchozí zálohy",
+        gametimerwin: "Zobrazí časovač na obrazovce ukazující čas potřebný k odemčení všech achievementů pro aktuální hru",
+        gametimerwinshortcut: "Přepíná časovač dokončení hry pomocí zadané klávesové zkratky",
+        gametimerwinaot: `Nastaví časovač dokončení hry do režimu „Vždy navrchu“, což umožní zobrazení okna nad oknem hry<br><br><span class="ttdesc">Pokud je povoleno, časovač dokončení hry již nebude registrovat interakce uživatele, například události „kliknutí“. Pro opětovné povolení interakce s oknem musí být tato možnost vypnuta</span>`,
+        resetgametimer: "Resetuje časovač dokončení aktuální hry",
+        noshortcuts: `Zakáže všechny klávesové zkratky v aplikaci<br><br><span class="ttdesc">Pokud je povoleno, <u>všechny klávesové zkratky v aplikaci přestanou fungovat</u>. Všechny možnosti související s klávesovými zkratkami budou také skryty</span>`,
+        extwinnotify: "Přepíná viditelnost všech oznámení na obrazovce při používání Stream Notifications"
     },
     update: {
         updateavailable: "Aktualizace je k dispozici",

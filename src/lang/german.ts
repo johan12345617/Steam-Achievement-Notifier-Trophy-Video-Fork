@@ -192,6 +192,7 @@ export const translations = {
             "Danke fürs Testen! 💜"
         ],
         betaghreleases: "Releases",
+        checkapplog: "Bitte prüfen Sie das App-Protokoll für weitere Details."
     },
     app: {
         content: {
@@ -310,6 +311,20 @@ export const translations = {
                 max: "Max",
                 custom: "Benutzerdefiniert...",
                 statwinshortcut: "Overlay-Verknüpfung",
+                gametimerwin: "Spielabschluss-Timer",
+                gametimerwinshortcut: "Timer-Tastenkürzel",
+                gametimerwinaot: "Immer im Vordergrund",
+                resetgametimer: "Timer zurücksetzen",
+                resetgametimersub: `
+                    <div class="wrapper resetsub">
+                        <span>Sind Sie sicher?</span>
+                        <span>Dadurch wird der Spielabschluss-Timer für das aktuelle Spiel auf 00:00:00.000 zurückgesetzt.</span>
+                        <span class="noundo">🛑 Dies kann nicht rückgängig gemacht werden!</span>
+                    </div>
+                `,
+                resetgametimerfailed: "Timer konnte nicht zurückgesetzt werden.",
+                resetgametimercomplete: "AppID $appid wurde bereits abgeschlossen.",
+                extwinnotify: "Bildschirmbenachrichtigung anzeigen"
             }
         },
         accessibility: {
@@ -320,7 +335,8 @@ export const translations = {
                 nvda: "NVDA-Unterstützung Aktivieren",
                 tooltips: "Tooltips Anzeigen",
                 showsystrayopts: "System-Tray-Optionen anzeigen",
-                releaseshortcut: "Spiel-Freigabe-Verknüpfung"
+                releaseshortcut: "Spiel-Freigabe-Verknüpfung",
+                noshortcuts: "Tastenkürzel deaktivieren"
             }
         },
         advanced: {
@@ -337,7 +353,23 @@ export const translations = {
                 lognum: "Vorherige Protokolldateien", 
                 audiocooldown: "Audio-Abklingzeit",
                 usecustomfiles: "Benutzerdefinierte App-Dateien Verwenden",
-                showcustomfiles: "Benutzerdefinierte App-Dateien Anzeigen"
+                showcustomfiles: "Benutzerdefinierte App-Dateien Anzeigen",
+                appdatadir: "AppData-Ordner anzeigen",
+                backup: "Sicherung",
+                backuppath: "Sicherungspfad",
+                backupsub: [
+                    "Sichern Sie den Inhalt des AppData-Ordners der App an einem ausgewählten Ort",
+                    "Diese Sicherung dient als Wiederherstellungspunkt für den aktuellen Zustand der App",
+                    `Stellen Sie eine vorherige Sicherung über <span class="hl">Einstellungen</span> > <span class="hl">Erweitert</span> > <span class="hl">Wiederherstellen</span> wieder her`
+                ],
+                backupfailed: "Sicherung konnte nicht erstellt werden.",
+                restore: "Wiederherstellen",
+                restoresub: [
+                    "Stellen Sie den Inhalt des AppData-Ordners der App aus einer vorherigen Sicherung wieder her",
+                    `Wählen Sie eine <span class="hl">.sanbak</span>-Sicherungsdatei zur Wiederherstellung aus. Diese Datei bleibt nach Abschluss der Wiederherstellung erhalten`,
+                    "❗ Nach Bestätigung wird die App neu gestartet, um die ausgewählte Sicherungsdatei wiederherzustellen"
+                ],
+                restorefailed: "Sicherung konnte nicht wiederhergestellt werden."
             }
         },
         ra: {
@@ -851,7 +883,16 @@ export const translations = {
         ssext: "Das Dateiformat für Screenshots festlegen, die über die Option Screenshot mit Benachrichtigungs-Overlay erstellt werden",
         notify1line: `Die Anzahl der in allen Benachrichtigungen angezeigten Textzeilen auf 1 begrenzen<br><br><span class="ttdesc">Überlaufende Textzeichenfolgen, die nicht in eine einzelne Zeile passen, werden mit "..." gekürzt</span>`,
         copytheme: "Das ausgewählte Design in einen anderen Benachrichtigungstyp kopieren",
-        ssaddtosteam: "Generierte Medien automatisch zu den Aufnahmen und Screenshots des aktuellen Spiels in Steam hinzufügen"
+        ssaddtosteam: "Generierte Medien automatisch zu den Aufnahmen und Screenshots des aktuellen Spiels in Steam hinzufügen",
+        appdatadir: "Öffne den Speicherort des AppData-Ordners der App",
+        backup: "Sichern Sie den Inhalt des AppData-Ordners der App an einem ausgewählten Ort, der als Wiederherstellungspunkt für den aktuellen Zustand der App dient",
+        restore: "Stellen Sie den Inhalt des AppData-Ordners der App aus einer vorherigen Sicherung wieder her",
+        gametimerwin: "Zeigt einen Bildschirm-Timer an, der die Zeit anzeigt, die benötigt wurde, um alle Erfolge für das aktuelle Spiel freizuschalten",
+        gametimerwinshortcut: "Schaltet den Spielabschluss-Timer mit dem angegebenen Tastenkürzel um",
+        gametimerwinaot: `Setzt den Spielabschluss-Timer auf den Modus „Immer im Vordergrund“, sodass das Fenster über dem Spielfenster angezeigt wird<br><br><span class="ttdesc">Wenn aktiviert, registriert der Spielabschluss-Timer keine Benutzerinteraktionen mehr, wie z. B. „Klick“-Ereignisse. Um die Interaktion mit dem Fenster wieder zu aktivieren, muss diese Option deaktiviert werden</span>`,
+        resetgametimer: "Setzt den Spielabschluss-Timer für das aktuelle Spiel zurück",
+        noshortcuts: `Deaktiviert alle Tastenkürzel in der App<br><br><span class="ttdesc">Wenn aktiviert, <u>funktionieren alle Tastenkürzel in der App nicht mehr</u>. Alle Optionen im Zusammenhang mit Tastenkürzeln werden ebenfalls ausgeblendet</span>`,
+        extwinnotify: "Schaltet die Sichtbarkeit aller Bildschirmbenachrichtigungen bei der Verwendung von Stream Notifications um"
     },
     update: {
         updateavailable: "Update verfügbar",

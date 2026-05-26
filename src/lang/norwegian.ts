@@ -192,6 +192,7 @@ export const translations = {
             "Takk for at du testet! 💜"
         ],
         betaghreleases: "Utgivelser",
+        checkapplog: "Vennligst sjekk Apploggen for detaljer."
     },
     app: {
         content: {
@@ -310,6 +311,20 @@ export const translations = {
                 max: "Maks",
                 custom: "Egendefinert...",
                 statwinshortcut: "Snarvei for overlegg",
+                gametimerwin: "Spillfullføringstidtaker",
+                gametimerwinshortcut: "Snarvei for Tidtaker",
+                gametimerwinaot: "Alltid Øverst",
+                resetgametimer: "Tilbakestill Tidtaker",
+                resetgametimersub: `
+                    <div class="wrapper resetsub">
+                        <span>Er du sikker?</span>
+                        <span>Dette vil tilbakestille Spillfullføringstidtaker for det nåværende spillet tilbake til 00:00:00.000.</span>
+                        <span class="noundo">🛑 Dette kan ikke angres!</span>
+                    </div>
+                `,
+                resetgametimerfailed: "Kunne ikke tilbakestille tidtakeren.",
+                resetgametimercomplete: "AppID $appid er allerede fullført.",
+                extwinnotify: "Vis Varsel på Skjermen"
             }
         },
         accessibility: {
@@ -320,7 +335,8 @@ export const translations = {
                 nvda: "Aktiver NVDA-støtte",
                 tooltips: "Vis verktøytips",
                 showsystrayopts: "Vis systemstatusalternativer",
-                releaseshortcut: "Frigjør spill hurtigtast"
+                releaseshortcut: "Frigjør spill hurtigtast",
+                noshortcuts: "Deaktiver Tastatursnarveier"
             }
         },
         advanced: {
@@ -337,7 +353,23 @@ export const translations = {
                 lognum: "Tidligere loggfiler", 
                 audiocooldown: "Lydnedkjøling",
                 usecustomfiles: "Bruk egendefinerte app-filer",
-                showcustomfiles: "Vis egendefinerte app-filer"
+                showcustomfiles: "Vis egendefinerte app-filer",
+                appdatadir: "Vis AppData-mappe",
+                backup: "Sikkerhetskopi",
+                backuppath: "Sikkerhetskopi-sti",
+                backupsub: [
+                    "Sikkerhetskopier innholdet i appens AppData-mappe til et valgt sted",
+                    "Denne sikkerhetskopien fungerer som et gjenopprettingspunkt for appens nåværende tilstand",
+                    `Gjenopprett en tidligere sikkerhetskopi via <span class="hl">Innstillinger</span> > <span class="hl">Avansert</span> > <span class="hl">Gjenopprett</span>`
+                ],
+                backupfailed: "Kunne ikke lage sikkerhetskopi.",
+                restore: "Gjenopprett",
+                restoresub: [
+                    "Gjenopprett innholdet i appens AppData-mappe fra en tidligere sikkerhetskopi",
+                    `Velg en <span class="hl">.sanbak</span> sikkerhetskopifil å gjenopprette fra. Denne filen beholdes etter gjenopprettingen`,
+                    "❗ Når bekreftet, vil appen starte på nytt for å gjenopprette den valgte sikkerhetskopifilen"
+                ],
+                restorefailed: "Kunne ikke gjenopprette sikkerhetskopi."
             }
         },
         ra: {
@@ -851,7 +883,16 @@ export const translations = {
         ssext: "Angi filformatet for skjermbilder generert via alternativet Skjermbilde med varslingsoverlay",
         notify1line: `Begrens antall tekstlinjer som vises i alle varsler til 1<br><br><span class="ttdesc">Tekststrenger som ikke får plass på én linje vil bli avkortet med "..."</span>`,
         copytheme: "Kopier det valgte temaet til en annen varslingstype",
-        ssaddtosteam: "Legg automatisk til generert media i det nåværende spillets opptak og skjermbilder i Steam"
+        ssaddtosteam: "Legg automatisk til generert media i det nåværende spillets opptak og skjermbilder i Steam",
+        appdatadir: "Åpne plasseringen av appens AppData-mappe",
+        backup: "Sikkerhetskopier innholdet i appens AppData-mappe til et valgt sted, som fungerer som et gjenopprettingspunkt for appens nåværende tilstand",
+        restore: "Gjenopprett innholdet i appens AppData-mappe fra en tidligere sikkerhetskopi",
+        gametimerwin: "Vis en tidtaker på skjermen som viser hvor lang tid det tok å låse opp alle achievements for det nåværende spillet",
+        gametimerwinshortcut: "Slå av/på Spillfullføringstidtaker ved hjelp av den angitte tastatursnarveien",
+        gametimerwinaot: `Sett Spillfullføringstidtaker til "Alltid Øverst"-modus, slik at vinduet kan vises over spillvinduet<br><br><span class="ttdesc">Når aktivert, vil Spillfullføringstidtaker ikke lenger registrere brukerinteraksjoner, som "click"-hendelser. For å aktivere interaksjon med vinduet igjen må dette alternativet deaktiveres</span>`,
+        resetgametimer: "Tilbakestill Spillfullføringstidtaker for det nåværende spillet",
+        noshortcuts: `Deaktiverer alle tastatursnarveier i appen<br><br><span class="ttdesc">Når aktivert, vil <u>alle snarveier i appen ikke lenger fungere</u>. Alle alternativer relatert til tastatursnarveier vil også bli skjult</span>`,
+        extwinnotify: "Bytt synlighet for alle varsler på skjermen mens du bruker Stream Notifications"
     },
     update: {
         updateavailable: "Oppdatering tilgjengelig",

@@ -49,6 +49,7 @@ declare interface Config {
         x: number,
         y: number
     },
+    extwinnotify: boolean,
     audiosrc: "notify" | "app" | "off",
     nowtracking: boolean,
     nowtrackingscale: number,
@@ -123,6 +124,8 @@ declare interface Config {
     statwinnospoilers: boolean,
     statwinshortcut: string,
     statwinaot: boolean,
+    statwinopacity: boolean,
+    statwindisplaymode: "locked" | "unlocked",
     raemus: string[],
     retroarchpath: string,
     dolphinpath: string,
@@ -147,6 +150,18 @@ declare interface Config {
     ssext: "png" | "jpg",
     notify1line: boolean,
     ssaddtosteam: boolean,
+    backuppath: string,
+    gametimerwin: boolean,
+    gametimerwinpos: {
+        width: number,
+        height: number,
+        x: number,
+        y: number
+    },
+    gametimerwinshortcut: string,
+    gametimerwinaot: boolean,
+    gametimerwinopacity: boolean,
+    noshortcuts: boolean,
     customisation: {
         main: Customisation,
         semi: Customisation,
@@ -330,7 +345,8 @@ declare interface Achievement {
     desc: string,
     percent: number,
     hidden: boolean,
-    icon?: string
+    icon?: string,
+    unlocktimestamp?: number
 }
 
 declare interface Notify extends Achievement {
@@ -353,7 +369,14 @@ declare interface Notify extends Achievement {
 declare interface StatsObj {
     appid: number,
     gamename: string | null,
-    achievements?: Achievement[]
+    achievements?: Achievement[],
+    ra?: boolean,
+    mode?: "hard" | "soft"
+}
+
+declare interface StatsEntry {
+    apiname: string,
+    unlocktimestamp: number
 }
 
 declare interface Dialog {
@@ -554,7 +577,8 @@ declare interface RAAchievement {
     gameicon: string,
     gameartlibhero: string,
     icon: string,
-    unlocked: boolean
+    unlocked: boolean,
+    unlocktimestamp?: number
 }
 
 declare interface RAAPlatObj {
@@ -579,6 +603,8 @@ declare interface RAActions {
     achievement: RegExp | null,
     mode?: RegExp | null
 }
+
+declare type RAStatus = "wait" | "idle" | "start" | "stop" | "achievement"
 
 declare interface ScreenshotConfig {
     config: any,
@@ -605,5 +631,35 @@ declare interface SSWin {
     haswarned: boolean
 }
 
+declare type ExtWins = "ext" | "stat" | "gametimer"
+
+declare interface ExtWinConfig {
+    wintitle: string,
+    width: number,
+    height: number,
+    minWidth: number,
+    minHeight: number
+}
+
+declare interface WorkerInfo {
+    appid: number,
+    gamename?: string | null,
+    steam3id?: number,
+    achnum?: number,
+    allunlocked?: boolean,
+    ra?: boolean
+}
+
+declare type GameTimer = {
+    elapsed: number,
+    complete: boolean
+}
+
+declare type RunningGameTimer = {
+    appid: number,
+    started: number
+}
+
 declare module "simple-vdf"
 declare module "adm-zip"
+declare module "steam-game-path"

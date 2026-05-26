@@ -31,6 +31,7 @@ export const customfilekeys = [
 export const shortcutkeys = new Map<string,boolean>([
     ["release",false],
     ["statwin",false],
+    ["gametimerwin",false],
     ["replaynotify",false],
     ["customtrigger",true]
 ])
@@ -163,7 +164,8 @@ export const sanconfig = {
                 sselems: ["unlockmsg","title"]
             }],
             ["ps3",{
-                logo: null, decoration: trophies,
+                logo: null,
+                decoration: trophies,
                 index: {
                     percent: 1,
                     hiddenicon: 1,
@@ -225,6 +227,7 @@ export const sanconfig = {
                     x: 0,
                     y: 0
                 },
+                extwinnotify: true,
                 audiosrc: "notify",
                 nowtracking: true,
                 nowtrackingscale: 100,
@@ -307,6 +310,8 @@ export const sanconfig = {
                 statwinnospoilers: true,
                 statwinshortcut: "CTRL+SHIFT+O",
                 statwinaot: false,
+                statwinopacity: false,
+                statwindisplaymode: "locked",
                 raemus: [],
                 retroarchpath: "",
                 dolphinpath: "",
@@ -331,6 +336,18 @@ export const sanconfig = {
                 ssext: "png",
                 notify1line: false,
                 ssaddtosteam: false,
+                backuppath: "",
+                gametimerwin: false,
+                gametimerwinpos: {
+                    width: 250,
+                    height: 100,
+                    x: 0,
+                    y: 0
+                },
+                gametimerwinshortcut: "CTRL+SHIFT+G",
+                gametimerwinaot: false,
+                gametimerwinopacity: false,
+                noshortcuts: false,
                 customisation: {
                     main: {} as Customisation,
                     semi: {} as Customisation,
@@ -721,5 +738,33 @@ export const sanconfig = {
 
         await sanconfig.validateconfigkeys(configkeys,objkeys,obj,type)
         type && await sanconfig.validatecustomicons(type as NotifyType)
+    },
+    get defaultextwins(): Record<ExtWins,ExtWinConfig> {
+        const config = sanconfig.get()
+        const { statwinpos, gametimerwinpos } = config.store
+        
+        return {
+            ext: {
+                wintitle: "Stream Notifications",
+                width: 300,
+                height: 50,
+                minWidth: 125,
+                minHeight: 50,
+            },
+            stat: {
+                wintitle: "Achievement Stats Overlay",
+                width: statwinpos?.width ?? 250,
+                height: statwinpos?.height ?? 500,
+                minWidth: 200,
+                minHeight: 300,
+            },
+            gametimer: {
+                wintitle: "Game Completion Timer",
+                width: gametimerwinpos?.width ?? 250,
+                height: gametimerwinpos?.height ?? 100,
+                minWidth: 250,
+                minHeight: 100,
+            }
+        }
     }
 }

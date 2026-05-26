@@ -183,15 +183,15 @@ div:has(> .contentsubitem[nobefore]) {
     content: none;
 }
 
-.wrapper#contentcontainer:has(.wrapper#resetsub) .contenttitle {
+.wrapper#contentcontainer:has(.resetsub) .contenttitle {
     background-color: red;
 }
 
-.wrapper#resetsub {
+.resetsub {
     gap: 0.25rem;
 }
 
-.wrapper#resetsub > span:nth-child(3) {
+.noundo {
     color: #ff000080;
     animation: flash calc(var(--transition) * 2.5) alternate infinite;
 }
@@ -1338,6 +1338,69 @@ body[beta] dialog[default] .contentwrapper:has(.btnwrapper > #betaexitbtn) .cont
 
 .addhtml > .betahtml#backup {
     background-color: var(--primary);
+}
+
+dialog .opt:has(> button.optbtn#backuppath,> button.optbtn#restorepath) > button {
+    background-color: var(--mediumgrey);
+}
+
+dialog .opt:has(> button.optbtn#backuppath,> button.optbtn#restorepath) > button:hover {
+    background-color: var(--lightgrey);
+}
+
+button.optbtn#restorepath:empty {
+    border: 0.1rem solid red;
+}
+
+.wrapper#contentcontainer:has(button.optbtn#restorepath:empty) + .btnwrapper > #okbtn {
+    opacity: 0.75;
+    pointer-events: none;
+}
+
+.addhtml:has(.dialoglog:empty) .dialoglog {
+    margin-top: 0;
+}
+
+.dialoglog {
+    display: block;
+    width: 100%;
+    text-align: center;
+    color: red;
+    margin-top: 0.25rem;
+}
+
+.contentsub:has(.addhtml[backup]) {
+    position: relative;
+}
+
+.contentsub:has(.addhtml[backup]),
+.wrapper#contentcontainer:has(.addhtml[backup]) + .btnwrapper > #okbtn {
+    filter: brightness(0.75);
+    pointer-events: none;
+}
+
+.contentsub:has(.addhtml[backup])::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    width: 50%;
+    height: 50%;
+    background: url("../../icon/reset.svg") center / contain no-repeat;
+    animation: spin 1s infinite;
+}
+
+@keyframes spin {
+    to { rotate: 360deg; }
+}
+
+.addhtml:has(.dialoglog#resetgametimerlog) {
+    margin-top: 0;
+}
+
+.addhtml:has(.dialoglog#resetgametimerlog:not(:empty)) .dialoglog {
+    margin-top: 1rem;
 }
 
 @media (orientation: portrait) {

@@ -1,5 +1,4 @@
 import { app, BrowserWindow, ipcMain, nativeTheme } from "electron"
-import fs from "fs"
 import path from "path"
 import { sanhelper, __root } from "./sanhelper"
 import { log } from "./log"
@@ -27,11 +26,6 @@ export const main = async (starttime: string) => {
             const steampath = await sanhelper.steampath
             if (!steampath) throw new Error(`Steam installation path not found. Please install Steam before running Steam Achievement Notifier`)
             log.write("INFO",`Steam installation path: ${steampath}`)
-        
-            // Check "appinfo.vdf" is present in Steam's installation directory
-            const appinfovdf = path.join(sanhelper.steampath,"appcache","appinfo.vdf").replace(/\\/g,"/")
-            if (!fs.existsSync(appinfovdf)) throw new Error(`"${appinfovdf}" not found in Steam installation directory. Please ensure the latest version of Steam is installed before running Steam Achievement Notifier`)
-            log.write("INFO",`"${appinfovdf}" present in Steam installation directory`)
         } catch (err) {
             if (err instanceof Error && err.message) throw err
             throw new Error(`Unable to start Steam Achievement Notifier: ${err}`)
@@ -87,8 +81,11 @@ export const main = async (starttime: string) => {
         win.once("ready-to-show", () => {
             listeners.set(win)
             ipcMain.emit("validateworker")
-            ;["ext","stat"].forEach(type => config.get(`${type}win`) && ipcMain.emit(`${type}win`,null,true))
-            ipcMain.emit("shortcut",null,config.get("shortcuts"))
+            ipcMain.emit("shortcut",null,!config.get("noshortcuts"))
+
+            for (const type of Object.keys(sanconfig.defaultextwins) as ExtWins[]) {
+                config.get(`${type}win`) && ipcMain.emit(`${type}win`,null,true)
+            }
         })
 
         ipcMain.on("starttime", event => event.reply("starttime",starttime))

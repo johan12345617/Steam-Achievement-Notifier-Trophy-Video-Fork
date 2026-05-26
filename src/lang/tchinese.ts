@@ -192,6 +192,7 @@ export const translations = {
             "感謝您的測試！ 💜"
         ],
         betaghreleases: "版本發佈",
+        checkapplog: "請查看應用程式日誌以獲取詳細資訊。"
     },
     app: {
         content: {
@@ -310,6 +311,20 @@ export const translations = {
                 max: "最大值",
                 custom: "自定義...",
                 statwinshortcut: "疊加層快捷鍵",
+                gametimerwin: "遊戲完成計時器",
+                gametimerwinshortcut: "計時器快捷鍵",
+                gametimerwinaot: "永遠置頂",
+                resetgametimer: "重設計時器",
+                resetgametimersub: `
+                    <div class="wrapper resetsub">
+                        <span>您確定嗎？</span>
+                        <span>這將把目前遊戲的遊戲完成計時器重設回 00:00:00.000。</span>
+                        <span class="noundo">🛑 此操作無法復原！</span>
+                    </div>
+                `,
+                resetgametimerfailed: "無法重設計時器。",
+                resetgametimercomplete: "AppID $appid 已經完成。",
+                extwinnotify: "顯示螢幕通知"
             }
         },
         accessibility: {
@@ -320,7 +335,8 @@ export const translations = {
                 nvda: "啟用 NVDA 支援",
                 tooltips: "顯示工具提示",
                 showsystrayopts: "顯示系統托盤選項",
-                releaseshortcut: "釋放遊戲快捷鍵"
+                releaseshortcut: "釋放遊戲快捷鍵",
+                noshortcuts: "停用鍵盤快捷鍵"
             }
         },
         advanced: {
@@ -337,7 +353,23 @@ export const translations = {
                 lognum: "先前的日誌檔案", 
                 audiocooldown: "音訊冷卻時間",
                 usecustomfiles: "使用自定義應用程式檔案",
-                showcustomfiles: "顯示自定義應用程式檔案"
+                showcustomfiles: "顯示自定義應用程式檔案",
+                appdatadir: "顯示 AppData 資料夾",
+                backup: "備份",
+                backuppath: "備份路徑",
+                backupsub: [
+                    "將應用程式的 AppData 資料夾內容備份到選定位置",
+                    "此備份將作為應用程式當前狀態的還原點",
+                    `透過 <span class="hl">設定</span> > <span class="hl">進階</span> > <span class="hl">還原</span> 恢復任何先前的備份`
+                ],
+                backupfailed: "無法建立備份。",
+                restore: "還原",
+                restoresub: [
+                    "從先前的備份還原應用程式 AppData 資料夾的內容",
+                    `選擇一個 <span class="hl">.sanbak</span> 備份檔以還原。還原完成後，此檔案將會保留`,
+                    "❗ 確認後，應用程式將重新啟動以還原所選的備份檔"
+                ],
+                restorefailed: "無法還原備份。"
             }
         },
         ra: {
@@ -851,7 +883,16 @@ export const translations = {
         ssext: "設定透過 Screenshot with Notification Overlay 選項產生的截圖檔案格式",
         notify1line: `將所有通知中顯示的文字行數限制為 1<br><br><span class="ttdesc">無法容納於單行的文字字串將會以 "..." 截斷</span>`,
         copytheme: "將所選主題複製到另一種通知類型",
-        ssaddtosteam: "自動將產生的媒體新增至目前遊戲在 Steam 中的錄製與截圖"
+        ssaddtosteam: "自動將產生的媒體新增至目前遊戲在 Steam 中的錄製與截圖",
+        appdatadir: "打開應用程式 AppData 資料夾的位置",
+        backup: "將應用程式的 AppData 資料夾內容備份到選定位置，作為應用程式當前狀態的還原點",
+        restore: "從先前的備份還原應用程式 AppData 資料夾的內容",
+        gametimerwin: "顯示一個螢幕計時器，用於顯示完成目前遊戲所有成就所花費的時間",
+        gametimerwinshortcut: "使用指定的鍵盤快捷鍵切換遊戲完成計時器",
+        gametimerwinaot: `將遊戲完成計時器設為「永遠置頂」模式，讓視窗顯示於遊戲視窗之上<br><br><span class="ttdesc">啟用後，遊戲完成計時器將不再回應使用者互動，例如「click」事件。若要重新啟用與視窗的互動，必須停用此選項</span>`,
+        resetgametimer: "重設目前遊戲的遊戲完成計時器",
+        noshortcuts: `停用所有應用程式內鍵盤快捷鍵<br><br><span class="ttdesc">啟用後，<u>所有應用程式內快捷鍵將不再運作</u>。所有與鍵盤快捷鍵相關的選項也將被隱藏</span>`,
+        extwinnotify: "切換使用 Stream Notifications 時所有螢幕通知的可見性"
     },
     update: {
         updateavailable: "有可用更新",

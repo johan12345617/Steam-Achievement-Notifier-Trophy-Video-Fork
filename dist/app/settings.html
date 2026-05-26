@@ -317,6 +317,10 @@
                 </div>
                 <div class="wrapper opt">
                     <span></span>
+                    <input type="checkbox" id="extwinnotify">
+                </div>
+                <div class="wrapper opt">
+                    <span></span>
                     <input type="range" id="extwinframerate" min="5" max="240" step="1" value="60">
                 </div>
                 <div class="wrapper opt">
@@ -331,6 +335,19 @@
                     <span class="lbl"></span>
                     <button class="shortcutbtn" id="statwinshortcut"></button>
                 </div>
+                <div class="wrapper opt">
+                    <span></span>
+                    <input type="checkbox" id="gametimerwin">
+                </div>
+                <div class="wrapper opt">
+                    <span></span>
+                    <input type="checkbox" id="gametimerwinaot">
+                </div>
+                <div class="wrapper opt">
+                    <span class="lbl"></span>
+                    <button class="shortcutbtn" id="gametimerwinshortcut"></button>
+                </div>
+                <button class="wrapper" id="resetgametimer"></button>
             </div>
         </div>
         <div class="wrapper cont">
@@ -351,6 +368,10 @@
                 <div class="wrapper opt">
                     <span></span>
                     <input type="checkbox" id="tooltips">
+                </div>
+                <div class="wrapper opt" star>
+                    <span></span>
+                    <input type="checkbox" id="noshortcuts">
                 </div>
                 <div class="wrapper opt">
                     <span></span>
@@ -393,10 +414,6 @@
                     <span></span>
                     <input type="checkbox" id="notifydebug">
                 </div>
-                <!-- <div class="wrapper opt">
-                    <span></span>
-                    <input type="checkbox" id="uselegacynotifytimer">
-                </div> -->
                 <div class="wrapper opt">
                     <span></span>
                     <input type="checkbox" id="exportachdata">
@@ -414,6 +431,9 @@
                     <input type="checkbox" id="usecustomfiles">
                 </div>
                 <button class="wrapper" id="showcustomfiles"></button>
+                <button class="wrapper" id="appdatadir"></button>
+                <button class="wrapper" id="backup"></button>
+                <button class="wrapper" id="restore"></button>
             </div>
         </div>
         <div class="wrapper cont">
@@ -471,11 +491,12 @@
                 <!-- <button class="wrapper" id="joinbetachannel"></button> -->
                 <button class="wrapper" id="log"></button>
                 <button class="wrapper" id="reset"></button>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="wrapper" id="settingsversion">
-        <span></span>
-        <span></span>
+        <div class="wrapper" id="settingsversion">
+            <span></span>
+            <span></span>
+        </div>
     </div>
 </div>

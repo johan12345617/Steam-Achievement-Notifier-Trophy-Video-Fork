@@ -192,6 +192,7 @@ export const translations = {
             "¡Gracias por probar! 💜"
         ],
         betaghreleases: "Lanzamientos",
+        checkapplog: "Por favor, revisa el registro de la aplicación para más detalles."
     },
     app: {
         content: {
@@ -310,6 +311,20 @@ export const translations = {
                 max: "Máximo",
                 custom: "Personalizado...",
                 statwinshortcut: "Acceso directo de superposición",
+                gametimerwin: "Temporizador de finalización del juego",
+                gametimerwinshortcut: "Atajo del temporizador",
+                gametimerwinaot: "Siempre visible",
+                resetgametimer: "Restablecer temporizador",
+                resetgametimersub: `
+                    <div class="wrapper resetsub">
+                        <span>¿Estás seguro?</span>
+                        <span>Esto restablecerá el Temporizador de finalización del juego del juego actual a 00:00:00.000.</span>
+                        <span class="noundo">🛑 ¡Esto no se puede deshacer!</span>
+                    </div>
+                `,
+                resetgametimerfailed: "No se pudo restablecer el temporizador.",
+                resetgametimercomplete: "La AppID $appid ya ha sido completada.",
+                extwinnotify: "Mostrar notificación en pantalla"
             }
         },
         accessibility: {
@@ -320,7 +335,8 @@ export const translations = {
                 nvda: "Activar soporte de NVDA",
                 tooltips: "Mostrar consejos de herramientas",
                 showsystrayopts: "Mostrar opciones de la bandeja del sistema",
-                releaseshortcut: "Acceso directo para liberar juego"
+                releaseshortcut: "Acceso directo para liberar juego",
+                noshortcuts: "Desactivar atajos de teclado"
             }
         },
         advanced: {
@@ -337,7 +353,23 @@ export const translations = {
                 lognum: "Archivos de Registro Anteriores", 
                 audiocooldown: "Enfriamiento de Audio",
                 usecustomfiles: "Utilizar Archivos de Aplicación Personalizados",
-                showcustomfiles: "Mostrar Archivos de Aplicación Personalizados"
+                showcustomfiles: "Mostrar Archivos de Aplicación Personalizados",
+                appdatadir: "Mostrar carpeta AppData",
+                backup: "Copia de seguridad",
+                backuppath: "Ruta de copia de seguridad",
+                backupsub: [
+                    "Realiza una copia de seguridad del contenido de la carpeta AppData de la aplicación en una ubicación seleccionada",
+                    "Esta copia de seguridad servirá como punto de restauración para el estado actual de la aplicación",
+                    `Restaura cualquier copia de seguridad anterior mediante <span class="hl">Configuración</span> > <span class="hl">Avanzado</span> > <span class="hl">Restaurar</span>`
+                ],
+                backupfailed: "No se pudo crear la copia de seguridad.",
+                restore: "Restaurar",
+                restoresub: [
+                    "Restaura el contenido de la carpeta AppData de la aplicación desde una copia de seguridad anterior",
+                    `Selecciona un archivo de copia de seguridad <span class="hl">.sanbak</span> desde el cual restaurar. Este archivo se conservará después de completar la restauración`,
+                    "❗ Una vez confirmado, la aplicación se reiniciará para restaurar el archivo de copia de seguridad seleccionado"
+                ],
+                restorefailed: "No se pudo restaurar la copia de seguridad."
             }
         },
         ra: {
@@ -851,7 +883,16 @@ export const translations = {
         ssext: "Establecer el formato de archivo de las capturas de pantalla generadas mediante la opción Screenshot with Notification Overlay",
         notify1line: `Limitar el número de líneas de texto mostradas en todas las notificaciones a 1<br><br><span class="ttdesc">Las cadenas de texto que no quepan en una sola línea se truncarán con "..."</span>`,
         copytheme: "Copiar el tema seleccionado a otro tipo de notificación",
-        ssaddtosteam: "Agregar automáticamente los medios generados a las grabaciones y capturas de pantalla del juego actual en Steam"
+        ssaddtosteam: "Agregar automáticamente los medios generados a las grabaciones y capturas de pantalla del juego actual en Steam",
+        appdatadir: "Abrir la ubicación de la carpeta AppData de la aplicación",
+        backup: "Realiza una copia de seguridad del contenido de la carpeta AppData de la aplicación en una ubicación seleccionada, que servirá como punto de restauración para el estado actual de la aplicación",
+        restore: "Restaura el contenido de la carpeta AppData de la aplicación desde una copia de seguridad anterior",
+        gametimerwin: "Mostrar un temporizador en pantalla que indique el tiempo empleado en desbloquear todos los logros del juego actual",
+        gametimerwinshortcut: "Alternar el Temporizador de finalización del juego usando el atajo de teclado especificado",
+        gametimerwinaot: `Configurar el Temporizador de finalización del juego en modo "Siempre visible", permitiendo que la ventana se muestre sobre la ventana del juego<br><br><span class="ttdesc">Cuando está habilitado, el Temporizador de finalización del juego ya no registrará interacciones del usuario, como eventos de "click". Para volver a habilitar la interacción con la ventana, esta opción debe desactivarse</span>`,
+        resetgametimer: "Restablecer el Temporizador de finalización del juego del juego actual",
+        noshortcuts: `Desactiva todos los atajos de teclado de la aplicación<br><br><span class="ttdesc">Cuando está habilitado, <u>todos los atajos de la aplicación dejarán de funcionar</u>. Todas las opciones relacionadas con los atajos de teclado también se ocultarán</span>`,
+        extwinnotify: "Alternar la visibilidad de todas las notificaciones en pantalla mientras se usan las notificaciones de transmisión"
     },
     update: {
         updateavailable: "Actualización disponible",

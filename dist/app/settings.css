@@ -183,8 +183,11 @@ dialog[menu] .contentwrapper > .wrapper#contentcontainer {
 .opt:has(#webhooks:not(:checked)) + .wrapper#webhookwrapper,
 body:not([trophymode]) .wrapper#webhooktypeswrapper > .opt:has(#webhooksemi),
 .opt:has(#steamlang:not(:checked)) + .wrapper:has(#maxsteamlangretries),
-.opt:has(#extwin:not(:checked)) ~ .wrapper:has(#extwinframerate,#extwinshow),
+.opt:has(#extwin:not(:checked)) ~ .wrapper:has(#extwinframerate,#extwinshow,#extwinnotify),
+.cont:has(input[type="checkbox"]#nohwa:checked) ~ .cont:has(.title#streaming) .opt:has(#extwinnotify),
 .opt:has(#statwin:not(:checked)) + .wrapper:has(#statwinaot),
+.opt:has(#gametimerwin:not(:checked)) + .wrapper:has(#gametimerwinaot),
+.opt:has(#gametimerwin:not(:checked)) ~ button#resetgametimer,
 .opt:has(#customtrigger:not(:checked)) ~ .wrapper:has(#customtriggershortcut,#customtriggerdelay,#customtriggerusedisplaytime),
 .opt:has(#notifymax)[value="1"] + .wrapper:has(#notifyspace) {
     display: none;
@@ -229,6 +232,11 @@ dialog[menu] #settingscontent .opt:has(select) > span:not(.lbl) {
     pointer-events: none;
 }
 
+body[noshortcuts] .opt:has(> .shortcutbtn:not(#customtriggershortcut)),
+body[noshortcuts] .opt:has(> input[type="checkbox"]#shortcuts) {
+    display: none;
+}
+
 .opt:has(> button[id$="shortcut"]) {
     gap: 0;
 }
@@ -236,6 +244,15 @@ dialog[menu] #settingscontent .opt:has(select) > span:not(.lbl) {
 #settingscontent .cont:has(.title#notifications,.title#streaming,.title#advanced,.title#games) .opt:has(input[type="range"],select) {
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
+}
+
+#settingscontent .cont:has(.title#advanced) > .optcont {
+    grid-template-columns: 1fr 1fr;
+}
+
+#settingscontent .cont:has(.title#advanced) > .optcont > .opt,
+#settingscontent .cont:has(.title#advanced) > .optcont > button:not(#backup,#restore) {
+    grid-column: 1 / -1;
 }
 
 .settingstabs {
@@ -512,6 +529,33 @@ body[themeswitch] #themeswitch::after {
 
 #reset:hover::before {
     rotate: 360deg;
+}
+
+#appdatadir {
+    --icon: url("../../icon/folder.svg");
+    background-color: #5662f6b5;
+}
+
+#appdatadir:hover {
+    background-color: #5662f6;
+}
+
+#backup {
+    --icon: url("../../icon/backup.svg");
+    background-color: #778899b5;
+}
+
+#backup:hover {
+    background-color: #778899;
+}
+
+#restore {
+    --icon: url("../../icon/restore.svg");
+    background-color: #6a5acdb5;
+}
+
+#restore:hover {
+    background-color: #6a5acd;
 }
 
 #settingscontent:has(#showsystrayopts:not(:checked)) .cont:has(.title#misc) button[systray] {
@@ -922,6 +966,21 @@ body:not([allowreplay]) #settingscontent button.rect#replaynotify > span {
 
 body:not([allowreplay]) #settingscontent button.rect#replaynotify::after {
     background-color: red;
+}
+
+button#resetgametimer {
+    --icon: url("../../icon/timer_start.svg");
+    display: none;
+    background-color: #b90505b5;
+}
+
+body[active] button#resetgametimer,
+body[ragameid] button#resetgametimer {
+    display: grid;
+}
+
+button#resetgametimer:hover {
+    background-color: #b90505;
 }
 
 @media (orientation: portrait) {

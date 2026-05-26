@@ -98,6 +98,11 @@ export const sanhelper: SANHelper = {
             ".aac",
             ".m4a"
     ]},
+    get datetimestr(): string {
+        const d = new Date()
+        const pad = (num: number) => num.toString().padStart(2,"0")
+        return `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}_${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}`
+    },
     getosinfo: async () => {
         if (process.platform !== "win32" && process.platform !== "linux") return `Unsupported platform ("${process.platform}")`
         
@@ -199,6 +204,7 @@ export const sanhelper: SANHelper = {
     createlogwin: () => ipcRenderer.send("logwin",sanhelper.logcontents("san"),"san"),
     updatelogwin: (logtype: "san" | "rust" | "sanhelperrs" | "bak",filename?: string) => ipcRenderer && ipcRenderer.send("updatelogwin",sanhelper.logcontents(logtype,filename),logtype,filename),
     showcustomfiles: () => shell.openPath(path.join(sanhelper.appdata,"customfiles")),
+    appdatadir: () => shell.openPath(sanhelper.appdata),
     switchtab: ({ target }: Event) => {
         target instanceof HTMLElement && (["main","semi","rare","plat"] as const).forEach(attr => document.body.toggleAttribute(attr,target.hasAttribute(attr)))
         usertheme.update()
@@ -293,7 +299,7 @@ export const sanhelper: SANHelper = {
             }
 
             !sctimer && sanhelper.getshortcut(config,document.body,id)
-            ipcRenderer.send("shortcut",true)
+            ipcRenderer.send("shortcut",!config.get("noshortcuts"))
         }
 
         target.setAttribute("set","")
@@ -360,17 +366,20 @@ export const sanhelper: SANHelper = {
     extwin: (value: boolean) => ipcRenderer.send("extwin",value),
     extwinshow: (value: boolean) => ipcRenderer.send("extwinshow",value),
     audiosrc: (value: "notify" | "app" | "off") => document.body.toggleAttribute("muted",value === "off"),
-    shortcuts: (value: boolean) => ipcRenderer.send("shortcut",value),
+    shortcuts: () => ipcRenderer.send("shortcut",true),
     statwin: (value: boolean) => ipcRenderer.send("statwin",value),
     statwinaot: (value: boolean) => ipcRenderer.send("statwinaot",value),
+    gametimerwin: (value: boolean) => ipcRenderer.send("gametimerwin",value),
+    gametimerwinaot: (value: boolean) => ipcRenderer.send("gametimerwinaot",value),
     noanim: (value: boolean) => document.body.toggleAttribute("noanim",value),
     tooltips: (value: boolean) => sanhelper.settooltips(value),
+    noshortcuts: (value: boolean) => ipcRenderer.send("shortcut",!value),
     debug: (value: boolean) => ipcRenderer.send("debugwin",value),
     usecustomfiles: () => ipcRenderer.send("closeextwin"),
     ramode: (value: boolean) => ipcRenderer.send("ra",value),
     trophymode: (value: boolean,config: Store<Config>,customiser?: boolean) => {
         // Patches `localStorage.themeswitch.<appid>.themes` to add missing keys (e.g. "semi") if missing when Trophy Mode is toggled
-        ;(async () => await sanhelper.verifylocalstorage(["themeswitch"]))()
+        ;(async () => await sanhelper.verifylocalstorage("themeswitch"))()
         
         document.body.toggleAttribute("trophymode",value)
 
@@ -397,7 +406,7 @@ export const sanhelper: SANHelper = {
             }
         }
 
-        ipcRenderer.send("shortcut",true)
+        ipcRenderer.send("shortcut",!config.get("noshortcuts"))
 
         // Below actions should only happen on app load
         if (customiser) return
@@ -412,10 +421,10 @@ export const sanhelper: SANHelper = {
         const elem = (event.target instanceof HTMLSpanElement ? event.target.parentElement!.querySelector(`input[type="checkbox"]`)! : event.target!) as HTMLInputElement
         if (raelems.find(id => elem.id === id)) return
 
-        if (process.platform === "linux") {    
+        if (process.platform === "linux") {
             for (const [lib,entries] of deps) {
                 for (const [id,section] of entries) {
-                    if (elem.id === id && sanhelper.depsinstalled(lib,section || "media")) return
+                    if (elem.id === id && !config.get(id) && sanhelper.depsinstalled(lib,section || "media")) return
                 }
             }
         }
@@ -563,25 +572,34 @@ export const sanhelper: SANHelper = {
     setbtn: async (config: Store<Config>,elem: HTMLButtonElement,keypath?: string) => {
         elem.removeAttribute("novalue")
 
-        const key = config.get((keypath ? `${keypath}.` : "") + elem.id.replace(/\d/,""))
         const type = sanhelper.type
+        const key = config.get((keypath ? `${keypath}.` : "") + elem.id.replace(/\d/,""))
         
         elem.onclick = () => {
-            const attr = ["img","audio","dir","font"].find(attr => elem.hasAttribute(attr))
+            const attr = ["img","audio","dir","font","sanbak"].find(attr => elem.hasAttribute(attr))
 
-            ipcRenderer.once("loadfile", (event,path) => {
+            ipcRenderer.once("loadfile",(event,path) => {
                 if (!path) return
+                const filepath = path[0].replace(/\\/g,"/")
 
                 const iconkey = ["logo","decoration","plat"].find(id => elem.id.replace(/\d/,"") === id)
                 const newkeypath = (keypath ? `${keypath}.` : "") + (iconkey ? (Array.isArray(config.get((keypath ? `${keypath}.` : "") + iconkey)) ? `${iconkey}.${parseInt(elem.id.replace(/[^\d]/g,"")) - 1}` : iconkey) : elem.id)
 
-                config.set(newkeypath,path[0].replace(/\\/g,"/"))
+                config.set(newkeypath,filepath)
+                
+                if (["backup","restore"].map(id => `${id}path`).includes(elem.id)) {
+                    elem.textContent = filepath
+                    const okbtn = document.querySelector("dialog .btnwrapper > button#okbtn") as HTMLButtonElement | null
+                    okbtn && (okbtn.tabIndex = 0)
+                }
+                
                 sanhelper.updatetabs(noreload(elem) !== undefined)
             })
 
             ipcRenderer.send("loadfile",attr)
         }
 
+        if (["backup","restore"].map(id => `${id}path`).includes(elem.id)) return
         if (!elem.classList.contains("img")) return elem.textContent = key ? key.toString().replace(/\\/g,"/") : (await language.get(`default${elem.id}`) || "MISSING!!!")
         if (!elem.classList.contains("customicon")) return elem.style.setProperty("--img",`url('${key ? key : sanhelper.setfilepath(elem.id === "hiddenicon" ? "icon" : "img",`${elem.id === "hiddenicon" ? (key || "lock.svg") : "sanimgbg.png"}`)}')`)
 
@@ -1067,13 +1085,14 @@ export const sanhelper: SANHelper = {
     presskeys: (keys: (string | number)[]) => setTimeout(() => process.platform === "win32" ? pressKeysWin32(keys as number[]) : pressKeysLinux(keys as string[]),100),
     triggerkeypress: async (hotkeys: (string | number)[]) => {
         const { log } = await import("./log")
-        if (process.platform === "linux" && !sanhelper.depsinstalled("keypressrs","media")) return log.write("WARN",`Unable to trigger keypress: "xdotool" dependency not installed`)
+        // The required lib is missing if `sanhelper.depsinstalled()` returns a non-empty string, so the value needs to be truthy to trigger the return
+        if (process.platform === "linux" && sanhelper.depsinstalled("keypressrs","media")) return log.write("WARN",`Unable to trigger keypress: "xdotool" dependency not installed`)
         if (!hotkeys?.length) return log.write("WARN",`No valid keys provided to trigger keypress/combo`)
 
         sanhelper.presskeys(hotkeys)
     },
     depsinstalled: (lib: "keypressrs" | "hdr" | "wmctrl",section: string): string => {
-        const missinglib = depsInstalled(lib)
+        const missinglib = depsInstalled(lib) // `depsInstalled()` returns the string(s) of missing deps (for logging purposes), or "" if installed
         
         if (process.platform === "linux" && missinglib) {
             if (!deps.has(lib)) throw new Error(`"${lib}" not found in "deps" map`)
@@ -1121,9 +1140,10 @@ export const sanhelper: SANHelper = {
         wintype.send("debuginfoupdated",debuginfo,true)
     },
     resetelemselector: async (menuelem: HTMLElement) => {
-        const { sanconfig: { defaulticons, get } } = await import("./config")
-        const config = get()
+        const { sanconfig } = await import("./config")
+        const config = sanconfig.get()
         const type = sanhelper.type
+        const { defaulticons } = sanconfig
 
         // Reset all element indexes to default value (listed in `sanconfig.defaulticons`) when switching presets
         ;["elems","sselems"].forEach(elemtype => config.set(`customisation.${type}.${elemtype}`,defaulticons.get(config.get(`customisation.${type}.preset`) as string)![elemtype]))
@@ -1293,45 +1313,113 @@ export const sanhelper: SANHelper = {
             log.write("ERROR",`Unable to query latest GitHub Release: ${err as Error}`)
         }
     },
-    verifylocalstorage: async (lsitems: ("linkgame" | "themeswitch" | "statwin" | "pinned")[]) => {
+    verifylocalstorage: async (id: "linkgame" | "themeswitch" | "statwin" | "pinned") => {
         const { log } = await import("./log")
+        const lsentry = localStorage.getItem(id)
+    
+        if (!lsentry) {
+            localStorage.setItem(id,JSON.stringify(id === "pinned" ? [] : {}))
+            return log.write("INFO",`"${id}" key in localStorage created successfully`)
+        }
 
-        lsitems.forEach(id => {
-            const lsitem = localStorage.getItem(id)
-        
-            if (!lsitem) return localStorage.setItem(id,JSON.stringify(id === "pinned" ? [] : {}))
-            if (id !== "themeswitch") return log.write("INFO",`"${id}" key in localStorage verified successfully`)
-        
-            const types = ["main","semi","rare","plat"] as NotifyType[]
-            let json: Record<string,ThemeSwitch>
+        // Patches existing "statwin" values if legacy string-based array method is currently in use (< V1.9.40)
+        if (id === "statwin") {
+            const lsentry: Record<string,StatsEntry[]> = JSON.parse(localStorage.getItem(id) || "{}")
             
-            try {
-                json = JSON.parse(lsitem)
-            } catch {
-                return log.write("WARN",`Failed to parse "${id}" key in localStorage - skipping...`)
-            }
-        
-            for (const appid in json) {
-                const themes = json[appid]?.themes
-                if (!themes) continue
-        
-                for (const type of types) {
-                    if (!(type in themes)) {
-                        themes[type] = 0
-                        log.write("INFO",`Patched missing "${id}.${appid}.themes.${type}" key in localStorage successfully`)
+            for (const [appid,statsentry] of Object.entries(lsentry)) {
+                if (statsentry.every(item => typeof item === "string")) {
+                    log.write("WARN",`AppID ${appid} uses legacy "${id}" array in localStorage - patching...`)
+            
+                    const statwinobj: Record<string,StatsEntry[]> = {
+                        ...lsentry,
+                        [appid]: statsentry.map(apiname => {
+                            return {
+                                apiname,
+                                unlocktimestamp: -1
+                            }
+                        })
                     }
+            
+                    localStorage.setItem(id,JSON.stringify(statwinobj,null,4))
+                    log.write("INFO",`"${id}" entry for AppID ${appid} patched successfully`)
                 }
             }
+        }
         
-            let err: Error | null = null
+        if (id !== "themeswitch") return log.write("INFO",`"${id}" key in localStorage verified successfully`)
+    
+        const types = ["main","semi","rare","plat"] as NotifyType[]
+        let json: Record<string,ThemeSwitch>
         
-            try {
-                localStorage.setItem(id,JSON.stringify(json))
-            } catch (e) {
-                err = e as Error
+        try {
+            json = JSON.parse(lsentry)
+        } catch {
+            return log.write("WARN",`Failed to parse "${id}" key in localStorage - skipping...`)
+        }
+    
+        for (const appid in json) {
+            const themes = json[appid]?.themes
+            if (!themes) continue
+    
+            for (const type of types) {
+                if (!(type in themes)) {
+                    themes[type] = 0
+                    log.write("INFO",`Patched missing "${id}.${appid}.themes.${type}" key in localStorage successfully`)
+                }
             }
-        
-            log.write(!err ? "INFO" : "WARN",!err ? `"${id}" key in localStorage verified successfully` : `Unable to verify "${id}" key in localStorage: ${err}`)
-        })
+        }
+    
+        let err: Error | null = null
+    
+        try {
+            localStorage.setItem(id,JSON.stringify(json))
+        } catch (e) {
+            err = e as Error
+        }
+    
+        log.write(!err ? "INFO" : "WARN",!err ? `"${id}" key in localStorage verified successfully` : `Unable to verify "${id}" key in localStorage: ${err}`)
+    },
+    settabindex: (btn: HTMLButtonElement,values: (string | null | undefined)[]) => btn.tabIndex = values.every(value => Boolean(value)) ? 0 : -1,
+    restorefrombackup: (sanbak: string,log: any) => {
+        const dir = sanhelper.appdata
+        const tempdir = `${sanhelper.appdata}_TEMP`
+
+        try {
+            const contents = fs.readdirSync(sanbak)
+            if (!contents.length) throw new Error(`"${sanbak}" is empty`)
+
+            fs.existsSync(tempdir) && fs.rmSync(tempdir,{ recursive: true, force: true })
+
+            if (fs.existsSync(dir)) {
+                fs.renameSync(dir,tempdir)
+                log.write("INFO",`"${dir}" renamed to "${tempdir}" successfully`)
+            }
+
+            try {
+                fs.renameSync(sanbak,dir)
+                log.write("INFO",`"${sanbak}" restored to "${dir}" successfully`)
+            } catch (err) {
+                // Attempt rollback to original `sanhelper.appdata` if rename fails
+                try {
+                    fs.renameSync(tempdir, dir)
+                    log.write("WARN",`Unable to restore from "${sanbak}". Rolled back to previous app state successfully`)
+                } catch (err) {
+                    log.write("ERROR",`Unable to rollback to previous app state: ${(err as Error).message}`)
+                }
+                
+                throw err
+            }
+        } catch (err) {
+            log.write("ERROR",`Unable to restore backup: ${(err as Error).message}`)
+        } finally {
+            if (fs.existsSync(tempdir)) {
+                try {
+                    fs.rmSync(tempdir,{ recursive: true, force: true })
+                    log.write("INFO",`Leftover restore directory "${tempdir}" detected and removed successfully`)
+                } catch (err) {
+                    log.write("WARN",`Unable to remove leftover restore directory "${tempdir}": ${(err as Error).message}`)
+                }
+            }
+        }
     }
 }

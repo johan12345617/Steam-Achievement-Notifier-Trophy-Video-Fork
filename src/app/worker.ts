@@ -6,6 +6,7 @@ import { sanhelper } from "./sanhelper"
 import { log } from "./log"
 import { sanconfig } from "./config"
 import { cachedata, checkunlockstatus, getachievementicon, cacheachievementicons, getlocalisedachievementinfo } from "./achievement"
+import { getGamePath } from "steam-game-path"
 import { getlogmap, getlastactions, executeaction, testraunlock, emu, rasupported, racached } from "./ra"
 
 declare global {
@@ -14,28 +15,90 @@ declare global {
         cachedata: any,
         globallocalised: any,
         testraunlock: Function,
-        racached: any
+        racached: any,
+        runninggametimers: any
     }
+}
+
+type LocalisedObj = {
+    name: string | null,
+    desc: string | null
 }
 
 log.init("WORKER")
 sanhelper.errorhandler(log)
 
-const resolvefilepath = (dir: string,file: string) => {
-    if (process.platform === "win32") {
-        const filepath = path.join(dir,file)
-        return fs.existsSync(filepath) ? filepath : null
-    }
+const globallocalised = new Map<string,LocalisedObj>()
+window.globallocalised = globallocalised
 
-    try {
-        for (const entry of fs.readdirSync(dir)) {
-            if (entry.toLowerCase() === file.toLowerCase()) return path.join(dir,entry)
+const worker = {
+    resolvefilepath: (dir: string,file: string) => {
+        if (process.platform === "win32") {
+            const filepath = path.join(dir,file)
+            return fs.existsSync(filepath) ? filepath : null
         }
-    } catch (err) {
-        log.write("ERROR",`Error reading contents of "${dir}" directory: ${err as Error}`)
-    }
 
-    return null
+        try {
+            for (const entry of fs.readdirSync(dir)) {
+                if (entry.toLowerCase() === file.toLowerCase()) return path.join(dir,entry)
+            }
+        } catch (err) {
+            log.write("ERROR",`Error reading contents of "${dir}" directory: ${err as Error}`)
+        }
+
+        return null
+    },
+    creategameinfo: (gamename: string,appid: number,exepath: string,pid: number,pollrate: number) => [
+        "Game process started:",
+        `gamename: ${gamename}`,
+        `appid: ${appid}`,
+        `exepath: ${exepath}`,
+        `pid: ${pid}`,
+        `pollrate: ${pollrate}ms`
+    ].join("\n- "),
+    localisedobj: async (steam3id: number,achievement: Achievement) => {
+        const config = sanconfig.get()
+        const steamlang = config.get("steamlang")
+        const maxlang = config.get("maxsteamlangretries")
+
+        const obj: LocalisedObj = {
+            name: null,
+            desc: null
+        }
+
+        for (const prop of (["name","description"] as const)) {
+            const key = prop === "name" ? "name" : "desc"
+            obj[key] = steamlang ? await getlocalisedachievementinfo(steam3id,achievement.apiname,prop,maxlang) : null
+        }
+
+        globallocalised.set(achievement.apiname,obj)
+        window.globallocalised = globallocalised
+
+        return obj
+    },
+    updatestats: async (workerinfo: WorkerInfo,achievements: Achievement[],launch?: boolean) => {
+        const { appid, gamename, steam3id } = workerinfo
+        if (!steam3id) return log.write("ERROR",`Invalid steam3id (${steam3id}) supplied to "updatestats()"`)
+        
+        const { steamlang } = sanconfig.get().store
+        
+        statsobj.appid = appid
+        statsobj.gamename = gamename || "???"
+        statsobj.achievements = !steamlang ? achievements : await Promise.all(
+            achievements.map(async achievement => {
+                const achievementcopy = { ...achievement }
+                const localised = await worker.localisedobj(steam3id,achievementcopy)
+
+                for (const key of Object.keys(localised)) {
+                    achievementcopy[key as "name" | "desc"] = localised[key as "name" | "desc"] || achievementcopy[key as "name" | "desc"]
+                }
+
+                return achievementcopy
+            })
+        )
+
+        ipcRenderer.send("stats",statsobj,launch)
+    }
 }
 
 const normalisepath = (value: string) => value.replace(/\\/g,"/").toLowerCase()
@@ -158,6 +221,28 @@ const shouldskiprecentrelease = (appid: number): boolean => {
     return true
 }
 
+const statsobj: StatsObj = {
+    appid: 0,
+    gamename: null
+}
+
+// `init` is only sent via "stats" IPC event when `statwin` spawns
+ipcRenderer.on("stats",(event,init?: boolean) => ipcRenderer.send("stats",statsobj,init))
+
+// Send to `listeners.ts` on spawn, in case `statwin` spawned between worker respawns and did not receive "stats" IPC event
+ipcRenderer.send("stats",statsobj)
+
+const workerinfo: WorkerInfo = {
+    appid: 0,
+    gamename: null,
+    steam3id: undefined,
+    achnum: undefined,
+    allunlocked: undefined,
+    ra: false
+}
+
+ipcRenderer.on("gametimer",(event,ra?: "ra") => ipcRenderer.send("gametimer",ra ? raworkerinfo : workerinfo))
+
 const startidle = () => {
     try {
         log.write("INFO","Idle loop started")
@@ -208,73 +293,6 @@ const startidle = () => {
     }
 }
 
-const statsobj: StatsObj = {
-    appid: 0,
-    gamename: null
-}
-
-ipcRenderer.on("stats",() => ipcRenderer.send("stats",statsobj))
-// Send to `listeners.ts` on spawn, in case `statwin` spawned between worker respawns and did not receive "stats" IPC event
-ipcRenderer.send("stats",statsobj)
-
-const creategameinfo = (gamename: string,appid: number,exepath: string,pid: number,pollrate: number) => [
-    "Game process started:",
-    `gamename: ${gamename}`,
-    `appid: ${appid}`,
-    `exepath: ${exepath}`,
-    `pid: ${pid}`,
-    `pollrate: ${pollrate}ms`
-].join("\n- ")
-
-type LocalisedObj = {
-    name: string | null,
-    desc: string | null
-}
-
-const globallocalised = new Map<string,LocalisedObj>()
-window.globallocalised = globallocalised
-
-const localisedobj = async (steam3id: number,achievement: Achievement) => {
-    const config = sanconfig.get()
-    const steamlang = config.get("steamlang")
-    const maxlang = config.get("maxsteamlangretries")
-
-    const obj: LocalisedObj = {
-        name: null,
-        desc: null
-    }
-
-    for (const prop of (["name","description"] as const)) {
-        const key = prop === "name" ? "name" : "desc"
-        obj[key] = steamlang ? await getlocalisedachievementinfo(steam3id,achievement.apiname,prop,maxlang) : null
-    }
-
-    globallocalised.set(achievement.apiname,obj)
-    window.globallocalised = globallocalised
-
-    return obj
-}
-
-const updatestats = async (appid: number,gamename: string,cache: Achievement[],steam3id: number) => {
-    const { steamlang } = sanconfig.get().store
-    statsobj.appid = appid
-    statsobj.gamename = gamename as string
-    statsobj.achievements = !steamlang ? cache : await Promise.all(
-        cache.map(async achievement => {
-            const achievementcopy = { ...achievement }
-            const localised = await localisedobj(steam3id,achievementcopy)
-
-            for (const key of Object.keys(localised)) {
-                achievementcopy[key as "name" | "desc"] = localised[key as "name" | "desc"] || achievementcopy[key as "name" | "desc"]
-            }
-
-            return achievementcopy
-        })
-    )
-
-    ipcRenderer.send("stats",statsobj)
-}
-
 const startsan = async (appinfo: AppInfo) => {
     try {
         globallocalised.clear()
@@ -290,7 +308,7 @@ const startsan = async (appinfo: AppInfo) => {
             const icon = await getachievementicon(client,achievement)
             ipcRenderer.send(`iconpath_${achievement.apiname}`,icon)
         })
-    
+
         const rustlog = client.log.initLogger(path.join(sanhelper.appdata,"logs"))
         log.write("INFO",rustlog)
     
@@ -299,12 +317,12 @@ const startsan = async (appinfo: AppInfo) => {
         const username = client.localplayer.getName()
         const num = client.achievement.getNumAchievements()
     
-        const getprocessinfo = (): ProcessInfo[] => {
+        const getprocessinfo = (sgpexe?: string): ProcessInfo[] => {
             const processinfo: ProcessInfo[] = []
-            const linkedgame: string | undefined = Object.entries(JSON.parse(localStorage.getItem("linkgame")!)).find(item => parseInt(item[0]) === appid)?.[1] as string
+            const linkedgame: string | undefined = sgpexe || Object.entries(JSON.parse(localStorage.getItem("linkgame")!)).find(item => parseInt(item[0]) === appid)?.[1] as string
 
-            linkedgame && log.write("INFO",`"Linked Game" executable found for AppID "${appid}": "${linkedgame}"`)
-    
+            linkedgame && log.write("INFO",`${sgpexe ? `"steam-game-path"` : "Linked Game"} executable found for AppID "${appid}": "${linkedgame}"`)
+
             client.processes.getGameProcesses(appid,linkedgame ? path.basename(linkedgame) : null).forEach(({ exe,pid }: ProcessInfo) => {
                 processinfo.push({
                     pid,
@@ -336,17 +354,28 @@ const startsan = async (appinfo: AppInfo) => {
         })
     
         const initgameloop = () => {
-            processes.forEach(({ pid,exe }: ProcessInfo) => log.write("INFO",creategameinfo(gamename || "???",appid,exe,pid,pollrate || 250)))
+            processes.forEach(({ pid,exe }: ProcessInfo) => log.write("INFO",worker.creategameinfo(gamename || "???",appid,exe,pid,pollrate || 250)))
+
+            workerinfo.appid = appid
+            workerinfo.steam3id = steam3id
+            workerinfo.achnum = num
+            workerinfo.gamename = gamename
+
+            ipcRenderer.send("appid",workerinfo)
             
-            ipcRenderer.send("appid",appid,gamename,steam3id,num)
             ipcRenderer.on("steam3id",(event,skipss?: boolean) => ipcRenderer.send("steam3id",steam3id,skipss))
             ipcRenderer.send("workeractive",true)
         
             const apinames: string[] = num ? client.achievement.getAchievementNames() : []
             let cache: Achievement[] = num ? cachedata(client,apinames) : []
 
-            ;(async () => await updatestats(appid,gamename || "???",cache,steam3id))()
-            ipcRenderer.on("steamlang",async () => await updatestats(appid,gamename || "???",cache,steam3id))
+            // ;(async () => await worker.updatestats(appid,gamename || "???",cache,steam3id,true))()
+            // ipcRenderer.on("steamlang",async () => await worker.updatestats(appid,gamename || "???",cache,steam3id))
+            ;(async () => await worker.updatestats(workerinfo,cache,true))()
+            ipcRenderer.on("steamlang",async () => await worker.updatestats(workerinfo,cache,true))
+
+            workerinfo.allunlocked = cache.every(ach => ach.unlocked)
+            ipcRenderer.emit("gametimer")
     
             !num && log.write("INFO",`"${gamename}" has no achievements`)
             
@@ -363,6 +392,13 @@ const startsan = async (appinfo: AppInfo) => {
                     statsobj.achievements = undefined
 
                     ipcRenderer.send("stats",statsobj)
+                    
+                    workerinfo.appid = 0
+                    workerinfo.steam3id = 0
+                    workerinfo.achnum = undefined
+                    workerinfo.gamename = undefined
+
+                    ipcRenderer.emit("gametimer")
                 }
     
                 const { debug } = sanconfig.get().store
@@ -396,6 +432,9 @@ const startsan = async (appinfo: AppInfo) => {
                 let hasshown = false
         
                 unlocked.forEach(async (achievement: Achievement) => {
+                    const unlocktime = Date.now()
+                    achievement.unlocktimestamp = achievement.unlocked ? unlocktime : -1
+
                     log.write("INFO",`Achievement unlocked: ${JSON.stringify(achievement)}`)
         
                     const config = sanconfig.get()
@@ -406,7 +445,7 @@ const startsan = async (appinfo: AppInfo) => {
         
                     const achievementicon = async (): Promise<string | null> => {
                         let icon: string | null = null
-                        const cachedicon = !noiconcache ? resolvefilepath(sanhelper.temp,`${achievement.apiname}.jpg`) : null
+                        const cachedicon = !noiconcache ? worker.resolvefilepath(sanhelper.temp,`${achievement.apiname}.jpg`) : null
         
                         try {
                             icon = cachedicon || await getachievementicon(client,achievement)
@@ -426,7 +465,7 @@ const startsan = async (appinfo: AppInfo) => {
         
                     const gameiconpath = path.join(sanhelper.temp,"gameicon.png")
                     const gameicon = (config.get(`customisation.${type}.usegameicon`) && fs.existsSync(gameiconpath)) ? gameiconpath : null
-                    const localised = await localisedobj(steam3id,achievement)
+                    const localised = await worker.localisedobj(steam3id,achievement)
                     const themeswitch: [key: string,ThemeSwitch] | undefined = Object.entries(JSON.parse(localStorage.getItem("themeswitch")!)).find(item => parseInt(item[0]) === appid) as [key: string,ThemeSwitch] | undefined
                     const customisation = config.get(`customisation.${type}${themeswitch ? `.usertheme.${themeswitch[1].themes[type]}.customisation` : ""}`) as Customisation
                     
@@ -451,7 +490,7 @@ const startsan = async (appinfo: AppInfo) => {
                         percent: achievement.percent,
                         icon: await achievementicon() || sanhelper.setfilepath("img","sanlogosquare.svg"),
                         gameicon: gameicon || sanhelper.setfilepath("img","sanlogosquare.svg"),
-                        unlocktime: new Date(Date.now()).toISOString()
+                        unlocktime: new Date(unlocktime).toISOString()
                     }
 
                     ;["notify","sendwebhook"].forEach(cmd => ipcRenderer.send(cmd,notify,undefined,themeswitch?.[1].src))
@@ -460,7 +499,7 @@ const startsan = async (appinfo: AppInfo) => {
                         statsobj.achievements = !config.get("steamlang") ? live : await Promise.all(
                             live.map(async achievement => {
                                 const achievementcopy = { ...achievement }
-                                const localised = globallocalised.get(achievementcopy.apiname) || await localisedobj(steam3id,achievementcopy)
+                                const localised = globallocalised.get(achievementcopy.apiname) || await worker.localisedobj(steam3id,achievementcopy)
         
                                 for (const key of Object.keys(localised)) {
                                     achievementcopy[key as "name" | "desc"] = localised[key as "name" | "desc"] || achievementcopy[key as "name" | "desc"]
@@ -469,11 +508,13 @@ const startsan = async (appinfo: AppInfo) => {
                                 return achievementcopy
                             })
                         )
-
-                        ipcRenderer.send("statsunlock",achievement,statsobj)
                     })()
+
+                    const allunlocked = live.every(ach => ach.unlocked)
+                    workerinfo.allunlocked = allunlocked
+                    ipcRenderer.emit("gametimer")
         
-                    if (live.every(ach => ach.unlocked) && !hasshown) {
+                    if (allunlocked && !hasshown) {
                         const { plat: platicon } = (config.get(`customisation.plat${themeswitch ? `.usertheme.${themeswitch[1].themes.plat}.customisation` : ""}`) as Customisation).customicons as CustomIcon
                         const customisation = config.get(`customisation.plat${themeswitch ? `.usertheme.${themeswitch[1].themes.plat}.customisation` : ""}`) as Customisation
         
@@ -497,6 +538,7 @@ const startsan = async (appinfo: AppInfo) => {
                         }
         
                         ;["notify","sendwebhook"].forEach(cmd => ipcRenderer.send(cmd,platnotify,undefined,themeswitch?.[1].src))
+
                         hasshown = true
                     }
                 })
@@ -520,6 +562,18 @@ const startsan = async (appinfo: AppInfo) => {
                     setTimeout(getrunninggameprocesses,1000)
                     return
                 } else {
+                    // If no processes are found by automatic process tracking or by manually adding a Linked Game, use "steam-game-path" as a last resort fallback
+                    log.write("WARN",`No matching game processes found via automatic process tracking or Linked Games. Checking for executable using "steam-game-path"...`)
+    
+                    const exes = async () => (await (getGamePath(appid,true)?.game)?.executable as any[]).filter(({ executable }: any) => path.extname(executable) === (process.platform === "win32" ? ".exe" : ""))    
+    
+                    for (const exe of await exes()) {
+                        await (async () => {
+                            const processinfo: ProcessInfo[] = getprocessinfo(exe.executable)
+                            processinfo.length && processes.push(...processinfo)
+                        })()
+                    }
+
                     // If an EXE is still not found, push an invalid process. The user will then need to manually release the game
                     if (!processes.length) {
                         log.write("WARN",`Unable to find running game process for "${gamename}": Game will not be able to quit automatically!`)
@@ -547,6 +601,7 @@ const startsan = async (appinfo: AppInfo) => {
 
 startidle()
 
+let gameid = 0
 let ratimer: NodeJS.Timeout | null = null
 const logactions = new Set<string>()
 const lastlog: { [key: string]: string } = {}
@@ -561,6 +616,20 @@ for (const emu of rasupported) {
 // Converts `LogAction` to string and stores in `logactions` Set. This de-dupes by ensuring only unique new actions are stored
 // Needs to be a string - Sets compare by reference (not by object or key/value), so comparing two `LogAction` objects directly will not work here
 const getactionstr = (action: LogAction) => `${action.key}:${action.file}:${action.action}:${action.value}:${action.mode}`
+
+const rastatsobj: StatsObj = {
+    appid: 0,
+    gamename: null,
+    ra: true
+}
+
+const raworkerinfo: WorkerInfo = {
+    appid: 0,
+    gamename: null,
+    achnum: undefined,
+    allunlocked: undefined,
+    ra: true
+}
 
 const startra = () => {
     if (ratimer) return log.write("WARN",`"ratimer" already active`)
@@ -592,6 +661,46 @@ const startra = () => {
                 type !== "CONSOLE" ? log.write(type as "INFO" | "ERROR", msg) : console.log(msg)
 
                 lastlog[keyname] = msg
+
+                const { action, value: appid, mode } = newaction
+                if (appid === null) continue
+
+                if (action !== "achievement") gameid = action === "start" ? appid : 0
+                const live = action !== "stop"
+
+                const {
+                    gamename,
+                    achievements,
+                    achnum,
+                    allunlocked
+                } = {
+                    gamename: live ? racached[0].gamename : null,
+                    achievements: live ? racached as any : undefined,
+                    achnum: live ? racached.length : undefined,
+                    allunlocked: live ? (racached.length ? racached.every(ach => ach.unlocked) : false) : undefined
+                }
+
+                if (achievements) {
+                    const unlocktime = Date.now()
+
+                    for (const achievement of achievements) {
+                        achievement.unlocktimestamp = achievement.unlocked ? unlocktime : -1
+                    }
+                }
+
+                rastatsobj.appid = gameid
+                rastatsobj.gamename = gamename
+                rastatsobj.achievements = achievements
+                rastatsobj.mode = mode
+
+                ipcRenderer.send("stats",rastatsobj,action === "start")
+                
+                raworkerinfo.appid = gameid
+                raworkerinfo.gamename = gamename
+                raworkerinfo.achnum = achnum
+                raworkerinfo.allunlocked = allunlocked
+
+                ipcRenderer.emit("gametimer",null,"ra")
             }
         }
     },1000)
@@ -610,3 +719,4 @@ ipcRenderer.on("rastop",() => {
 })
 
 ipcRenderer.on("emu",() => ipcRenderer.send("emu",emu))
+ipcRenderer.on("rastats",(event,init: boolean) => ipcRenderer.send("stats",rastatsobj,init))

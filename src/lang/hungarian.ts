@@ -192,6 +192,7 @@ export const translations = {
             "Köszönjük, hogy tesztelted! 💜"
         ],
         betaghreleases: "Kiadások",
+        checkapplog: "Kérjük, ellenőrizze az alkalmazás naplóját a részletekért."
     },
     app: {
         content: {
@@ -310,6 +311,20 @@ export const translations = {
                 max: "Max",
                 custom: "Egyedi...",
                 statwinshortcut: "Átfedés gyorsbillentyű",
+                gametimerwin: "Játék Befejezési Időzítő",
+                gametimerwinshortcut: "Időzítő Gyorsbillentyű",
+                gametimerwinaot: "Mindig Felül",
+                resetgametimer: "Időzítő Visszaállítása",
+                resetgametimersub: `
+                    <div class="wrapper resetsub">
+                        <span>Biztos vagy benne?</span>
+                        <span>Ez visszaállítja az aktuális játék Játék Befejezési Időzítőjét 00:00:00.000 értékre.</span>
+                        <span class="noundo">🛑 Ez a művelet nem vonható vissza!</span>
+                    </div>
+                `,
+                resetgametimerfailed: "Nem sikerült visszaállítani az időzítőt.",
+                resetgametimercomplete: "Az AppID $appid már teljesítve lett.",
+                extwinnotify: "Képernyőértesítés Megjelenítése"
             }
         },
         accessibility: {
@@ -320,7 +335,8 @@ export const translations = {
                 nvda: "NVDA támogatás engedélyezése",
                 tooltips: "Eszközleírások megjelenítése",
                 showsystrayopts: "Rendszer tálca opciók megjelenítése",
-                releaseshortcut: "Játék felszabadítása billentyűparancs"
+                releaseshortcut: "Játék felszabadítása billentyűparancs",
+                noshortcuts: "Billentyűparancsok Letiltása"
             }
         },
         advanced: {
@@ -337,7 +353,23 @@ export const translations = {
                 lognum: "Korábbi naplófájlok", 
                 audiocooldown: "Hang-várakozási idő",
                 usecustomfiles: "Egyedi alkalmazásfájlok használata",
-                showcustomfiles: "Egyedi alkalmazásfájlok megjelenítése"
+                showcustomfiles: "Egyedi alkalmazásfájlok megjelenítése",
+                appdatadir: "AppData mappa megjelenítése",
+                backup: "Biztonsági mentés",
+                backuppath: "Mentési útvonal",
+                backupsub: [
+                    "Készítsen biztonsági másolatot az alkalmazás AppData mappájának tartalmáról egy kiválasztott helyre",
+                    "Ez a biztonsági mentés a jelenlegi állapot visszaállítási pontjaként szolgál az alkalmazás számára",
+                    `Bármely korábbi biztonsági mentés visszaállítása a <span class="hl">Beállítások</span> > <span class="hl">Speciális</span> > <span class="hl">Visszaállítás</span> menüpontból`
+                ],
+                backupfailed: "A biztonsági mentés létrehozása sikertelen.",
+                restore: "Visszaállítás",
+                restoresub: [
+                    "Állítsa vissza az alkalmazás AppData mappájának tartalmát egy korábbi biztonsági mentésből",
+                    `Válasszon egy <span class="hl">.sanbak</span> biztonsági mentési fájlt a visszaállításhoz. Ez a fájl megmarad a visszaállítás után`,
+                    "❗ A megerősítés után az alkalmazás újraindul a kiválasztott biztonsági mentési fájl visszaállításához"
+                ],
+                restorefailed: "A biztonsági mentés visszaállítása sikertelen."
             }
         },    
         ra: {
@@ -851,7 +883,16 @@ export const translations = {
         ssext: "Állítsd be a képernyőképek fájlformátumát, amelyeket a Képernyőkép értesítési átfedéssel opció hoz létre",
         notify1line: `Korlátozza az összes értesítésben megjelenített szövegsorok számát 1-re<br><br><span class="ttdesc">Azok a szövegek, amelyek nem férnek el egy sorban, "..." jellel lesznek levágva</span>`,
         copytheme: "A kiválasztott téma másolása egy másik értesítési típushoz",
-        ssaddtosteam: "A generált média automatikus hozzáadása az aktuális játék Felvételeihez és Képernyőképeihez a Steamen"
+        ssaddtosteam: "A generált média automatikus hozzáadása az aktuális játék Felvételeihez és Képernyőképeihez a Steamen",
+        appdatadir: "Nyissa meg az alkalmazás AppData mappájának helyét",
+        backup: "Készítsen biztonsági másolatot az alkalmazás AppData mappájának tartalmáról egy kiválasztott helyre, amely a jelenlegi állapot visszaállítási pontjaként szolgál",
+        restore: "Állítsa vissza az alkalmazás AppData mappájának tartalmát egy korábbi biztonsági mentésből",
+        gametimerwin: "Egy képernyőn megjelenő időzítő megjelenítése, amely mutatja, mennyi idő kellett az aktuális játék összes achievementjének feloldásához",
+        gametimerwinshortcut: "A Játék Befejezési Időzítő be- vagy kikapcsolása a megadott billentyűparancs használatával",
+        gametimerwinaot: `A Játék Befejezési Időzítő beállítása "Mindig Felül" módba, amely lehetővé teszi, hogy az ablak a játék ablaka felett jelenjen meg<br><br><span class="ttdesc">Ha engedélyezve van, a Játék Befejezési Időzítő többé nem fogja érzékelni a felhasználói interakciókat, például a "click" eseményeket. Az ablakkal való interakció újbóli engedélyezéséhez ezt az opciót ki kell kapcsolni</span>`,
+        resetgametimer: "Az aktuális játék Játék Befejezési Időzítőjének visszaállítása",
+        noshortcuts: `Letiltja az alkalmazáson belüli összes billentyűparancsot<br><br><span class="ttdesc">Ha engedélyezve van, <u>az alkalmazáson belüli összes billentyűparancs többé nem fog működni</u>. A billentyűparancsokhoz kapcsolódó összes opció is el lesz rejtve</span>`,
+        extwinnotify: "Az összes képernyőértesítés láthatóságának váltása Stream Notifications használata közben"
     },
     update: {
         updateavailable: "Frissítés elérhető",

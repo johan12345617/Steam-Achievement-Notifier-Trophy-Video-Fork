@@ -192,6 +192,7 @@ export const translations = {
             "Cảm ơn bạn đã thử nghiệm! 💜"
         ],
         betaghreleases: "Phiên bản phát hành",
+        checkapplog: "Vui lòng kiểm tra Nhật ký Ứng dụng để biết chi tiết."
     },
     app: {
         content: {
@@ -310,6 +311,20 @@ export const translations = {
                 max: "Tối đa",
                 custom: "Tùy chỉnh...",
                 statwinshortcut: "Phím tắt Overlay",
+                gametimerwin: "Bộ đếm thời gian hoàn thành trò chơi",
+                gametimerwinshortcut: "Phím tắt bộ đếm thời gian",
+                gametimerwinaot: "Luôn hiển thị trên cùng",
+                resetgametimer: "Đặt lại bộ đếm thời gian",
+                resetgametimersub: `
+                    <div class="wrapper resetsub">
+                        <span>Bạn có chắc chắn không?</span>
+                        <span>Thao tác này sẽ đặt lại Bộ đếm thời gian hoàn thành trò chơi của trò chơi hiện tại về 00:00:00.000.</span>
+                        <span class="noundo">🛑 Không thể hoàn tác thao tác này!</span>
+                    </div>
+                `,
+                resetgametimerfailed: "Không thể đặt lại bộ đếm thời gian.",
+                resetgametimercomplete: "AppID $appid đã được hoàn thành.",
+                extwinnotify: "Hiển thị thông báo trên màn hình"
             }
         },
         accessibility: {
@@ -320,7 +335,8 @@ export const translations = {
                 nvda: "Bật hỗ trợ NVDA",
                 tooltips: "Hiển thị Chú giải Công cụ",
                 showsystrayopts: "Hiện tùy chọn khay hệ thống",
-                releaseshortcut: "Phím tắt phát hành trò chơi"
+                releaseshortcut: "Phím tắt phát hành trò chơi",
+                noshortcuts: "Tắt phím tắt bàn phím"
             }
         },
         advanced: {
@@ -337,7 +353,23 @@ export const translations = {
                 lognum: "Tệp nhật ký trước đó", 
                 audiocooldown: "Thời gian chờ âm thanh",
                 usecustomfiles: "Sử dụng tập tin ứng dụng tùy chỉnh",
-                showcustomfiles: "Hiển thị tập tin ứng dụng tùy chỉnh"
+                showcustomfiles: "Hiển thị tập tin ứng dụng tùy chỉnh",
+                appdatadir: "Hiển thị Thư mục AppData",
+                backup: "Sao lưu",
+                backuppath: "Đường dẫn sao lưu",
+                backupsub: [
+                    "Sao lưu nội dung thư mục AppData của ứng dụng đến vị trí đã chọn",
+                    "Bản sao lưu này sẽ hoạt động như điểm khôi phục cho trạng thái hiện tại của ứng dụng",
+                    `Khôi phục bất kỳ bản sao lưu trước đó nào thông qua <span class="hl">Cài đặt</span> > <span class="hl">Nâng cao</span> > <span class="hl">Khôi phục</span>`
+                ],
+                backupfailed: "Không thể tạo bản sao lưu.",
+                restore: "Khôi phục",
+                restoresub: [
+                    "Khôi phục nội dung thư mục AppData của ứng dụng từ bản sao lưu trước đó",
+                    `Chọn một tệp sao lưu <span class="hl">.sanbak</span> để khôi phục. Tệp này sẽ được giữ nguyên sau khi khôi phục hoàn tất`,
+                    "❗ Sau khi xác nhận, ứng dụng sẽ khởi động lại để khôi phục tệp sao lưu đã chọn"
+                ],
+                restorefailed: "Không thể khôi phục bản sao lưu."
             }
         },
         ra: {
@@ -851,7 +883,16 @@ export const translations = {
         ssext: "Đặt định dạng tệp của ảnh chụp màn hình được tạo thông qua tùy chọn Screenshot with Notification Overlay",
         notify1line: `Giới hạn số dòng văn bản hiển thị trong tất cả thông báo xuống 1<br><br><span class="ttdesc">Các chuỗi văn bản không thể vừa trong một dòng sẽ bị cắt ngắn bằng "..."</span>`,
         copytheme: "Sao chép giao diện đã chọn sang loại thông báo khác",
-        ssaddtosteam: "Tự động thêm phương tiện đã tạo vào Bản ghi và Ảnh chụp màn hình của trò chơi hiện tại trong Steam"
+        ssaddtosteam: "Tự động thêm phương tiện đã tạo vào Bản ghi và Ảnh chụp màn hình của trò chơi hiện tại trong Steam",
+        appdatadir: "Mở vị trí thư mục AppData của ứng dụng",
+        backup: "Sao lưu nội dung thư mục AppData của ứng dụng đến vị trí đã chọn, sẽ hoạt động như điểm khôi phục cho trạng thái hiện tại của ứng dụng",
+        restore: "Khôi phục nội dung thư mục AppData của ứng dụng từ bản sao lưu trước đó",
+        gametimerwin: "Hiển thị bộ đếm thời gian trên màn hình cho biết khoảng thời gian đã dùng để mở khóa tất cả thành tựu của trò chơi hiện tại",
+        gametimerwinshortcut: "Bật/tắt Bộ đếm thời gian hoàn thành trò chơi bằng phím tắt bàn phím đã chỉ định",
+        gametimerwinaot: `Đặt Bộ đếm thời gian hoàn thành trò chơi sang chế độ "Luôn hiển thị trên cùng", cho phép cửa sổ hiển thị phía trên cửa sổ trò chơi<br><br><span class="ttdesc">Khi được bật, Bộ đếm thời gian hoàn thành trò chơi sẽ không còn ghi nhận các tương tác của người dùng, chẳng hạn như sự kiện "click". Để bật lại khả năng tương tác với cửa sổ, tùy chọn này phải được tắt</span>`,
+        resetgametimer: "Đặt lại Bộ đếm thời gian hoàn thành trò chơi cho trò chơi hiện tại",
+        noshortcuts: `Tắt tất cả phím tắt bàn phím trong ứng dụng<br><br><span class="ttdesc">Khi được bật, <u>tất cả phím tắt trong ứng dụng sẽ không còn hoạt động</u>. Tất cả các tùy chọn liên quan đến phím tắt bàn phím cũng sẽ bị ẩn</span>`,
+        extwinnotify: "Bật/tắt hiển thị tất cả thông báo trên màn hình khi sử dụng Stream Notifications"
     },
     update: {
         updateavailable: "Có bản cập nhật mới",

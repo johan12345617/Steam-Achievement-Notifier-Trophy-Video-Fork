@@ -99,6 +99,7 @@ export const language = {
             }
             
             const customiserelem = document.querySelector(".wrapper#customiser")
+            
             if (customiserelem) {
                 const customisercontent = document.getElementById("customisercontent")!
                 const customisertitles = Array.from(customisercontent.querySelectorAll(`#customiseropts > .cont > .title`)).map(title => title.id)!
