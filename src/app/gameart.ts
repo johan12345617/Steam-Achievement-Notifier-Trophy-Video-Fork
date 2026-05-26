@@ -9,10 +9,10 @@ export const gameart = {
         const iconpng = path.join(tempdir,"gameicon.png")
         if (fs.existsSync(iconpng)) return iconpng
 
-        const { parse } = await import("icojs")
+        const { decodeIco } = await import("icojs")
         
         const buffer = fs.readFileSync(file)
-        const layers = await parse(buffer,"image/png")
+        const layers = await decodeIco(buffer,"image/png")
         const hq = layers.reduce((max,current) => (current.width > max.width) ? current : max)
     
         try {
