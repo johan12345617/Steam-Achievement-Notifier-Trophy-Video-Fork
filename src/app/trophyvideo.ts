@@ -4,6 +4,7 @@ import path from "path"
 import { spawn, spawnSync } from "child_process"
 import OBSWebSocket, { EventSubscription } from "obs-websocket-js"
 import { log } from "./log"
+import { savupload } from "./savupload"
 
 interface ObsWebSocketConfig {
     auth_required?: boolean
@@ -398,6 +399,7 @@ const stopManagedReplayBuffer = async () => {
 }
 
 const stopManagedObs = async () => {
+    log.write("INFO","Stopping managed OBS lifecycle")
     await captureQueue.catch(() => undefined)
     await stopManagedReplayBuffer()
     await stopLaunchedObs()
@@ -413,19 +415,25 @@ const clearShutdownTimer = () => {
 }
 
 const refreshLifecycle = async () => {
-    clearShutdownTimer()
-
     if (trackingActive || gameDetected) {
+        clearShutdownTimer()
+        log.write("INFO",`Keeping OBS ready for active lifecycle (tracking: ${trackingActive}, game: ${gameDetected})`)
         await ensureReplayBufferReady()
         return
     }
 
+    if (shutdownTimer)
+        return
+
+    log.write("INFO",`Scheduling OBS shutdown in ${Math.round(obsShutdownGraceMs / 1000)}s`)
     shutdownTimer = setTimeout(() => {
         shutdownTimer = null
         lifecycleQueue = lifecycleQueue
             .then(async () => {
-                if (trackingActive || gameDetected)
+                if (trackingActive || gameDetected) {
+                    log.write("INFO",`OBS shutdown cancelled by active lifecycle (tracking: ${trackingActive}, game: ${gameDetected})`)
                     return
+                }
 
                 await stopManagedObs()
             })
@@ -482,7 +490,7 @@ const ensureUniquePath = (targetPath: string): string => {
     }
 }
 
-const moveReplayFile = async (sourcePath: string,targetPath: string) => {
+const moveReplayFile = async (sourcePath: string,targetPath: string): Promise<string> => {
     const finalTargetPath = ensureUniquePath(targetPath)
     fs.mkdirSync(path.dirname(finalTargetPath),{ recursive: true })
 
@@ -492,7 +500,7 @@ const moveReplayFile = async (sourcePath: string,targetPath: string) => {
         try {
             fs.renameSync(sourcePath,finalTargetPath)
             log.write("INFO",`Moved trophy replay to "${finalTargetPath}"`)
-            return
+            return finalTargetPath
         } catch (err) {
             lastErr = err
             await sleep(400 * attempt)
@@ -503,7 +511,7 @@ const moveReplayFile = async (sourcePath: string,targetPath: string) => {
         fs.copyFileSync(sourcePath,finalTargetPath)
         fs.rmSync(sourcePath,{ force: true })
         log.write("INFO",`Copied trophy replay to "${finalTargetPath}" after rename retries failed`)
-        return
+        return finalTargetPath
     } catch (err) {
         lastErr = err
     }
@@ -528,16 +536,13 @@ const targetReplayPath = (notify: Notify,sourcePath: string): string => {
 }
 
 const shouldCapture = (notify: Notify): boolean => {
-    if (notify.ra)
-        return false
-
     if (notify.istestnotification)
         return ["main","semi","rare","plat"].includes(notify.type)
 
     return !!notify.appid
         && !!notify.gamename
         && !!notify.englishname
-        && ["main","semi","rare"].includes(notify.type)
+        && ["main","semi","rare","plat"].includes(notify.type)
 }
 
 const captureReplay = async (notify: Notify) => {
@@ -563,13 +568,18 @@ const captureReplay = async (notify: Notify) => {
     if (!fs.existsSync(replayPath))
         throw new Error(`OBS reported replay path "${replayPath}", but the file does not exist`)
 
-    await moveReplayFile(replayPath,targetReplayPath(notify,replayPath))
+    const finalReplayPath = await moveReplayFile(replayPath,targetReplayPath(notify,replayPath))
+    savupload.upload(notify,"video",finalReplayPath)
 }
 
 export const trophyvideo = {
     prewarm: () => undefined,
     setTrackingActive: async (value: boolean) => {
+        if (trackingActive === value)
+            return
+
         trackingActive = value
+        log.write("INFO",`OBS tracking lifecycle set to ${value}`)
 
         lifecycleQueue = lifecycleQueue
             .then(async () => await refreshLifecycle())
@@ -578,7 +588,11 @@ export const trophyvideo = {
         await lifecycleQueue
     },
     setGameDetected: async (value: boolean) => {
+        if (gameDetected === value)
+            return
+
         gameDetected = value
+        log.write("INFO",`OBS game-detection lifecycle set to ${value}`)
 
         lifecycleQueue = lifecycleQueue
             .then(async () => await refreshLifecycle())

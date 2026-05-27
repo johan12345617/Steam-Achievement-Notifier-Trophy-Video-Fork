@@ -4,6 +4,7 @@ import fs from "fs"
 import { sanconfig } from "./config"
 import { log } from "./log"
 import { __root, sanhelper } from "./sanhelper"
+import { savupload } from "./savupload"
 
 // Used in `dialog.ts`/`renderer.ts` to close "sswin", and in `renderer.ts` to spawn the Preview window
 ipcMain.on("sswin",(event,notify?: Notify,src?: number) => {
@@ -296,6 +297,7 @@ export const screenshot = {
                     const ssimg = screenshot.sspathinfo(config,type,notify,info,imgpath)
                     fs.copyFileSync(srcpath as string,ssimg)
                     log.write("INFO",`"${srcpath}" copied to "${ssimg}" successfully`)
+                    savupload.upload(notify,"image",ssimg)
                     
                     // Add generated media to Steam's Recordings and Screenshots menu
                     screenshot.addtosteam(!notify.istestnotification && config.get("ssaddtosteam"),ssimg,nativeImage.createFromPath(ssimg))
@@ -397,6 +399,7 @@ export const screenshot = {
                         fs.writeFileSync(ssimg,img.toPNG())
 
                         log.write("INFO",`${sswintype.replace(" Window","")} written to "${ssimg}" successfully`)
+                        savupload.upload(notify,"image",ssimg)
 
                         // Add generated media to Steam's Recordings and Screenshots menu
                         screenshot.addtosteam(!notify.istestnotification && config.get("ssaddtosteam"),ssimg,img) // Send the `<filename>_STEAM.<png|jpg>` copy to Steam

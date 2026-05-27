@@ -362,7 +362,7 @@ export const listeners = {
             appid = id
             win.webContents.send("appid",{ ...workerinfo, appid })
             updatetray(tray!,gamename,achnum)
-            void trophyvideo.setGameDetected(!!appid)
+            void trophyvideo.setGameDetected(!!(appid || gameid))
         })
 
         ipcMain.on("runningappid",event => event.reply("runningappid",appid || 0))
@@ -1777,6 +1777,8 @@ export const listeners = {
         ipcMain.on("ragame",async (event,status: RAStatus,ragame?: RAGame) => {
             gameid = ragame?.gameid || 0
             win.webContents.send("ragame",status,ragame)
+            if (!appid && !gameid) await trophyvideo.setTrackingActive(false)
+            await trophyvideo.setGameDetected(!!(appid || gameid))
         })
         
         ipcMain.on("emu",(event,_emu: string | null) => emu = _emu) // Updates global `emu` variable with name of current emulator (or `null` if nothing is running)
