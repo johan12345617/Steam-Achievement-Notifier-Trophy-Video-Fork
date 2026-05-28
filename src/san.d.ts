@@ -361,6 +361,8 @@ declare interface Notify extends Achievement {
     englishname?: string,
     istestnotification?: boolean,
     ra?: boolean,
+    raAchievementId?: number,
+    raUser?: string,
     emu?: string | null,
     libhero?: string,
     unlocktime?: string

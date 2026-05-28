@@ -273,6 +273,8 @@ const ranotify = async (gameid: number,achid: number,mode: "hard" | "soft") => {
         type,
         customisation: customisation[type],
         apiname: achievement.badgeName,
+        raAchievementId: achievement.id,
+        raUser: config.get("rauser"),
         englishname: achievement.title,
         name: achievement.title,
         desc: achievement.description,
