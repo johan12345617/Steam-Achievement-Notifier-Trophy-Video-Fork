@@ -214,20 +214,16 @@ body[beta] .logo::before {
     --icon: url("../../icon/game.svg");
 }
 
-.rect#game > button#link {
-    --icon: url("../../icon/link.svg");
-    content: "";
-    grid-column: 1 / -1;
-    justify-self: end;
-    margin-right: 1rem;
-    opacity: 0.5;
-    transition: opacity var(--transition);
-    pointer-events: auto;
-    cursor: pointer;
+.rect#game[releasing] {
+    animation: release calc(var(--transition) * 2.5) linear alternate infinite;
 }
 
-.rect#game > button#link:hover {
-    opacity: 1;
+@keyframes release {
+    to { color: transparent; }
+}
+
+body[noanim] .rect#game[releasing] {
+    color: #808080;
 }
 
 .rect#usertheme::before {

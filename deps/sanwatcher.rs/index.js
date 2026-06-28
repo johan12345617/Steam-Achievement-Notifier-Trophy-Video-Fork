@@ -32,24 +32,24 @@ switch (platform) {
   case 'android':
     switch (arch) {
       case 'arm64':
-        localFileExisted = existsSync(join(__dirname, 'sanhelperrs.android-arm64.node'))
+        localFileExisted = existsSync(join(__dirname, 'sanwatcherrs.android-arm64.node'))
         try {
           if (localFileExisted) {
-            nativeBinding = require('./sanhelperrs.android-arm64.node')
+            nativeBinding = require('./sanwatcherrs.android-arm64.node')
           } else {
-            nativeBinding = require('sanhelperrs-android-arm64')
+            nativeBinding = require('sanwatcherrs-android-arm64')
           }
         } catch (e) {
           loadError = e
         }
         break
       case 'arm':
-        localFileExisted = existsSync(join(__dirname, 'sanhelperrs.android-arm-eabi.node'))
+        localFileExisted = existsSync(join(__dirname, 'sanwatcherrs.android-arm-eabi.node'))
         try {
           if (localFileExisted) {
-            nativeBinding = require('./sanhelperrs.android-arm-eabi.node')
+            nativeBinding = require('./sanwatcherrs.android-arm-eabi.node')
           } else {
-            nativeBinding = require('sanhelperrs-android-arm-eabi')
+            nativeBinding = require('sanwatcherrs-android-arm-eabi')
           }
         } catch (e) {
           loadError = e
@@ -63,13 +63,13 @@ switch (platform) {
     switch (arch) {
       case 'x64':
         localFileExisted = existsSync(
-          join(__dirname, 'sanhelperrs.win32-x64-msvc.node')
+          join(__dirname, 'sanwatcherrs.win32-x64-msvc.node')
         )
         try {
           if (localFileExisted) {
-            nativeBinding = require('./sanhelperrs.win32-x64-msvc.node')
+            nativeBinding = require('./sanwatcherrs.win32-x64-msvc.node')
           } else {
-            nativeBinding = require('sanhelperrs-win32-x64-msvc')
+            nativeBinding = require('sanwatcherrs-win32-x64-msvc')
           }
         } catch (e) {
           loadError = e
@@ -77,13 +77,13 @@ switch (platform) {
         break
       case 'ia32':
         localFileExisted = existsSync(
-          join(__dirname, 'sanhelperrs.win32-ia32-msvc.node')
+          join(__dirname, 'sanwatcherrs.win32-ia32-msvc.node')
         )
         try {
           if (localFileExisted) {
-            nativeBinding = require('./sanhelperrs.win32-ia32-msvc.node')
+            nativeBinding = require('./sanwatcherrs.win32-ia32-msvc.node')
           } else {
-            nativeBinding = require('sanhelperrs-win32-ia32-msvc')
+            nativeBinding = require('sanwatcherrs-win32-ia32-msvc')
           }
         } catch (e) {
           loadError = e
@@ -91,13 +91,13 @@ switch (platform) {
         break
       case 'arm64':
         localFileExisted = existsSync(
-          join(__dirname, 'sanhelperrs.win32-arm64-msvc.node')
+          join(__dirname, 'sanwatcherrs.win32-arm64-msvc.node')
         )
         try {
           if (localFileExisted) {
-            nativeBinding = require('./sanhelperrs.win32-arm64-msvc.node')
+            nativeBinding = require('./sanwatcherrs.win32-arm64-msvc.node')
           } else {
-            nativeBinding = require('sanhelperrs-win32-arm64-msvc')
+            nativeBinding = require('sanwatcherrs-win32-arm64-msvc')
           }
         } catch (e) {
           loadError = e
@@ -108,23 +108,23 @@ switch (platform) {
     }
     break
   case 'darwin':
-    localFileExisted = existsSync(join(__dirname, 'sanhelperrs.darwin-universal.node'))
+    localFileExisted = existsSync(join(__dirname, 'sanwatcherrs.darwin-universal.node'))
     try {
       if (localFileExisted) {
-        nativeBinding = require('./sanhelperrs.darwin-universal.node')
+        nativeBinding = require('./sanwatcherrs.darwin-universal.node')
       } else {
-        nativeBinding = require('sanhelperrs-darwin-universal')
+        nativeBinding = require('sanwatcherrs-darwin-universal')
       }
       break
     } catch {}
     switch (arch) {
       case 'x64':
-        localFileExisted = existsSync(join(__dirname, 'sanhelperrs.darwin-x64.node'))
+        localFileExisted = existsSync(join(__dirname, 'sanwatcherrs.darwin-x64.node'))
         try {
           if (localFileExisted) {
-            nativeBinding = require('./sanhelperrs.darwin-x64.node')
+            nativeBinding = require('./sanwatcherrs.darwin-x64.node')
           } else {
-            nativeBinding = require('sanhelperrs-darwin-x64')
+            nativeBinding = require('sanwatcherrs-darwin-x64')
           }
         } catch (e) {
           loadError = e
@@ -132,13 +132,13 @@ switch (platform) {
         break
       case 'arm64':
         localFileExisted = existsSync(
-          join(__dirname, 'sanhelperrs.darwin-arm64.node')
+          join(__dirname, 'sanwatcherrs.darwin-arm64.node')
         )
         try {
           if (localFileExisted) {
-            nativeBinding = require('./sanhelperrs.darwin-arm64.node')
+            nativeBinding = require('./sanwatcherrs.darwin-arm64.node')
           } else {
-            nativeBinding = require('sanhelperrs-darwin-arm64')
+            nativeBinding = require('sanwatcherrs-darwin-arm64')
           }
         } catch (e) {
           loadError = e
@@ -152,12 +152,12 @@ switch (platform) {
     if (arch !== 'x64') {
       throw new Error(`Unsupported architecture on FreeBSD: ${arch}`)
     }
-    localFileExisted = existsSync(join(__dirname, 'sanhelperrs.freebsd-x64.node'))
+    localFileExisted = existsSync(join(__dirname, 'sanwatcherrs.freebsd-x64.node'))
     try {
       if (localFileExisted) {
-        nativeBinding = require('./sanhelperrs.freebsd-x64.node')
+        nativeBinding = require('./sanwatcherrs.freebsd-x64.node')
       } else {
-        nativeBinding = require('sanhelperrs-freebsd-x64')
+        nativeBinding = require('sanwatcherrs-freebsd-x64')
       }
     } catch (e) {
       loadError = e
@@ -168,26 +168,26 @@ switch (platform) {
       case 'x64':
         if (isMusl()) {
           localFileExisted = existsSync(
-            join(__dirname, 'sanhelperrs.linux-x64-musl.node')
+            join(__dirname, 'sanwatcherrs.linux-x64-musl.node')
           )
           try {
             if (localFileExisted) {
-              nativeBinding = require('./sanhelperrs.linux-x64-musl.node')
+              nativeBinding = require('./sanwatcherrs.linux-x64-musl.node')
             } else {
-              nativeBinding = require('sanhelperrs-linux-x64-musl')
+              nativeBinding = require('sanwatcherrs-linux-x64-musl')
             }
           } catch (e) {
             loadError = e
           }
         } else {
           localFileExisted = existsSync(
-            join(__dirname, 'sanhelperrs.linux-x64-gnu.node')
+            join(__dirname, 'sanwatcherrs.linux-x64-gnu.node')
           )
           try {
             if (localFileExisted) {
-              nativeBinding = require('./sanhelperrs.linux-x64-gnu.node')
+              nativeBinding = require('./sanwatcherrs.linux-x64-gnu.node')
             } else {
-              nativeBinding = require('sanhelperrs-linux-x64-gnu')
+              nativeBinding = require('sanwatcherrs-linux-x64-gnu')
             }
           } catch (e) {
             loadError = e
@@ -197,26 +197,26 @@ switch (platform) {
       case 'arm64':
         if (isMusl()) {
           localFileExisted = existsSync(
-            join(__dirname, 'sanhelperrs.linux-arm64-musl.node')
+            join(__dirname, 'sanwatcherrs.linux-arm64-musl.node')
           )
           try {
             if (localFileExisted) {
-              nativeBinding = require('./sanhelperrs.linux-arm64-musl.node')
+              nativeBinding = require('./sanwatcherrs.linux-arm64-musl.node')
             } else {
-              nativeBinding = require('sanhelperrs-linux-arm64-musl')
+              nativeBinding = require('sanwatcherrs-linux-arm64-musl')
             }
           } catch (e) {
             loadError = e
           }
         } else {
           localFileExisted = existsSync(
-            join(__dirname, 'sanhelperrs.linux-arm64-gnu.node')
+            join(__dirname, 'sanwatcherrs.linux-arm64-gnu.node')
           )
           try {
             if (localFileExisted) {
-              nativeBinding = require('./sanhelperrs.linux-arm64-gnu.node')
+              nativeBinding = require('./sanwatcherrs.linux-arm64-gnu.node')
             } else {
-              nativeBinding = require('sanhelperrs-linux-arm64-gnu')
+              nativeBinding = require('sanwatcherrs-linux-arm64-gnu')
             }
           } catch (e) {
             loadError = e
@@ -224,42 +224,57 @@ switch (platform) {
         }
         break
       case 'arm':
-        localFileExisted = existsSync(
-          join(__dirname, 'sanhelperrs.linux-arm-gnueabihf.node')
-        )
-        try {
-          if (localFileExisted) {
-            nativeBinding = require('./sanhelperrs.linux-arm-gnueabihf.node')
-          } else {
-            nativeBinding = require('sanhelperrs-linux-arm-gnueabihf')
-          }
-        } catch (e) {
-          loadError = e
-        }
-        break
-      case 'riscv64':
         if (isMusl()) {
           localFileExisted = existsSync(
-            join(__dirname, 'sanhelperrs.linux-riscv64-musl.node')
+            join(__dirname, 'sanwatcherrs.linux-arm-musleabihf.node')
           )
           try {
             if (localFileExisted) {
-              nativeBinding = require('./sanhelperrs.linux-riscv64-musl.node')
+              nativeBinding = require('./sanwatcherrs.linux-arm-musleabihf.node')
             } else {
-              nativeBinding = require('sanhelperrs-linux-riscv64-musl')
+              nativeBinding = require('sanwatcherrs-linux-arm-musleabihf')
             }
           } catch (e) {
             loadError = e
           }
         } else {
           localFileExisted = existsSync(
-            join(__dirname, 'sanhelperrs.linux-riscv64-gnu.node')
+            join(__dirname, 'sanwatcherrs.linux-arm-gnueabihf.node')
           )
           try {
             if (localFileExisted) {
-              nativeBinding = require('./sanhelperrs.linux-riscv64-gnu.node')
+              nativeBinding = require('./sanwatcherrs.linux-arm-gnueabihf.node')
             } else {
-              nativeBinding = require('sanhelperrs-linux-riscv64-gnu')
+              nativeBinding = require('sanwatcherrs-linux-arm-gnueabihf')
+            }
+          } catch (e) {
+            loadError = e
+          }
+        }
+        break
+      case 'riscv64':
+        if (isMusl()) {
+          localFileExisted = existsSync(
+            join(__dirname, 'sanwatcherrs.linux-riscv64-musl.node')
+          )
+          try {
+            if (localFileExisted) {
+              nativeBinding = require('./sanwatcherrs.linux-riscv64-musl.node')
+            } else {
+              nativeBinding = require('sanwatcherrs-linux-riscv64-musl')
+            }
+          } catch (e) {
+            loadError = e
+          }
+        } else {
+          localFileExisted = existsSync(
+            join(__dirname, 'sanwatcherrs.linux-riscv64-gnu.node')
+          )
+          try {
+            if (localFileExisted) {
+              nativeBinding = require('./sanwatcherrs.linux-riscv64-gnu.node')
+            } else {
+              nativeBinding = require('sanwatcherrs-linux-riscv64-gnu')
             }
           } catch (e) {
             loadError = e
@@ -268,13 +283,13 @@ switch (platform) {
         break
       case 's390x':
         localFileExisted = existsSync(
-          join(__dirname, 'sanhelperrs.linux-s390x-gnu.node')
+          join(__dirname, 'sanwatcherrs.linux-s390x-gnu.node')
         )
         try {
           if (localFileExisted) {
-            nativeBinding = require('./sanhelperrs.linux-s390x-gnu.node')
+            nativeBinding = require('./sanwatcherrs.linux-s390x-gnu.node')
           } else {
-            nativeBinding = require('sanhelperrs-linux-s390x-gnu')
+            nativeBinding = require('sanwatcherrs-linux-s390x-gnu')
           }
         } catch (e) {
           loadError = e
@@ -295,17 +310,8 @@ if (!nativeBinding) {
   throw new Error(`Failed to load native binding`)
 }
 
-const { getSteamPath, getAppInfo, pressKeysWin32, pressKeysLinux, getHqIcon, depsInstalled, hdrScreenshot, getFocusedWinPath, getWindowBounds, getAllDisplays, findElectronDisplay, log } = nativeBinding
+const { getActiveProcesses, stop, start } = nativeBinding
 
-module.exports.getSteamPath = getSteamPath
-module.exports.getAppInfo = getAppInfo
-module.exports.pressKeysWin32 = pressKeysWin32
-module.exports.pressKeysLinux = pressKeysLinux
-module.exports.getHqIcon = getHqIcon
-module.exports.depsInstalled = depsInstalled
-module.exports.hdrScreenshot = hdrScreenshot
-module.exports.getFocusedWinPath = getFocusedWinPath
-module.exports.getWindowBounds = getWindowBounds
-module.exports.getAllDisplays = getAllDisplays
-module.exports.findElectronDisplay = findElectronDisplay
-module.exports.log = log
+module.exports.getActiveProcesses = getActiveProcesses
+module.exports.stop = stop
+module.exports.start = start

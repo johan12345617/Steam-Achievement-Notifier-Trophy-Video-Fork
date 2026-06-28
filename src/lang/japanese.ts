@@ -349,6 +349,7 @@ export const translations = {
                 debug: "デバッグパネル",
                 userust: "代替処理モード",
                 notifydebug: "デバッグ通知の表示",
+                workerdebug: "Worker DevTools を表示",
                 exportachdata: "実績データをエクスポート",
                 lognum: "以前のログファイル", 
                 audiocooldown: "オーディオクールダウン",
@@ -369,7 +370,9 @@ export const translations = {
                     `復元する <span class="hl">.sanbak</span> バックアップファイルを選択してください。このファイルは復元後も保持されます`,
                     "❗ 確認後、選択したバックアップファイルを復元するためにアプリが再起動します"
                 ],
-                restorefailed: "バックアップの復元に失敗しました。"
+                restorefailed: "バックアップの復元に失敗しました。",
+                usesanwatcher: "SANWatcher",
+                releasewaittime: "解放待機時間"
             }
         },
         ra: {
@@ -673,6 +676,7 @@ export const translations = {
         debug: "デバッグパネルを開きます。これにより、プロセスの詳細なトラッキング情報が表示されます。",
         userust: "システム上でトラックされたゲームプロセスが現在実行されているかどうかを確認するために、Rustベースの代替機能を使用します。チェックが外れている場合、代わりにデフォルトのNodeJSベースのプロセスチェックが使用されます。",
         notifydebug: "すべての通知に対してDevToolsウィンドウを作成します。通知のデバッグ/トラブルシューティングに便利です",
+        workerdebug: "Worker プロセス用の DevTools ウィンドウを作成します。ゲーム追跡の問題のデバッグやトラブルシューティングに役立ちます",
         usecustomfiles: "ユーザーがカスタマイズ可能なファイルを通知に読み込むことを有効にします。通常のユーザーには注意が必要です",
         showcustomfiles: "カスタムファイルの場所を開く",
         log: "プロセスのアクティビティ、警告、エラーに関する情報を表示するアプリログウィンドウを開く",
@@ -892,7 +896,9 @@ export const translations = {
         gametimerwinaot: `ゲーム完了タイマーを「常に最前面に表示」モードに設定し、ゲームウィンドウの上に表示できるようにします<br><br><span class="ttdesc">有効にすると、ゲーム完了タイマーは "click" イベントなどのユーザー操作を受け付けなくなります。ウィンドウとの操作を再度有効にするには、このオプションを無効にする必要があります</span>`,
         resetgametimer: "現在のゲームのゲーム完了タイマーをリセットします",
         noshortcuts: `アプリ内のすべてのキーボードショートカットを無効にします<br><br><span class="ttdesc">有効にすると、<u>すべてのアプリ内ショートカットが機能しなくなります</u>。キーボードショートカットに関連するすべてのオプションも非表示になります</span>`,
-        extwinnotify: "Stream Notifications 使用中のすべてのオンスクリーン通知の表示を切り替えます"
+        extwinnotify: "Stream Notifications 使用中のすべてのオンスクリーン通知の表示を切り替えます",
+        usesanwatcher: `SAN の新しいゲームプロセス監視機能を有効化<br><br><span class="ttdesc">新しい SANWatcher と従来の自動プロセス追跡方式の違いは次のとおりです。<br><br><div class="wrapper sanwatcher"><span class="hl">ON</span><ul><li>ゲームのインストールディレクトリ内に存在するすべてのプロセスの開始／終了イベントを積極的に監視します</li><li>現在のゲームを解放するためにゲームの実行ファイルを特定しておく必要はありません</li><li>ゲーム起動前ランチャーの動作はゲームごとに異なるため、すべての Steam ゲームとの完全な互換性は保証されません</li></ul></div><br><div class="wrapper sanwatcher"><span class="hl" style="color: firebrick;">OFF</span><ul><li>ゲーム起動後、ゲームのインストールディレクトリ内で実行中の実行ファイルをスキャンします</li><li>現在のゲームを解放するためにゲームの実行ファイルを特定しておく必要があります</li><li>ゲームプロセスを自動的に特定できない場合、ゲームを自動的に解放するにはユーザーが <span class="hl">自動リリース ゲーム</span> に新しいエントリを手動で追加する必要があります</li></ul></div>`,
+        releasewaittime: `現在のゲームを解放する前に、新しいゲームプロセスの起動をSANWatcherがどれくらい待機するかを設定します<br><br><span class="ttdesc">例えば、現在のゲームが実際のゲームを起動する前にランチャーや設定ウィンドウを表示する場合、この設定はランチャーや設定ウィンドウが閉じられた後に実際のゲームウィンドウが表示されるまでSANWatcherが待機する秒数を決定します<br><br>この待機時間内に新しいアクティブなゲームプロセスが検出された場合、解放はキャンセルされ、代わりに新たにアクティブになったプロセスが追跡されます<br><br>💡 現在のゲームが解放待機中の間、ゲーム名は<span style="animation: release calc(var(--transition) * 2.5) linear alternate infinite;">点滅</span>し、<span class="hl">ゲーム表示</span>ボックス内で表示されます</span>`
     },
     update: {
         updateavailable: "アップデートが利用可能です",

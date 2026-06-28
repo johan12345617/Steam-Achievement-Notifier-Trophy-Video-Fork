@@ -349,6 +349,7 @@ export const translations = {
                 debug: "Debugpanel",
                 userust: "Alternativ bearbetningsläge",
                 notifydebug: "Visa felsökningsaviseringar",
+                workerdebug: "Visa Worker DevTools",
                 exportachdata: "Exportera prestationsdata",
                 lognum: "Tidigare loggfiler", 
                 audiocooldown: "Ljudnedkylning",
@@ -369,7 +370,9 @@ export const translations = {
                     `Välj en <span class="hl">.sanbak</span> säkerhetskopieringsfil att återställa från. Denna fil bevaras efter återställningen`,
                     "❗ Efter bekräftelse startas appen om för att återställa den valda säkerhetskopieringsfilen"
                 ],
-                restorefailed: "Kunde inte återställa säkerhetskopian."
+                restorefailed: "Kunde inte återställa säkerhetskopian.",
+                usesanwatcher: "SANWatcher",
+                releasewaittime: "Väntetid för frigöring"
             }
         },
         ra: {
@@ -673,6 +676,7 @@ export const translations = {
         debug: "Öppna Debugpanelen, som visar detaljerad processpårningsinformation",
         userust: "Använd en alternativ Rust-baserad funktion för att kontrollera om de spårade spelprocesserna för närvarande körs på systemet. När det inte är markerat kommer standardprocesskontrollen baserad på NodeJS att användas istället.",
         notifydebug: "Skapa ett DevTools-fönster för alla aviseringar. Användbart för felsökning av aviseringar",
+        workerdebug: "Skapa ett DevTools-fönster för Worker-processen. Användbart för felsökning och problemlösning av problem med spelspårning",
         usecustomfiles: "Aktiverar aviseringar för att ladda användaranpassade filer. Försiktighet rekommenderas för vanliga användare",
         showcustomfiles: "Öppna platsen för de anpassade filerna",
         log: "Öppna apploggen som visar information om processaktivitet, varningar och fel",
@@ -892,7 +896,9 @@ export const translations = {
         gametimerwinaot: `Ställ in Timern för spelavslut till läget "Alltid överst", så att fönstret visas ovanför spelfönstret<br><br><span class="ttdesc">När detta är aktiverat kommer Timern för spelavslut inte längre att registrera användarinteraktioner, såsom "click"-händelser. För att återaktivera interaktion med fönstret måste detta alternativ inaktiveras</span>`,
         resetgametimer: "Återställ Timern för spelavslut för det aktuella spelet",
         noshortcuts: `Inaktiverar alla tangentbordsgenvägar i appen<br><br><span class="ttdesc">När detta är aktiverat kommer <u>alla genvägar i appen inte längre att fungera</u>. Alla alternativ relaterade till tangentbordsgenvägar kommer också att döljas</span>`,
-        extwinnotify: "Växla synlighet för alla skärmnotifikationer vid användning av Stream Notifications"
+        extwinnotify: "Växla synlighet för alla skärmnotifikationer vid användning av Stream Notifications",
+        usesanwatcher: `Aktivera SAN:s nya övervakare för spelprocesser<br><br><span class="ttdesc">Skillnaderna mellan den nya SANWatcher och den gamla metoden för automatisk processövervakning är följande:<br><br><div class="wrapper sanwatcher"><span class="hl">PÅ</span><ul><li>Övervakar aktivt start- och avslutningshändelser för alla processer som finns i spelets installationskatalog</li><li>Kräver inte att spelets körbara fil är känd för att frigöra det aktuella spelet</li><li>Beteendet hos startprogram före spelets start kan variera, så full kompatibilitet med alla Steam-spel kan inte garanteras</li></ul></div><br><div class="wrapper sanwatcher"><span class="hl" style="color: firebrick;">AV</span><ul><li>Söker igenom spelets installationskatalog efter körbara filer som är igång efter att spelet har startats</li><li>Kräver att spelets körbara fil är känd för att frigöra det aktuella spelet</li><li>Om spelprocessen inte kan fastställas automatiskt måste användaren manuellt lägga till en ny post i <span class="hl">Automatiskt Frigjorda Spel</span> för att spel ska frigöras automatiskt</li></ul></div>`,
+        releasewaittime: `Ange hur länge SANWatcher ska vänta på att nya spelprocesser startas innan det aktuella spelet släpps<br><br><span class="ttdesc">Om det aktuella spelet till exempel startar ett förstartsfönster/en konfigurationsruta innan själva spelet startas, avgör denna inställning hur många sekunder SANWatcher ska vänta på att det faktiska spelfönstret ska startas efter att förstartsfönstret/konfigurationsrutan har stängts<br><br>Om en ny aktiv spelprocess upptäcks inom denna väntetid kommer frigöringen att avbrytas och den nyaktiva processen kommer i stället att spåras<br><br>💡 Spelnamnet kommer att <span style="animation: release calc(var(--transition) * 2.5) linear alternate infinite;">blinka</span> i rutan <span class="hl">Spelvisning</span> medan det aktuella spelet väntar på att släppas</span>`
     },
     update: {
         updateavailable: "Uppdatering tillgänglig",

@@ -349,6 +349,7 @@ export const translations = {
                 debug: "Hata Ayıkla Paneli",
                 userust: "Alternatif İşleme Modu",
                 notifydebug: "Hata Ayıklama Bildirimlerini Göster",
+                workerdebug: "Worker DevTools'u Göster",
                 exportachdata: "Başarım Verilerini Dışa Aktar",
                 lognum: "Önceki Günlük Dosyaları", 
                 audiocooldown: "Ses Bekleme Süresi",
@@ -369,7 +370,9 @@ export const translations = {
                     `Geri yüklemek için bir <span class="hl">.sanbak</span> yedekleme dosyası seçin. Bu dosya geri yükleme tamamlandıktan sonra korunacaktır`,
                     "❗ Onaylandıktan sonra, seçilen yedekleme dosyasını geri yüklemek için uygulama yeniden başlatılacaktır"
                 ],
-                restorefailed: "Yedekleme geri yüklenemedi."
+                restorefailed: "Yedekleme geri yüklenemedi.",
+                usesanwatcher: "SANWatcher",
+                releasewaittime: "Serbest Bırakma Bekleme Süresi"
             }
         },
         ra: {
@@ -673,6 +676,7 @@ export const translations = {
         debug: "Hata Ayıkla Panelini açın, bu panel işlem takip bilgilerini detaylı bir şekilde gösterir",
         userust: "Takip edilen oyun işlemlerinin şu anda sistemde çalışıp çalışmadığını kontrol etmek için Rust tabanlı alternatif bir işlev kullanın. İşaretlenmediğinde, varsayılan NodeJS tabanlı işlem kontrolü kullanılacaktır.",
         notifydebug: "Tüm bildirimler için bir DevTools penceresi oluştur. Bildirim sorunlarını gidermek/çözmek için kullanışlıdır",
+        workerdebug: "Worker işlemi için bir DevTools penceresi oluştur. Oyun takibi sorunlarını hata ayıklamak ve gidermek için kullanışlıdır",
         usecustomfiles: "Bildirimlerin kullanıcı tarafından özelleştirilebilir dosyaları yüklemesine izin verir. Düzenli kullanıcılar için dikkatli olunması önerilir",
         showcustomfiles: "Özel dosyaların konumunu aç",
         log: "Uygulama Günlük penceresini açar, işlem etkinliği, uyarılar ve hatalar hakkında bilgi görüntüler",
@@ -892,7 +896,9 @@ export const translations = {
         gametimerwinaot: `Oyun Tamamlama Zamanlayıcısını "Her Zaman Üstte" moduna ayarlayarak pencerenin oyun penceresinin üstünde görüntülenmesini sağla<br><br><span class="ttdesc">Etkinleştirildiğinde, Oyun Tamamlama Zamanlayıcısı artık "click" olayları gibi kullanıcı etkileşimlerini algılamayacaktır. Pencereyle etkileşimi yeniden etkinleştirmek için bu seçenek devre dışı bırakılmalıdır</span>`,
         resetgametimer: "Mevcut oyun için Oyun Tamamlama Zamanlayıcısını sıfırla",
         noshortcuts: `Tüm uygulama içi klavye kısayollarını devre dışı bırakır<br><br><span class="ttdesc">Etkinleştirildiğinde, <u>tüm uygulama içi kısayollar artık çalışmayacaktır</u>. Klavye kısayollarıyla ilgili tüm seçenekler de gizlenecektir</span>`,
-        extwinnotify: "Stream Notifications kullanılırken tüm ekran bildirimlerinin görünürlüğünü aç/kapat"
+        extwinnotify: "Stream Notifications kullanılırken tüm ekran bildirimlerinin görünürlüğünü aç/kapat",
+        usesanwatcher: `SAN'ın yeni oyun süreç izleyicisini etkinleştir<br><br><span class="ttdesc">Yeni SANWatcher ile eski otomatik süreç takip yöntemleri arasındaki farklar şunlardır:<br><br><div class="wrapper sanwatcher"><span class="hl">AÇIK</span><ul><li>Oyunun kurulum dizininde bulunan tüm süreçlerin başlatılma ve sonlandırılma olaylarını aktif olarak izler</li><li>Mevcut oyunu serbest bırakmak için oyunun çalıştırılabilir dosyasının bilinmesini gerektirmez</li><li>Oyun öncesi başlatıcıların davranışları farklılık gösterebilir, bu nedenle tüm Steam oyunlarıyla tam uyumluluk garanti edilmez</li></ul></div><br><div class="wrapper sanwatcher"><span class="hl" style="color: firebrick;">KAPALI</span><ul><li>Oyun başlatıldıktan sonra çalışan yürütülebilir dosyalar için oyunun kurulum dizinini tarar</li><li>Mevcut oyunu serbest bırakmak için oyunun çalıştırılabilir dosyasının bilinmesini gerektirir</li><li>Oyun süreci otomatik olarak belirlenemezse, oyunların otomatik olarak serbest bırakılabilmesi için kullanıcının <span class="hl">Otomatik Serbest Bırakılan Oyunlar</span> bölümüne manuel olarak yeni bir giriş eklemesi gerekir</li></ul></div>`,
+        releasewaittime: `Mevcut oyun serbest bırakılmadan önce SANWatcher'ın yeni oyun süreçlerinin başlatılmasını ne kadar süre bekleyeceğini ayarlayın<br><br><span class="ttdesc">Örneğin, mevcut oyun asıl oyunu başlatmadan önce bir oyun öncesi başlatıcı/yapılandırma penceresi açıyorsa, bu ayar oyun öncesi başlatıcı/yapılandırma penceresi kapandıktan sonra SANWatcher'ın asıl oyun penceresinin açılmasını kaç saniye bekleyeceğini belirler<br><br>Bu bekleme süresi içinde yeni bir etkin oyun süreci algılanırsa, serbest bırakma işlemi iptal edilir ve bunun yerine yeni etkin süreç takip edilir<br><br>💡 Mevcut oyun serbest bırakılmayı beklerken oyun adı <span class="hl">Oyun Görüntüsü</span> kutusunda <span style="animation: release calc(var(--transition) * 2.5) linear alternate infinite;">yanıp sönecektir</span></span>`
     },
     update: {
         updateavailable: "Güncelleme mevcut",

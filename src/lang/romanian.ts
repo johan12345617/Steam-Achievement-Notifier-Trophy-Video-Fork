@@ -349,6 +349,7 @@ export const translations = {
                 debug: "Panou de Depanare",
                 userust: "Mod Alternativ de Procesare",
                 notifydebug: "Afișare Notificări de Depanare",
+                workerdebug: "Afișează DevTools pentru Worker",
                 exportachdata: "Exportă datele realizărilor",
                 lognum: "Fișiere de Jurnal Anterioare", 
                 audiocooldown: "Timp de Așteptare Audio",
@@ -369,7 +370,9 @@ export const translations = {
                     `Selectați un fișier de backup <span class="hl">.sanbak</span> pentru restaurare. Acest fișier va fi păstrat după finalizarea restaurării`,
                     "❗ După confirmare, aplicația se va reporni pentru a restaura fișierul de backup selectat"
                 ],
-                restorefailed: "Nu s-a putut restaura backup-ul."
+                restorefailed: "Nu s-a putut restaura backup-ul.",
+                usesanwatcher: "SANWatcher",
+                releasewaittime: "Timp de așteptare pentru eliberare"
             }
         },
         ra: {
@@ -673,6 +676,7 @@ export const translations = {
         debug: "Deschideți Panoul de Depanare, care afișează informații detaliate de urmărire a proceselor",
         userust: "Utilizați o funcție alternativă bazată pe Rust pentru a verifica dacă procesele de joc urmărite rulează în prezent pe sistem. Atunci când nu este bifat, se va folosi în schimb verificarea procesului implicită bazată pe NodeJS.",
         notifydebug: "Creați o fereastră DevTools pentru toate notificările. Util pentru depanarea problemelor de notificare",
+        workerdebug: "Creează o fereastră DevTools pentru procesul Worker. Util pentru depanarea/remedierea problemelor de monitorizare a jocurilor",
         usecustomfiles: "Permite notificărilor să încarce fișiere personalizabile de către utilizator. Se recomandă prudență pentru utilizatorii obișnuiți",
         showcustomfiles: "Deschideți locația fișierelor personalizate",
         log: "Deschideți fereastra Jurnal aplicație, care afișează informații despre activitatea procesului, avertismente și erori",
@@ -892,7 +896,9 @@ export const translations = {
         gametimerwinaot: `Setează Cronometrul de Finalizare a Jocului în modul "Întotdeauna deasupra", permițând afișarea ferestrei deasupra ferestrei jocului<br><br><span class="ttdesc">Când este activat, Cronometrul de Finalizare a Jocului nu va mai înregistra interacțiunile utilizatorului, precum evenimentele "click". Pentru a reactiva interacțiunea cu fereastra, această opțiune trebuie dezactivată</span>`,
         resetgametimer: "Resetează Cronometrul de Finalizare a Jocului pentru jocul curent",
         noshortcuts: `Dezactivează toate scurtăturile de la tastatură din aplicație<br><br><span class="ttdesc">Când este activat, <u>toate scurtăturile din aplicație nu vor mai funcționa</u>. Toate opțiunile legate de scurtăturile de la tastatură vor fi, de asemenea, ascunse</span>`,
-        extwinnotify: "Comută vizibilitatea tuturor notificărilor pe ecran în timpul utilizării Stream Notifications"
+        extwinnotify: "Comută vizibilitatea tuturor notificărilor pe ecran în timpul utilizării Stream Notifications",
+        usesanwatcher: `Activează noul monitor de procese pentru jocuri al SAN<br><br><span class="ttdesc">Diferențele dintre noul SANWatcher și vechile metode de urmărire automată a proceselor sunt următoarele:<br><br><div class="wrapper sanwatcher"><span class="hl">ON</span><ul><li>Monitorizează activ evenimentele de pornire/închidere pentru orice proces stocat în directorul de instalare al jocului</li><li>Nu necesită cunoașterea fișierului executabil al jocului pentru a elibera jocul curent</li><li>Comportamentul lansatoarelor pre-joc poate varia, astfel că nu este garantată compatibilitatea completă cu toate jocurile Steam</li></ul></div><br><div class="wrapper sanwatcher"><span class="hl" style="color: firebrick;">OFF</span><ul><li>Scanează directorul de instalare al jocului pentru orice fișiere executabile aflate în execuție după lansarea jocului</li><li>Necesită cunoașterea fișierului executabil al jocului pentru a elibera jocul curent</li><li>Dacă procesul jocului nu poate fi determinat automat, utilizatorul trebuie să adauge manual o nouă intrare în <span class="hl">Jocuri cu eliberare automată</span> pentru ca jocurile să fie eliberate automat</li></ul></div>`,
+        releasewaittime: `Setați cât timp SANWatcher va aștepta ca noile procese de joc să fie inițializate înainte de a elibera jocul curent<br><br><span class="ttdesc">De exemplu, dacă jocul curent inițializează un lansator/fereastră de configurare înainte de a porni jocul propriu-zis, această setare determină numărul de secunde pe care SANWatcher îl va aștepta pentru ca fereastra jocului propriu-zis să apară după ce lansatorul/fereastra de configurare s-a închis<br><br>Dacă un nou proces de joc activ este detectat în acest interval de așteptare, eliberarea va fi anulată, iar noul proces activ va fi urmărit în schimb<br><br>💡 Numele jocului va <span style="animation: release calc(var(--transition) * 2.5) linear alternate infinite;">clipi</span> în caseta <span class="hl">Afișaj Joc</span> în timp ce jocul curent așteaptă să fie eliberat</span>`
     },
     update: {
         updateavailable: "Actualizare disponibilă",

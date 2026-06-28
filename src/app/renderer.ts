@@ -1169,3 +1169,8 @@ ipcRenderer.on("creategametimerentry",async (event,appid: number) => {
         log.write("ERROR",(err as Error).message)
     }
 })
+
+ipcRenderer.on("releasing",(event,value: boolean) => {
+    const gamedisplay = document.getElementById("game")
+    gamedisplay && gamedisplay.toggleAttribute("releasing",value)
+})

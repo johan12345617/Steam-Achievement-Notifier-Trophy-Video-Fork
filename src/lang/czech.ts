@@ -349,6 +349,7 @@ export const translations = {
                 debug: "Panel Ladění",
                 userust: "Alternativní Režim Zpracování",
                 notifydebug: "Zobrazit oznámení nástrojů pro ladění",
+                workerdebug: "Zobrazit DevTools pro Worker",
                 exportachdata: "Exportovat data o úspěších",
                 lognum: "Předchozí soubory protokolu", 
                 audiocooldown: "Časový odstup zvuku",
@@ -369,7 +370,9 @@ export const translations = {
                     `Vyberte záložní soubor <span class="hl">.sanbak</span> pro obnovení. Tento soubor bude zachován po dokončení obnovení`,
                     "❗ Po potvrzení se aplikace restartuje, aby obnovila vybraný záložní soubor"
                 ],
-                restorefailed: "Nepodařilo se obnovit zálohu."
+                restorefailed: "Nepodařilo se obnovit zálohu.",
+                usesanwatcher: "SANWatcher",
+                releasewaittime: "Doba čekání na uvolnění"
             }
         },
         ra: {
@@ -673,6 +676,7 @@ export const translations = {
         debug: "Otevřete Panel Ladění, který zobrazuje podrobné informace o sledování procesů",
         userust: "Použijte alternativní funkci založenou na Rust k ověření, zda jsou sledované herní procesy aktuálně spuštěny na systému. Když není zaškrtnuto, bude místo toho použita výchozí kontrola procesů založená na NodeJS.",
         notifydebug: "Vytvořit okno DevTools pro všechna oznámení. Užitečné pro ladění/problémování problémů s oznámeními",
+        workerdebug: "Vytvořit okno DevTools pro proces Worker. Užitečné pro ladění/řešení problémů se sledováním her",
         usecustomfiles: "Povoluje načítání uživatelsky přizpůsobitelných souborů pro oznámení. Běžným uživatelům se doporučuje opatrnost",
         showcustomfiles: "Otevřít umístění uživatelsky přizpůsobitelných souborů",
         log: "Otevřít okno s protokolem aplikace, které zobrazuje informace o činnosti procesu, varování a chyby",
@@ -892,7 +896,9 @@ export const translations = {
         gametimerwinaot: `Nastaví časovač dokončení hry do režimu „Vždy navrchu“, což umožní zobrazení okna nad oknem hry<br><br><span class="ttdesc">Pokud je povoleno, časovač dokončení hry již nebude registrovat interakce uživatele, například události „kliknutí“. Pro opětovné povolení interakce s oknem musí být tato možnost vypnuta</span>`,
         resetgametimer: "Resetuje časovač dokončení aktuální hry",
         noshortcuts: `Zakáže všechny klávesové zkratky v aplikaci<br><br><span class="ttdesc">Pokud je povoleno, <u>všechny klávesové zkratky v aplikaci přestanou fungovat</u>. Všechny možnosti související s klávesovými zkratkami budou také skryty</span>`,
-        extwinnotify: "Přepíná viditelnost všech oznámení na obrazovce při používání Stream Notifications"
+        extwinnotify: "Přepíná viditelnost všech oznámení na obrazovce při používání Stream Notifications",
+        usesanwatcher: `Povolit nový sledovač herních procesů SAN<br><br><span class="ttdesc">Rozdíly mezi novým SANWatcherem a starými metodami automatického sledování procesů jsou následující:<br><br><div class="wrapper sanwatcher"><span class="hl">ZAPNUTO</span><ul><li>Aktivně sleduje události spuštění/ukončení všech procesů uložených v instalačním adresáři hry</li><li>Pro uvolnění aktuální hry není nutné znát spustitelný soubor hry</li><li>Chování spouštěčů před samotnou hrou se může lišit, proto není zaručena úplná kompatibilita se všemi hrami na Steam</li></ul></div><br><div class="wrapper sanwatcher"><span class="hl" style="color: firebrick;">VYPNUTO</span><ul><li>Po spuštění hry prohledává instalační adresář hry a hledá spuštěné spustitelné soubory</li><li>Pro uvolnění aktuální hry je nutné znát spustitelný soubor hry</li><li>Pokud nelze herní proces určit automaticky, musí uživatel ručně přidat novou položku do <span class="hl">Automatické uvolnění her</span>, aby byly hry uvolňovány automaticky</li></ul></div>`,
+        releasewaittime: `Nastavte, jak dlouho bude SANWatcher čekat na spuštění nových herních procesů, než uvolní aktuální hru<br><br><span class="ttdesc">Například pokud aktuální hra před spuštěním samotné hry otevře spouštěcí nebo konfigurační okno, toto nastavení určuje počet sekund, po které bude SANWatcher čekat na zobrazení skutečného herního okna po zavření spouštěcího nebo konfiguračního okna<br><br>Pokud bude během této čekací doby zjištěn nový aktivní herní proces, uvolnění bude zrušeno a místo toho bude sledován nově aktivní proces<br><br>💡 Název hry bude <span style="animation: release calc(var(--transition) * 2.5) linear alternate infinite;">blikat</span> v poli <span class="hl">Zobrazení hry</span>, zatímco aktuální hra čeká na uvolnění</span>`
     },
     update: {
         updateavailable: "Aktualizace je k dispozici",

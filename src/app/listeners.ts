@@ -79,17 +79,20 @@ export const listeners = {
 
         let suspended = false
 
-        const updatetray = async (tray: Tray,gamename?: string | null,num?: number,betaunsupported?: boolean) => {
+        const updatetray = async (tray: Tray,gamename?: string | null,num?: number,releasing?: boolean,betaunsupported?: boolean) => {
             tray && tray.removeAllListeners()
 
+            const { usesanwatcher } = sanconfig.get().store
+            const showautorelease = !usesanwatcher && !!appid
+
             tray.setToolTip(`Steam Achievement Notifier (V${sanhelper.version})`)
-            tray.setImage(path.join(__root,"img",`sanlogo_${num === 0 ? "inactive" : (gamename ? "active" : "idle")}.${process.platform === "win32" ? "ico" : "png"}`))
+            tray.setImage(path.join(__root,"img",`sanlogo_${releasing ? "releasing" : (num === 0 ? "inactive" : (gamename ? "active" : "idle"))}.${process.platform === "win32" ? "ico" : "png"}`))
 
             const template: Electron.MenuItemConstructorOptions[] = [
                 {
                     label: gamename || await language.get("game",["app","content"]),
                     icon: nativeImage
-                            .createFromPath(path.join(__root,"icon",`dot_${num === 0 ? "yellow" : (gamename ? "green" : "red")}.png`))
+                            .createFromPath(path.join(__root,"icon",`dot_${releasing ? "grey" : (num === 0 ? "yellow" : (gamename ? "green" : "red"))}.png`))
                             .resize({ width: 10 }),
                     enabled: false
                 },
@@ -142,8 +145,8 @@ export const listeners = {
                         .createFromPath(path.join(__root,"icon","link.png"))
                         .resize({ width: 16 }),
                     click: () => ipcMain.emit("noexe",null,false,true),
-                    enabled: !!appid,
-                    visible: !!appid
+                    enabled: showautorelease,
+                    visible: showautorelease
                 },
                 {
                     label: await language.get("replaynotify",["settings","notifications","content"]),
@@ -189,11 +192,27 @@ export const listeners = {
             ;(statwin || gametimerwin) && worker && worker.webContents.send("stats")
         })
 
+        ipcMain.on("usesanwatcher",() => {
+            updatetray(tray!)
+            ipcMain.emit("validateworker")
+        })
+
         ipcMain.on("steamlang",() => statwin && worker && worker.webContents.send("stats"))
 
-        let worker: BrowserWindow | null = null
+        let lastknowngame: LastKnownGame | null = null // Updated via `worker.ts` and sent via "createworker" on each new "Worker" process spawn
 
-        ipcMain.on("createworker",() => {
+        // Received from `worker.ts` when tracking begins for a new game
+        ipcMain.on("lastknowngame",(event,game: LastKnownGame) => {
+            lastknowngame = game
+            log.write("INFO",`Cached last known game:\n- appid: ${game.appid}\n- installdir: ${game.installdir}`)
+        })
+
+        let worker: BrowserWindow | null = null
+        let workerid = 0
+
+        ipcMain.on("createworker",(event,lastknowngame: LastKnownGame | null) => {
+            const id = ++workerid
+
             worker = new BrowserWindow({
                 title: `Steam Achievement Notifier (V${sanhelper.version}): Worker`,
                 width: 100,
@@ -213,15 +232,21 @@ export const listeners = {
                 webPreferences: {
                     nodeIntegration: true,
                     contextIsolation: false,
-                    backgroundThrottling: false
+                    backgroundThrottling: false,
+                    additionalArguments: [
+                        `--lastknowngame=${lastknowngame ? JSON.stringify(lastknowngame) : ""}` // "Worker" parses `lastknowngame` arg on spawn
+                    ]
                 }
             })
 
-            worker.loadFile(path.join(__root,"dist","app","worker.html"))
-            sanhelper.devmode && sanhelper.setdevtools(worker)
-            worker.once("closed",() => log.write("EXIT",`"Worker" process closed`))
+            log.write("INFO",`"Worker" process #${id} created`)
 
             const config = sanconfig.get()
+
+            worker.loadFile(path.join(__root,"dist","app","worker.html"))
+            ;(sanhelper.devmode || config.get("workerdebug")) && sanhelper.setdevtools(worker)
+            worker.once("closed",() => log.write("EXIT",`"Worker" process #${id} closed`))
+
             config.get("raemus").length && worker.webContents.send("startra")
         })
 
@@ -232,6 +257,62 @@ export const listeners = {
 
         ipcMain.on("worker",(event,args) => console.log(JSON.parse(args)))
 
+        const validateworker = (): Promise<string> => {
+            return new Promise<string>((resolve,reject) => {
+                if (worker) {
+                    worker.destroy()
+                    worker = null
+                    reject(`Existing "Worker" process destroyed.`)
+                }
+
+                const gameicon = path.join(sanhelper.temp,"gameicon.png")
+                fs.existsSync(gameicon) && fs.rmSync(gameicon,{ force: true })
+
+                resolve(`No running game or "Worker" processes found. Restarting "Worker" process...`)
+            })
+        }
+
+        let applaunch = true // Prevent SAN failing to start tracking for already-running games on launch
+        let workertimer: NodeJS.Timeout | null = null
+        let resetcounter = 0
+
+        ipcMain.on("validateworker",async () => {
+            if (workertimer) {
+                clearInterval(workertimer)
+                workertimer = null
+            }
+
+            win.webContents.send("releasing",false) // Clear "releasing" attribute
+
+            const { releasedelay, usesanwatcher } = sanconfig.get().store
+            const runningappid = sanhelper.gameinfo.appid
+
+            try {
+                ipcMain.emit("appid",null,{ appid: 0 })
+
+                const msg = await validateworker()
+                log.write("INFO",msg)
+
+                if (usesanwatcher) {
+                    if (!applaunch && !appid && runningappid) throw new Error(`Steam reports AppID ${runningappid} is still active - waiting for Steam to clear AppID (${resetcounter})s`)
+
+                    applaunch = false
+                    resetcounter = 0
+                }
+
+                workertimer = setTimeout(() => ipcMain.emit("createworker",null,lastknowngame),releasedelay * 1000)
+            } catch (err) {
+                log.write("WARN",(err as Error).message || err as Error)
+                usesanwatcher && ++resetcounter
+                workertimer = setTimeout(() => ipcMain.emit("validateworker"),1000)
+            }
+        })
+
+        ipcMain.on("releasing",(event,gamename: string,value: boolean) => {
+            updatetray(tray,gamename,undefined,value)
+            win.webContents.send("releasing",value)
+        }) // Adds visual "releasing" hint in UI
+
         const sendnoexeclick = (ipctype: "noexe" | "addlinkfailed",appid: number,skipnotify?: boolean) => {
             win.show()
             win.focus()
@@ -240,7 +321,7 @@ export const listeners = {
 
         ipcMain.on("noexe",(event,addlinkfailed?: boolean,skipnotify?: boolean) => {
             if (skipnotify) return sendnoexeclick("noexe",appid,skipnotify)
-            
+
             const config = sanconfig.get()
             let notifywin: BrowserWindow | null = null
             const ipctype = !addlinkfailed ? "noexe" : "addlinkfailed"
@@ -248,7 +329,7 @@ export const listeners = {
             // Delay to prevent overlapping with trackwin
             setTimeout(() => {
                 const { scaleFactor }: Monitor = config.get("monitors").find(monitor => monitor.primary)!
-    
+
                 notifywin = new BrowserWindow({
                     title: `Steam Achievement Notifier (V${sanhelper.version}): ${!addlinkfailed ? "No Game EXE" : "Add Link Failed"}`,
                     width: Math.round((375 / scaleFactor) * (config.get("nowtrackingscale") / 100)),
@@ -270,25 +351,25 @@ export const listeners = {
                         contextIsolation: false
                     }
                 })
-    
+
                 addlinkfailed && notifywin.setIgnoreMouseEvents(true)
                 notifywin.setAlwaysOnTop(true,"screen-saver")
                 sanhelper.devmode && sanhelper.setdevtools(notifywin)
-    
+
                 notifywin.loadFile(path.join(__root,"dist","app",`${ipctype}.html`))
-    
+
                 ipcMain.once(`${ipctype}ready`,async () => {
                     if (!notifywin) return
 
                     const { width, height } = notifywin.getBounds()
                     const bounds = setnotifybounds({ width: width, height: height },null) as { width: number, height: number, x: number, y: number }
-    
+
                     notifywin.webContents.send(`${ipctype}ready`,await language.get(ipctype),await language.get(`${ipctype}sub`))
                     shownotify(notifywin,bounds,undefined,true)
-            
+
                     return setTimeout(() => notifywin && notifywin.webContents.send(`${ipctype}close`),!addlinkfailed ? 7500 : 5000)
                 })
-    
+
                 ipcMain.once(`${ipctype}close`, () => {
                     if (!notifywin) return
 
@@ -327,35 +408,6 @@ export const listeners = {
         }
 
         cleartemp()
-
-        const validateworker = (): Promise<string> => {
-            return new Promise<string>((resolve,reject) => {
-                if (worker) {
-                    worker.destroy()
-                    worker = null
-                    reject(`Existing "Worker" process destroyed.`)
-                }
-
-                const gameicon = path.join(sanhelper.temp,"gameicon.png")
-                fs.existsSync(gameicon) && fs.rmSync(gameicon,{ force: true })
-
-                resolve(`No running game or "Worker" processes found. Restarting "Worker" process...`)
-            })
-        }
-        
-        ipcMain.on("validateworker", async () => {
-            const { releasedelay } = sanconfig.get().store
-
-            try {
-                ipcMain.emit("appid",null,{ appid: 0 })
-                const msg = await validateworker()
-                log.write("INFO",msg)
-                setTimeout(() => ipcMain.emit("createworker"),releasedelay * 1000)
-            } catch (err) {
-                log.write("WARN",err as Error)
-                setTimeout(() => ipcMain.emit("validateworker"),1000)
-            }
-        })
 
         ipcMain.on("appid",(event,workerinfo: WorkerInfo) => {
             const { appid: id, gamename, achnum } = workerinfo
@@ -458,14 +510,14 @@ export const listeners = {
                 const sendtrackinfo = async (gamename: string,gamearticon: string,gameartlibhero: string) => {
                     trackwin.webContents.send("gamename",await language.get("nowtracking"),gamename,gamearticon,gameartlibhero)
                     shownotify(trackwin,bounds,false,config.get("nowtracking"))
-    
+
                     return setTimeout(() => trackwin.webContents.send("trackwinclose"),4500)
                 }
 
                 const steampath = sanhelper.steampath
                 const hqicon = ra ? ra.icon : sanhelper.gethqicon(appid)
                 const tempdir = sanhelper.temp
-                
+
                 const gameartobj = {
                     appid,
                     hqicon,
@@ -491,7 +543,7 @@ export const listeners = {
                     skipss && sendtrackinfo(gamename,gamearticon || icon,gameartlibhero)
                 } catch (err) {
                     log.write("ERROR",`Error sending tracking info to Worker: ${err}`)
-                    
+
                     const { icon, gameartlibhero } = ra || await getgameartimgs(gameartobj,gameartfiles)
                     const gamearticon = ra ? null : await gameart.convertICO(icon,tempdir)
 
@@ -569,7 +621,7 @@ export const listeners = {
                 win.show()
 
                 const { x, y } = win.getBounds()
-    
+
                 return config.set({
                     width: width,
                     height: height,
@@ -660,7 +712,7 @@ export const listeners = {
         ipcMain.on("restart",(event,reason: string) => {
             return new Promise(async (resolve,reject) => {
                 if (reason !== "Reset App confirmed by user") return resolve(reason)
-                    
+
                 await new Promise<void>(resolve => {
                     ipcMain.once("clearls", (event,msg) => {
                         log.write("INFO",msg as string)
@@ -752,7 +804,7 @@ export const listeners = {
                 extwin.close()
                 extwin = null
             }
-            
+
             if (type === "stat") {
                 if (!statwin) return log.write("WARN",`"${type}win" not found`)
 
@@ -789,7 +841,7 @@ export const listeners = {
         ipcMain.on("extwin",(event,value: boolean) => {
             const config = sanconfig.get()
             const { notifymax } = config.store
-            
+
             if (value && notifymax > 1) {
                 log.write("WARN",`Max notifications currently set to ${notifymax}, and Stream Notifications does not support more than 1 notification at a time. Resetting to 1...`)
                 config.set("notifymax",1)
@@ -821,12 +873,12 @@ export const listeners = {
 
         ipcMain.on("statwin",(event,value: boolean) => {
             if (value && statwin) return log.write("WARN",`${defaultextwins.stat.wintitle} window already active`)
-            
+
             const config = sanconfig.get()
 
             // If `reopenonlaunch` is true when the app closes, the window reopens next time the app is launched (as it writes bool value to config)
             let reopenonlaunch = true
-            
+
             statwin = createextwin(config,"stat",value)
             if (!statwin) return
 
@@ -863,15 +915,15 @@ export const listeners = {
 
         ipcMain.on("stats",async (event,statsobj: StatsObj,init?: boolean) => {
             if (!statwin) return
-            
+
             const { appid, ra } = statsobj
             const active = ra ? "ra" : "steam"
             const inactive = ra ? "steam" : "ra"
 
             if (runningstatwin[inactive] !== 0) return log.write("WARN",`${defaultextwins.stat.wintitle} already active for ${inactive === "ra" ? "RA Game" : "App"}ID ${runningstatwin[inactive]}`)
-            
+
             runningstatwin[active] = appid
-            
+
             const section = ["settings","streaming","content"]
             const translations: StatsObjTranslations = {
                 nogame: await language.get("game",["app","content"]),
@@ -957,7 +1009,7 @@ export const listeners = {
             const config = sanconfig.get()
 
             !iswebview && void trophyvideo.capture(notify)
-            
+
             if (config.get("soundonly")) {
                 if (!iswebview) {
                     win.webContents.send("soundonly",notify.type)
@@ -972,7 +1024,7 @@ export const listeners = {
 
                 try {
                     const notifycopy = { ...notify }
-                    
+
                     delete (notifycopy as any).customisation
                     notifycopy.gameicon = !notify.ra ? path.join(sanhelper.temp,"gameicon.png").replace(/\\/g,"/") : notify.gameicon
 
@@ -1074,7 +1126,7 @@ export const listeners = {
                     }
                 }
             }
-            
+
             if (iswebview === "customiser") {
                 const { ssalldetails, screenshots, notify1line } = config.store
                 const { icon, libhero, logo } = gameartobj
@@ -1106,7 +1158,7 @@ export const listeners = {
         const buildnotify = async (notify: Notify): Promise<BuildNotifyInfo> => {
             const config = sanconfig.get()
             const { id, type, customisation, gamename, steam3id, apiname, icon, percent, hidden } = notify
-            
+
             return {
                 id,
                 type,
@@ -1131,25 +1183,25 @@ export const listeners = {
         const setnotifybounds = (dims: { width: number, height: number, x?: number, y?: number },type: NotifyType | null,offset = 20,wintype?: "extwin" | "sswin",customisation?: Customisation) => {
             const config = sanconfig.get()
             if (config.get("soundonly")) return
-        
+
             const custompos = customisation ? customisation.custompos : config.get(`customisation.${type}.custompos`) as { x: number, y: number }
             const monitor = (dims.x !== undefined && dims.y !== undefined) ? screen.getDisplayNearestPoint({ x: dims.x, y: dims.y }) : ((customisation ? customisation.usecustompos : (config.get(`customisation.${type}.usecustompos`))) ? screen.getDisplayNearestPoint({ x: custompos.x, y: custompos.y }) : screen.getPrimaryDisplay())
             const scale = type ? (customisation ? customisation.scale : config.get(`customisation.${type}.scale`) as number) / 100 : 1
-        
+
             // "screenwidth"/"screenheight" already have scaleFactor applied when returned as Electron.Display
             const screenwidth = monitor.bounds.width
             const screenheight = monitor.bounds.height
             const notifywidth = dims.width * scale
             const ssheight = (type && wintype !== "sswin" && config.get("screenshots") === "overlay" && customisation && customisation.ssdisplay) ? 175 : 0
             const notifyheight = (dims.height + ssheight) * scale
-        
+
             const bordersize = 50
             const glowsize = type ? bordersize * scale : 0
 
             // `!offset ? 0 : ...` fixes issue where presets containing HTML with a `meta` tag "offset" attribute value of 0 would still be assigned an offset, causing incorrect placement
             const top = !offset ? 0 : ((glowsize / 2) * -1) + (bordersize / 2)
             const bottom = !offset ? 0 : (glowsize / 2) - (bordersize / 2)
-        
+
             const positions = {
                 topleft: { x: top, y: top },
                 topcenter: { x: (screenwidth / 2) - ((notifywidth + glowsize) / 2), y: top },
@@ -1158,9 +1210,9 @@ export const listeners = {
                 bottomcenter: { x: (screenwidth / 2) - ((notifywidth + glowsize) / 2), y: (screenheight - (notifyheight + glowsize) + bottom) },
                 bottomright: { x: (screenwidth - (notifywidth + glowsize) + bottom), y: (screenheight - (notifyheight + glowsize) + bottom) }
             } as Positions
-        
+
             const { x, y } = (type && wintype === "extwin") ? { x: 0, y: 0 } : (type ? (((customisation ? customisation.usecustompos : config.get(`customisation.${type}.usecustompos`)) ? custompos : positions[(customisation ? customisation.pos : config.get(`customisation.${type}.pos`)) as "topleft" | "topcenter" | "topright" | "bottomleft" | "bottomcenter" | "bottomright"])) : positions[config.get("nowtrackingpos")])
-        
+
             return {
                 width: notifywidth + glowsize,
                 height: notifyheight + glowsize,
@@ -1172,7 +1224,7 @@ export const listeners = {
         const shownotify = (win: BrowserWindow,bounds: { width: number, height: number, x: number, y: number },isextwin?: boolean,istrackwin?: boolean) => {
             const { width, height, x, y } = bounds
             const offscreenpx: number | null = process.platform === "linux" && !sanconfig.get().store.extwinnotify ? 10000  : null
-            
+
             isextwin && win.setResizable(true)
             win.setSize(Math.round(width),Math.round(height))
 
@@ -1198,7 +1250,7 @@ export const listeners = {
             for (const queueobj of queue) {
                 queueobj.order -= 1
             }
-            
+
             if (type === "Notification") {
                 // `toastXML` overrides all other options on Windows, but not on other platforms
                 notifywins.set(notify.id,new Notification({
@@ -1305,9 +1357,9 @@ export const listeners = {
                 ipcMain.once(`offscreenready_${notify.id}`,async () => offscreenwin && offscreenwin.webContents.send("notify",await notifyinfo(true)))
 
                 notifywin.once("ready-to-show", async () => {
-                    const { notifymax } = config.store                    
+                    const { notifymax } = config.store
                     const info = await notifyinfo()
-                    
+
                     notifymax > 1 && info.customisation.preset !== "os" && audio.playhighestpriority(info,info.info.type) // Play the audio for the highest priority notification
                     ;(notifywin as BrowserWindow).webContents.send("notify",info,notify.id)
 
@@ -1320,14 +1372,14 @@ export const listeners = {
                         }
                     }
                 })
-    
+
                 config.get("notifydebug") && sanhelper.setdevtools(notifywin)
                 config.get("nvda") && clipboard.writeText(`${info.unlockmsg}. ${info.title}. ${info.desc}.`)
                 config.get("customtrigger") && setTimeout(async () => {
                     const { jstosteamkeycodes, steamkeycodes } = await import("./keycodes")
                     const sckeys = config.get("customtriggershortcut").split("+")
                     const keypresses: (string | number)[] = []
-                    
+
                     for (const sckey of sckeys) {
                         const hotkey = `KEY_${jstosteamkeycodes.get(sckey) || sckey}`
                         const steamkeycode = steamkeycodes.get(hotkey)
@@ -1341,7 +1393,7 @@ export const listeners = {
 
                     sanhelper.triggerkeypress(keypresses)
                 },((config.get(config.get("customtriggerusedisplaytime") ? `customisation.${notify.type}.displaytime` : "customtriggerdelay") as number) * 1000) + (config.get("customtriggerusedisplaytime") ? 1000 : 0))
-    
+
                 ipcMain.once("notifyready", (event,res: Res) => {
                     const { msg, dims } = res
 
@@ -1359,7 +1411,7 @@ export const listeners = {
                             const top = pos.startsWith("top")
 
                             let stack = posmap.get(pos)
-                            
+
                             if (!stack) {
                                 stack = { y: bounds.y, items: [] }
                                 posmap.set(pos,stack)
@@ -1368,11 +1420,11 @@ export const listeners = {
                             let offset = 0
 
                             const { notifyspace, customisation } = config.store
-                            
+
                             for (const item of stack.items) {
                                 offset += item.bounds.height + Math.round(notifyspace * (customisation[item.type].scale / 100))
                             }
-                            
+
                             bounds.y = top ? stack.y + offset : stack.y - offset
 
                             stack.items.push({ id: notify.id, win: notifywin, bounds, type: notify.type })
@@ -1381,7 +1433,7 @@ export const listeners = {
 
                         shownotify(win,bounds,isextwin)
                     }
-                    
+
                     preparewin(notifywin as BrowserWindow)
                     extwin && [(offscreenwin as BrowserWindow),extwin].forEach(win => preparewin(win,true))
                     ipcMain.emit(`offscreenready_${notify.id}`)
@@ -1389,7 +1441,7 @@ export const listeners = {
             }
 
             const notifywin = notifywins.get(notify.id)! as BrowserWindow
-            const offscreenwin = offscreenwins.get(notify.id)! as BrowserWindow 
+            const offscreenwin = offscreenwins.get(notify.id)! as BrowserWindow
 
             (config.get("audiosrc") === "app" || notifywin instanceof Notification && config.get("audiosrc") !== "off") && win.webContents.send("appaudio",notify.type)
 
@@ -1405,7 +1457,7 @@ export const listeners = {
                 notifywin instanceof BrowserWindow ? notifywin.webContents.send("notifyfinished",id) : ipcMain.emit("notifyfinished",null,id)
 
                 log.write("INFO",`Animation for ID ${id} finished - closing notification window...`)
-                
+
                 if (extwin) {
                     if (!offscreenwin) return log.write("WARN",`"offscreenwin" not found - cannot send "notifyfinished" ipc event`)
                     offscreenwin.webContents.send("notifyfinished",id)
@@ -1423,7 +1475,7 @@ export const listeners = {
             const notify = { id: Array.from(notifywins.keys()).find(key => key === id) }
             const notifywin = notifywins.get(id)
             const offscreenwin = offscreenwins.get(id)
-            
+
             if (!notify.id || notify.id !== id || !notifywin) return
 
             try {
@@ -1498,20 +1550,20 @@ export const listeners = {
             const notifywin = id ? notifywins.get(id) : null
             const offscreenwin = id ? offscreenwins.get(id) : null
             if (!id || !notifywin) return log.write("ERROR",`No ${!id ? "ID" : `window for ID ${id}`} found`)
-            
+
             try {
                 notifywin && (notifywin instanceof BrowserWindow ? notifywin.destroy() : notifywin.close()) // Destroys/closes the window
                 notifywins.delete(id)
-    
+
                 offscreenwin && offscreenwin.destroy() // Destroys/closes the window
                 offscreenwins.delete(id)
 
                 // Emit dummy events to trigger `.once()` listeners, which removes them for subsequent notifications
                 // Note: "notifyready" event cannot be triggered here, as it causes an error which prevents subsequent notifications from displaying
                 ;["notifyfinished","animend"].forEach(event => ipcMain.emit(event,null,id))
-                
+
                 id && runningmap.delete(id)
-    
+
                 win.webContents.send("notifyprogress",0,true) // Resets UI progress circle
             } catch (err) {
                 success = false
@@ -1539,7 +1591,7 @@ export const listeners = {
             const { width: notifywidth, height: notifyheight } = sanhelper.getpresetbounds(`customisation.${type}.preset`)
             const { width, height } = setnotifybounds({ width: Math.round(notifywidth), height: Math.round(notifyheight) },type) as { width: number, height: number }
             const customisation = config.get(`customisation.${type}`) as Customisation
-            
+
             poswin = new BrowserWindow({
                 title: `Steam Achievement Notifier (V${sanhelper.version}): Notification Position`,
                 width: Math.round(width),
@@ -1659,7 +1711,7 @@ export const listeners = {
                 const VDF = await import("simple-vdf")
                 const localconfig = fs.readFileSync(path.join(sanhelper.steampath,"userdata",`${steam3id}`,"config","localconfig.vdf")).toString()
                 const { InGameOverlayScreenshotHotKey } = VDF.parse(localconfig).UserLocalConfigStore.system || "KEY_F12"
-                
+
                 const { steamkeycodes } = await import("./keycodes")
                 const hotkey = steamkeycodes.get(InGameOverlayScreenshotHotKey)?.[0]
                 if (!hotkey) return log.write("WARN",`"${InGameOverlayScreenshotHotKey}" not found in "steamkeycodes" Map`)
@@ -1749,10 +1801,10 @@ export const listeners = {
 
         ipcMain.on("storekey",async (event,key: string) => {
             const { safeStorage } = await import("electron")
-    
+
             // safeStorage encryption is not available on Steam Deck
             const encrypted = key.length ? (safeStorage.isEncryptionAvailable() ? safeStorage.encryptString(key).toString("base64") : key) : ""
-    
+
             const config = sanconfig.get()
             config.set("rakey",encrypted)
             log.write("INFO",`"rakey"${safeStorage.isEncryptionAvailable() ? " securely" : ""} stored in config successfully`)
@@ -1763,7 +1815,7 @@ export const listeners = {
         const decryptrakey = async (key: string): Promise<string | Error> => {
             try {
                 const { safeStorage } = await import("electron")
-                return safeStorage.isEncryptionAvailable() ? safeStorage.decryptString(Buffer.from(key,"base64")) : sanconfig.get().store.rakey                
+                return safeStorage.isEncryptionAvailable() ? safeStorage.decryptString(Buffer.from(key,"base64")) : sanconfig.get().store.rakey
             } catch (err) {
                 return err as Error
             }
@@ -1780,7 +1832,7 @@ export const listeners = {
             if (!appid && !gameid) await trophyvideo.setTrackingActive(false)
             await trophyvideo.setGameDetected(!!(appid || gameid))
         })
-        
+
         ipcMain.on("emu",(event,_emu: string | null) => emu = _emu) // Updates global `emu` variable with name of current emulator (or `null` if nothing is running)
         ipcMain.on("getemu",event => ipcMain.emit("sendemu",null,emu)) // Sends emulator name to `screenshot.ts` if `notify.ra` is true
 
@@ -1793,7 +1845,7 @@ export const listeners = {
                 worker = null
             },(config.get("initdelay") * 1000) + 1000)
 
-            updatetray(tray,undefined,undefined,true)
+            updatetray(tray,undefined,undefined,undefined,true)
         })
 
         ipcMain.on("addtosteam",(event,imgpath: string,width: number,height: number) => {
@@ -1804,7 +1856,7 @@ export const listeners = {
         ipcMain.on("gametimerwin",(event,value: boolean) => {
             if (value && gametimerwin) return log.write("WARN",`${defaultextwins.gametimer.wintitle} window already active`)
             const config = sanconfig.get()
-            
+
             // If `reopenonlaunch` is true when the app closes, the window reopens next time the app is launched (as it writes bool value to config)
             let reopenonlaunch = true
 
@@ -1843,7 +1895,7 @@ export const listeners = {
             const inactive = ra ? "steam" : "ra"
 
             if (runninggametimer[inactive].appid !== 0) return log.write("WARN",`${defaultextwins.gametimer.wintitle} already active for ${inactive === "ra" ? "RA Game" : "App"}ID ${runninggametimer[inactive].appid}`)
-            
+
             if (appid) {
                 runninggametimer[active].appid = appid
                 if (runninggametimer[active].started === 0) runninggametimer[active].started = Date.now()
@@ -1881,10 +1933,10 @@ export const listeners = {
                 const activetimers = Object.entries(runninggametimer).filter(([_,timer]) => timer.appid !== 0 && timer.started !== 0)
                 if (!activetimers.length) throw new Error(`No active Game Timer found for AppID ${appid}`)
                 if (activetimers.length > 1) throw new Error("Multiple active Game Timers found")
-                
+
                 const [active] = activetimers[0] as ["steam" | "ra",RunningGameTimer]
                 runninggametimer[active].started = Date.now()
-    
+
                 gametimerwin.webContents.send("resetgametimer",runninggametimer[active])
             } catch (err) {
                 ipcMain.emit("resetgametimerstatus",null,undefined,err as Error)
@@ -1896,7 +1948,7 @@ export const listeners = {
         ipcMain.on("gametimerappid",async event => {
             const appid = await new Promise<number | null>(resolve => {
                 if (!gametimerwin) return resolve(null)
-                
+
                 ipcMain.once("gametimerwinappid",(event,appid: number) => resolve(appid))
                 gametimerwin.webContents.send("gametimerwinappid")
             })

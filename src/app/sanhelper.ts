@@ -6,7 +6,7 @@ import { usertheme } from "./usertheme"
 import { keycodes } from "./keycodes"
 import { language } from "./language"
 import tippy, { followCursor, Instance, Props } from "tippy.js"
-import { getSteamPath, getAppInfo, pressKeysWin32, pressKeysLinux, depsInstalled, getHqIcon, log as sanhelperrslog, hdrScreenshot, getWindowBounds } from "sanhelper.rs"
+import { getSteamPath, getAppInfo, pressKeysWin32, pressKeysLinux, depsInstalled, getHqIcon, log as sanhelperrslog, hdrScreenshot, getWindowBounds, findElectronDisplay } from "sanhelper.rs"
 import { selectorelems } from "./elemselector"
 import { createcolorpicker } from "./colorpicker"
 import { raelems, rasupported } from "./ra"
@@ -105,23 +105,23 @@ export const sanhelper: SANHelper = {
     },
     getosinfo: async () => {
         if (process.platform !== "win32" && process.platform !== "linux") return `Unsupported platform ("${process.platform}")`
-        
+
         const os = await import("os")
-        
+
         if (process.platform === "win32") {
             const buildno = parseInt(os.release().split(".")[2])
-    
+
             if (buildno >= 22000) return `Windows 11 (${buildno})`
             if (buildno >= 10240) return `Windows 10 (${buildno})`
-            
+
             return `Windows [Unsupported] (${buildno})`
         }
-        
+
         try {
             const match = fs.readFileSync("/etc/os-release","utf8").match(/^PRETTY_NAME="(.+)"$/m)
             if (match) return match[1]
         } catch {}
-        
+
         return `Linux kernel (${os.release()})`
     },
     gethqicon: (appid: number = 0) => getHqIcon(appid),
@@ -142,7 +142,7 @@ export const sanhelper: SANHelper = {
             document.body.setAttribute("error","")
             log.write("ERROR",err)
         }
-        
+
         ipcRenderer.on("error", (event,err) => handleerr((err as Error).stack || err as string))
         window.onerror = (event,src,lineno,colno,err) => handleerr(err ? `${err.stack}` : event.toString())
         window.onunhandledrejection = err => handleerr(err.toString())
@@ -160,27 +160,28 @@ export const sanhelper: SANHelper = {
     getdisplays: (): Promise<Display[]> => {
         return new Promise<Display[]>(resolve => {
             const monitors: Display[] = []
-    
+
             ipcRenderer.once("displays", (event,displays: {
                 primary: Display,
                 all: Display[]
             }) => {
                 const primary = displays.all.find(d => displays.primary.id === d.id)
-    
+
                 for (const i in displays.all) {
                     Object.assign(displays.all[i],{
                         primary: primary && primary.id === displays.all[i].id
                     })
-    
+
                     monitors.push(displays.all[i])
                 }
-    
+
                 resolve(monitors)
             })
 
             ipcRenderer.send("displays")
         })
     },
+    findelectrondisplay: (id: number) => findElectronDisplay(id),
     setdevtools: async (win: Electron.BrowserWindow) => {
         const { BrowserWindow, screen } = await import("electron")
         const { width, height } = screen.getPrimaryDisplay().bounds
@@ -213,9 +214,9 @@ export const sanhelper: SANHelper = {
     switchcustomisertab: ({ target }: Event,trophymode: boolean) => {
         const attrs = ["main",...(trophymode ? ["semi"] : []),"rare", "plat"] as NotifyType[]
         const i = attrs.indexOf(attrs.find(attr => document.body.hasAttribute(attr))!)
-        
+
         if (i === -1) return
-        
+
         switch ((target as HTMLElement)!.id) {
             case "customiserbackbtn":
                 if (i > 0) {
@@ -253,7 +254,7 @@ export const sanhelper: SANHelper = {
 
         // "false" unregisters all shortcuts then returns
         ipcRenderer.send("shortcut",false)
-        
+
         const keydown = (event: KeyboardEvent) => {
             const key = event.code.toUpperCase()
 
@@ -347,7 +348,7 @@ export const sanhelper: SANHelper = {
             try {
                 const xdgdesktopdir = fs.readFileSync(path.join(process.env.HOME!,".config","user-dirs.dirs")).toString().split("\n").find(item => item.includes("XDG_DESKTOP_DIR"))?.match(/"([^"]+)"/)?.[1]?.replace(/^\$(?:\{)?HOME(?:\})?/,process.env.HOME!)
                 if (!xdgdesktopdir || (xdgdesktopdir && !fs.existsSync(xdgdesktopdir))) throw new Error(`"${xdgdesktopdir}" not found - reverting to default Desktop path...`)
-                
+
                 return xdgdesktopdir
             } catch (err) {
                 return path.join(process.env[platform === "linux" ? "HOME" : "USERPROFILE"]!,"Desktop")
@@ -374,13 +375,15 @@ export const sanhelper: SANHelper = {
     noanim: (value: boolean) => document.body.toggleAttribute("noanim",value),
     tooltips: (value: boolean) => sanhelper.settooltips(value),
     noshortcuts: (value: boolean) => ipcRenderer.send("shortcut",!value),
+    usesanwatcher: () => ipcRenderer.send("usesanwatcher"),
     debug: (value: boolean) => ipcRenderer.send("debugwin",value),
+    workerdebug: () => ipcRenderer.send("releasegame",true),
     usecustomfiles: () => ipcRenderer.send("closeextwin"),
     ramode: (value: boolean) => ipcRenderer.send("ra",value),
     trophymode: (value: boolean,config: Store<Config>,customiser?: boolean) => {
         // Patches `localStorage.themeswitch.<appid>.themes` to add missing keys (e.g. "semi") if missing when Trophy Mode is toggled
         ;(async () => await sanhelper.verifylocalstorage("themeswitch"))()
-        
+
         document.body.toggleAttribute("trophymode",value)
 
         const { customisation, trophymode } = config.store
@@ -397,7 +400,7 @@ export const sanhelper: SANHelper = {
         for (const type of Object.keys(customisation) as NotifyType[]) {
             synced && synced === type && config.set(`customisation.${type}.synctheme`,false) // Removes synced Themes when toggling Trophy Mode
             document.querySelectorAll(`.logo#${customiser ? "customiser" : ""}logo > img[${type}]`).forEach(img => (img as HTMLImageElement).src = trophyimgpath(trophymap[type],customiser))
-            
+
             // Reset and remove (via CSS) "Use Rarity" options when Trophy Mode is enabled
             if (value) {
                 for (const id of ["glow","iconborder"] as const) {
@@ -430,7 +433,7 @@ export const sanhelper: SANHelper = {
         }
 
         config.set((keypath ? `${keypath}.` : "") + elem.id,!config.get((keypath ? `${keypath}.` : "") + elem.id) as boolean)
-        
+
         // `elem.checked` property does not update when clicking `input` element if `requestAnimationFrame`/`setTimeout` is not used here.
         requestAnimationFrame(() => {
             elem.checked = config.get((keypath ? `${keypath}.` : "") + elem.id) as boolean
@@ -448,8 +451,11 @@ export const sanhelper: SANHelper = {
             elem.textContent = ""
 
             const monitors = key as Monitor[]
-            let currentmonitor = monitors.find(monitor => config.get("lastknownmonitorlbl") === monitor.label)
-            if (!currentmonitor) currentmonitor = monitors.find(monitor => monitor.id === config.get("monitor")) || monitors.find(monitor => monitor.primary)!
+            // let currentmonitor = monitors.find(monitor => config.get("lastknownmonitorlbl") === monitor.label)
+            // if (!currentmonitor) currentmonitor = monitors.find(monitor => monitor.id === config.get("monitor")) || monitors.find(monitor => monitor.primary)!
+
+            const currentmonitor = monitors.find(monitor => monitor.id === config.get("monitor")) || monitors.find(monitor => monitor.primary)
+            if (!currentmonitor) throw new Error(`Current monitor "id" ${config.get("monitor")} not found in "monitors" array`)
 
             for (const monitor of monitors) {
                 const opt = document.createElement("option")
@@ -462,11 +468,8 @@ export const sanhelper: SANHelper = {
             elem.onchange = ({ target }: Event) => {
                 const select = target as HTMLSelectElement
                 const id = parseInt(select.value)
-                const lbl = select.querySelector(`option[value="${id}"]`)!.textContent
 
                 config.set("monitor",id)
-                config.set("lastknownmonitorlbl",lbl)
-
                 sanhelper.devmode && ipcRenderer.send("montest",id)
             }
 
@@ -490,12 +493,12 @@ export const sanhelper: SANHelper = {
         }
 
         const selectinputtype = (target: EventTarget) => ((target instanceof HTMLSelectElement ? target as HTMLSelectElement : target as HTMLInputElement)).value
-        
+
         const skipelems = [
             ...selectorelems,
             ...raelems
         ]
-        
+
         // Fixes issue where switching Customiser tabs/setting Screenshots to "off" causes an error on next line
         if (skipelems.find(id => elem.id === id)) return
 
@@ -505,7 +508,7 @@ export const sanhelper: SANHelper = {
 
         elem.onchange = ({ target }: Event) => {
             const scalelock = elem.id === "scale" && config.get("notifymax") > 1 // Locks all notification types to the same scaling if Max Notifications > 1
-            
+
             config.set(`${scalelock ? `customisation.main.` : (keypath ? `${keypath}.` : "")}${elem.id}`,(target instanceof HTMLInputElement && (!scalelock && (target.type === "range" || target.type === "number"))) ? parseFloat(target.value) : ((scalelock || typeof key === "number") ? parseInt(selectinputtype(target!)) : selectinputtype(target!)))
             sanhelper.updatetabs(noreload(elem) !== undefined)
 
@@ -523,7 +526,7 @@ export const sanhelper: SANHelper = {
             config.get("debug") && ipcRenderer.emit("updatemenu",null,"debug")
             elem.id === "screenshots" && sanhelper.loadadditionaltooltips(document.querySelector(`dialog[menu] #settingscontent`))
             elem.id === "rauser" && ipcRenderer.emit("ra") // If `ra` Settings elements are updated, restart the `startra()` function in `worker.ts` with current settings
-            
+
             // Updates labels and tooltips for percentage-based options while Customiser is open
             // Also ensures Silver Percentage value is always reset to be above the Rare Percentage value on change
             for (const id of (["rarity","semirarity"] as const)) {
@@ -531,12 +534,12 @@ export const sanhelper: SANHelper = {
                     const { rarity, semirarity } = config.store
                     const input = document.querySelector(`input[type="range"]#semirarity`)! as HTMLInputElement
                     const rounded = Math.ceil(rarity) + 1
-                    
+
                     if (rarity > semirarity) {
                         config.set("semirarity",rounded)
                         input.value = `${rounded}`
                     }
-                    
+
                     input.min = `${rounded}`
                 }
 
@@ -551,7 +554,7 @@ export const sanhelper: SANHelper = {
                 ipcRenderer.emit("ra")
             }
 
-            if (process.platform === "linux") {   
+            if (process.platform === "linux") {
                 for (const [lib,entries] of deps) {
                     for (const [id,section] of entries) {
                         if (id === "ssmode" && elem.id === id && sanhelper.depsinstalled(lib,section || "media")) {
@@ -574,7 +577,7 @@ export const sanhelper: SANHelper = {
 
         const type = sanhelper.type
         const key = config.get((keypath ? `${keypath}.` : "") + elem.id.replace(/\d/,""))
-        
+
         elem.onclick = () => {
             const attr = ["img","audio","dir","font","sanbak"].find(attr => elem.hasAttribute(attr))
 
@@ -586,13 +589,13 @@ export const sanhelper: SANHelper = {
                 const newkeypath = (keypath ? `${keypath}.` : "") + (iconkey ? (Array.isArray(config.get((keypath ? `${keypath}.` : "") + iconkey)) ? `${iconkey}.${parseInt(elem.id.replace(/[^\d]/g,"")) - 1}` : iconkey) : elem.id)
 
                 config.set(newkeypath,filepath)
-                
+
                 if (["backup","restore"].map(id => `${id}path`).includes(elem.id)) {
                     elem.textContent = filepath
                     const okbtn = document.querySelector("dialog .btnwrapper > button#okbtn") as HTMLButtonElement | null
                     okbtn && (okbtn.tabIndex = 0)
                 }
-                
+
                 sanhelper.updatetabs(noreload(elem) !== undefined)
             })
 
@@ -629,7 +632,7 @@ export const sanhelper: SANHelper = {
 
                 if (((type === "main" || type === "semi") && (i - 1) > 1) || ((type !== "main" && type !== "semi") && (i - 1) < 2)) return elem.setAttribute("novalue","")
             }
-            
+
             elem.parentElement!.querySelector("span")!.textContent = type === "plat" ? await language.get("decoration",["customiser","icons","content"]) : `${await language.get(Array.isArray(key) ? "rarity" : "decoration",["customiser","icons","content"])}${Array.isArray(key) ? `: ${raritylbl}` : ""}`
         }
     },
@@ -725,7 +728,7 @@ export const sanhelper: SANHelper = {
                         inst.setProps({ animation: document.body.hasAttribute("noanim") ? false : "scale" })
                     }
                 })
-    
+
                 tippies.push(tt)
             }
         })
@@ -740,7 +743,7 @@ export const sanhelper: SANHelper = {
             const color = clr as HTMLInputElement
 
             color.style.setProperty("--configcolor",config.get(`${!color.id.startsWith("webhookembedcolor") ? `customisation.${sanhelper.type}.` : ""}${color.id}`) as string)
-    
+
             const tt = tippy(`#${color.id}`,{
                 allowHTML: true,
                 appendTo: dialog || document.body,
@@ -757,13 +760,13 @@ export const sanhelper: SANHelper = {
                 },
                 onMount: inst => {
                     menu.addEventListener("scroll",() => inst.hide(),{ once: true })
-    
+
                     const html = `
                         <input type="text" spellcheck="false" maxlength="9">
                         <span id="colorcode"></span>
                         <div id="picker"></div>
                     `
-        
+
                     inst.setContent(html)
                     createcolorpicker(inst,color,menuelem)
                 },
@@ -772,7 +775,7 @@ export const sanhelper: SANHelper = {
                     currenttippy === inst && (currenttippy = null)
                 }
             })
-    
+
             tippies.push(tt)
         })
     }),
@@ -795,11 +798,13 @@ export const sanhelper: SANHelper = {
             ["lognum",""],
             ["notifymax",""],
             ["notifyspace","px"],
-            ["audiocooldown","ms"]
+            ["audiocooldown","ms"],
+            ["releasewaittime","s"]
         ])
 
         const wideelems = [
-            "exportachdata"
+            "exportachdata",
+            "usesanwatcher"
         ]
 
         range.forEach((value,key) => {
@@ -822,7 +827,7 @@ export const sanhelper: SANHelper = {
                         inst.setProps({ animation: document.body.hasAttribute("noanim") ? false : "scale" })
                     }
                 })
-    
+
                 tippies.push(tt)
             }
         })
@@ -839,7 +844,7 @@ export const sanhelper: SANHelper = {
 
         elems.forEach(async elem => {
             const parent = document.querySelector(`.rect:has(> #${elem})`) as any
-            
+
             const tt = tippy(`#${elem}`,{
                 ...defaulttippy,
                 maxWidth: sanhelper.maxwidth(wideelems,elem),
@@ -904,7 +909,7 @@ export const sanhelper: SANHelper = {
                             inst.setProps({ animation: document.body.hasAttribute("noanim") ? false : "scale" })
                         }
                     }) as Instance<Props>[]
-            
+
                     tippies.push(tt)
                 })
             })
@@ -954,7 +959,7 @@ export const sanhelper: SANHelper = {
                         inst.setProps({ animation: document.body.hasAttribute("noanim") ? false : "scale" })
                     }
                 }) as Instance<Props>[]
-                
+
                 tippies.push(tt)
             })
 
@@ -1016,7 +1021,7 @@ export const sanhelper: SANHelper = {
         }
 
         const exclusionlistnewdialog = document.querySelector(`dialog:has(#exclusionappid)`)
-        
+
         if (exclusionlistnewdialog && exclusionlistnewdialog.querySelector(`input[appid]`)) {
             requestAnimationFrame(() => {
                 exclusionlistnewdialog.querySelectorAll(
@@ -1065,17 +1070,17 @@ export const sanhelper: SANHelper = {
             dialogtitles && dialogtitles.forEach(elem => {
                 (elem as HTMLElement).onclick = () => {
                     elem.toggleAttribute("closed",!elem.hasAttribute("closed"))
-    
+
                     elem.hasAttribute("closed") && !closedstate.includes(elem.id) && closedstate.push(elem.id)
                     !elem.hasAttribute("closed") && closedstate.includes(elem.id) && closedstate.splice(closedstate.indexOf(elem.id),1)
-    
+
                     localStorage.setItem("closedstate",JSON.stringify([...closedstate],null,4))
                 }
-    
+
                 doctitles && doctitles.forEach(elem => {
                     elem.toggleAttribute("notransition",elem.hasAttribute("closed"))
                     elem.toggleAttribute("closed",closedstate.includes(elem.id))
-    
+
                     // Remove "notransition" attribute after transition duration to prevent elements from playing transition animation when opening menu
                     setTimeout(() => elem.removeAttribute("notransition"),200)
                 })
@@ -1093,7 +1098,7 @@ export const sanhelper: SANHelper = {
     },
     depsinstalled: (lib: "keypressrs" | "hdr" | "wmctrl",section: string): string => {
         const missinglib = depsInstalled(lib) // `depsInstalled()` returns the string(s) of missing deps (for logging purposes), or "" if installed
-        
+
         if (process.platform === "linux" && missinglib) {
             if (!deps.has(lib)) throw new Error(`"${lib}" not found in "deps" map`)
 
@@ -1193,7 +1198,7 @@ export const sanhelper: SANHelper = {
                     </div>
                 </div>
             `
-            
+
             elems.add([id,html])
         }
 
@@ -1204,7 +1209,7 @@ export const sanhelper: SANHelper = {
             const input = opt.querySelector(`input[type="checkbox"]`) as HTMLInputElement
             const installdir = opt.querySelector(`input[type="text"]`) as HTMLInputElement
             const installdirvalue = config.get(installdir.id) as string
-            
+
             installdir.placeholder = await language.get("placeholder",["settings","ra","content"])
             installdir.value = installdirvalue
 
@@ -1242,7 +1247,7 @@ export const sanhelper: SANHelper = {
             }
 
             const btn = opt.querySelector(`button[id$="browse"]`) as HTMLButtonElement
-                
+
             btn.onclick = event => {
                 const btn = event.target as HTMLButtonElement
                 const input = btn.parentElement!.querySelector("input") as HTMLInputElement
@@ -1252,7 +1257,7 @@ export const sanhelper: SANHelper = {
                     const value = dirpath[0].replace(/\\/g,"/")
 
                     config.set(input.id,value)
-    
+
                     input.value = value
                 })
 
@@ -1268,10 +1273,10 @@ export const sanhelper: SANHelper = {
 
             elems.forEach(async ([id,html]) => {
                 raemuswrapper.insertAdjacentHTML("beforeend",html)
-                
+
                 const opt = raemuswrapper.querySelector(`.opt:has(input#${id})`) as HTMLElement
                 opt.onclick = null
-                
+
                 await setraemuactions(opt,id,config)
             })
         })
@@ -1316,7 +1321,7 @@ export const sanhelper: SANHelper = {
     verifylocalstorage: async (id: "linkgame" | "themeswitch" | "statwin" | "pinned") => {
         const { log } = await import("./log")
         const lsentry = localStorage.getItem(id)
-    
+
         if (!lsentry) {
             localStorage.setItem(id,JSON.stringify(id === "pinned" ? [] : {}))
             return log.write("INFO",`"${id}" key in localStorage created successfully`)
@@ -1325,11 +1330,11 @@ export const sanhelper: SANHelper = {
         // Patches existing "statwin" values if legacy string-based array method is currently in use (< V1.9.40)
         if (id === "statwin") {
             const lsentry: Record<string,StatsEntry[]> = JSON.parse(localStorage.getItem(id) || "{}")
-            
+
             for (const [appid,statsentry] of Object.entries(lsentry)) {
                 if (statsentry.every(item => typeof item === "string")) {
                     log.write("WARN",`AppID ${appid} uses legacy "${id}" array in localStorage - patching...`)
-            
+
                     const statwinobj: Record<string,StatsEntry[]> = {
                         ...lsentry,
                         [appid]: statsentry.map(apiname => {
@@ -1339,28 +1344,28 @@ export const sanhelper: SANHelper = {
                             }
                         })
                     }
-            
+
                     localStorage.setItem(id,JSON.stringify(statwinobj,null,4))
                     log.write("INFO",`"${id}" entry for AppID ${appid} patched successfully`)
                 }
             }
         }
-        
+
         if (id !== "themeswitch") return log.write("INFO",`"${id}" key in localStorage verified successfully`)
-    
+
         const types = ["main","semi","rare","plat"] as NotifyType[]
         let json: Record<string,ThemeSwitch>
-        
+
         try {
             json = JSON.parse(lsentry)
         } catch {
             return log.write("WARN",`Failed to parse "${id}" key in localStorage - skipping...`)
         }
-    
+
         for (const appid in json) {
             const themes = json[appid]?.themes
             if (!themes) continue
-    
+
             for (const type of types) {
                 if (!(type in themes)) {
                     themes[type] = 0
@@ -1368,15 +1373,15 @@ export const sanhelper: SANHelper = {
                 }
             }
         }
-    
+
         let err: Error | null = null
-    
+
         try {
             localStorage.setItem(id,JSON.stringify(json))
         } catch (e) {
             err = e as Error
         }
-    
+
         log.write(!err ? "INFO" : "WARN",!err ? `"${id}" key in localStorage verified successfully` : `Unable to verify "${id}" key in localStorage: ${err}`)
     },
     settabindex: (btn: HTMLButtonElement,values: (string | null | undefined)[]) => btn.tabIndex = values.every(value => Boolean(value)) ? 0 : -1,
@@ -1406,7 +1411,7 @@ export const sanhelper: SANHelper = {
                 } catch (err) {
                     log.write("ERROR",`Unable to rollback to previous app state: ${(err as Error).message}`)
                 }
-                
+
                 throw err
             }
         } catch (err) {

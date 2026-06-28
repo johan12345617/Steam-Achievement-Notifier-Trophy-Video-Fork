@@ -349,6 +349,7 @@ export const translations = {
                 debug: "Vianetsintäpaneeli",
                 userust: "Vaihtoehtoinen käsittelytila",
                 notifydebug: "Näytä Ilmoitus Vianmäärityksestä",
+                workerdebug: "Näytä Workerin DevTools",
                 exportachdata: "Vie saavutustiedot",
                 lognum: "Aiemmat lokitiedostot", 
                 audiocooldown: "Äänien viive",
@@ -369,7 +370,9 @@ export const translations = {
                     `Valitse <span class="hl">.sanbak</span> varmuuskopiotiedosto palautettavaksi. Tämä tiedosto säilyy palautuksen jälkeen`,
                     "❗ Vahvistamisen jälkeen sovellus käynnistyy uudelleen palauttaakseen valitun varmuuskopiotiedoston"
                 ],
-                restorefailed: "Varmuuskopion palautus epäonnistui."
+                restorefailed: "Varmuuskopion palautus epäonnistui.",
+                usesanwatcher: "SANWatcher",
+                releasewaittime: "Vapautuksen odotusaika"
             }
         },
         ra: {
@@ -673,6 +676,7 @@ export const translations = {
         debug: "Avaa Vianetsintäpaneeli, joka näyttää yksityiskohtaiset prosessiseurantatiedot",
         userust: "Käytä vaihtoehtoista Rust-pohjaista toimintoa tarkistaaksesi, ovatko seuratut peliprosessit tällä hetkellä käynnissä järjestelmässä. Kun ei ole valittu, oletusarvoinen NodeJS-pohjainen prosessin tarkistus otetaan käyttöön sen sijaan.",
         notifydebug: "Luo DevTools-ikkuna kaikille ilmoituksille. Hyödyllinen vianmääritykseen ja ongelmanratkaisuun ilmoitusongelmien yhteydessä",
+        workerdebug: "Luo DevTools-ikkuna Worker-prosessille. Hyödyllinen pelien seurantaongelmien virheenkorjaukseen/vianmääritykseen",
         usecustomfiles: "Mahdollistaa käyttäjän mukautettujen tiedostojen lataamisen ilmoituksiin. Varovaisuutta suositellaan tavallisille käyttäjille",
         showcustomfiles: "Avaa mukautettujen tiedostojen sijainti",
         log: "Avaa sovellusloki-ikkuna, joka näyttää tietoja prosessitoiminnasta, varoituksista ja virheistä",
@@ -892,7 +896,9 @@ export const translations = {
         gametimerwinaot: `Asettaa pelin valmistumisajastimen "Aina päällimmäisenä" -tilaan, jolloin ikkuna voidaan näyttää peli-ikkunan yläpuolella<br><br><span class="ttdesc">Kun tämä on käytössä, pelin valmistumisajastin ei enää rekisteröi käyttäjän toimintoja, kuten "klikkaus"-tapahtumia. Vuorovaikutuksen palauttamiseksi tämän asetuksen kanssa se on poistettava käytöstä</span>`,
         resetgametimer: "Nollaa nykyisen pelin valmistumisajastimen",
         noshortcuts: `Poistaa kaikki sovelluksen pikanäppäimet käytöstä<br><br><span class="ttdesc">Kun tämä on käytössä, <u>mikään sovelluksen pikanäppäimistä ei enää toimi</u>. Kaikki pikanäppäimiin liittyvät asetukset piilotetaan myös</span>`,
-        extwinnotify: "Vaihtaa kaikkien näytöllä näkyvien ilmoitusten näkyvyyttä käytettäessä Stream Notifications -ominaisuutta"
+        extwinnotify: "Vaihtaa kaikkien näytöllä näkyvien ilmoitusten näkyvyyttä käytettäessä Stream Notifications -ominaisuutta",
+        usesanwatcher: `Ota käyttöön SAN:n uusi peliprosessien valvonta<br><br><span class="ttdesc">Uuden SANWatcherin ja vanhojen automaattisten prosessienseurantamenetelmien erot ovat seuraavat:<br><br><div class="wrapper sanwatcher"><span class="hl">PÄÄLLÄ</span><ul><li>Valvoo aktiivisesti kaikkien pelin asennushakemistossa olevien prosessien käynnistys- ja lopetustapahtumia</li><li>Ei edellytä pelin suoritettavan tiedoston tuntemista nykyisen pelin vapauttamiseksi</li><li>Peliä edeltävien käynnistysohjelmien toiminta voi vaihdella, joten täyttä yhteensopivuutta kaikkien Steam-pelien kanssa ei voida taata</li></ul></div><br><div class="wrapper sanwatcher"><span class="hl" style="color: firebrick;">POIS PÄÄLTÄ</span><ul><li>Tarkistaa pelin asennushakemistosta käynnissä olevat suoritettavat tiedostot pelin käynnistyksen jälkeen</li><li>Edellyttää pelin suoritettavan tiedoston tuntemista nykyisen pelin vapauttamiseksi</li><li>Jos peliprosessia ei voida määrittää automaattisesti, käyttäjän on lisättävä manuaalisesti uusi merkintä kohtaan <span class="hl">Pelien automaattinen vapautus</span>, jotta pelit voidaan vapauttaa automaattisesti</li></ul></div>`,
+        releasewaittime: `Määritä, kuinka kauan SANWatcher odottaa uusien peliprosessien käynnistymistä ennen nykyisen pelin vapauttamista<br><br><span class="ttdesc">Jos esimerkiksi nykyinen peli käynnistää ennen varsinaista peliä esikäynnistys- tai asetusikkunan, tämä asetus määrittää, kuinka monta sekuntia SANWatcher odottaa varsinaisen peli-ikkunan ilmestymistä sen jälkeen, kun esikäynnistys- tai asetusikkuna on suljettu<br><br>Jos uusi aktiivinen peliprosessi havaitaan tämän odotusajan kuluessa, vapautus peruutetaan ja uutta aktiivista prosessia seurataan sen sijaan<br><br>💡 Pelin nimi <span style="animation: release calc(var(--transition) * 2.5) linear alternate infinite;">vilkkuu</span> <span class="hl">Pelinäyttö</span>-ruudussa, kun nykyinen peli odottaa vapauttamista</span>`
     },
     update: {
         updateavailable: "Päivitys saatavilla",

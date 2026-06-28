@@ -1,10 +1,10 @@
 {
-    "name": "sanhelperrs",
-    "version": "0.0.6",
+    "name": "sanwatcherrs",
+    "version": "0.0.1",
     "main": "index.js",
     "types": "index.d.ts",
     "napi": {
-        "name": "sanhelperrs",
+        "name": "sanwatcherrs",
         "triples": {
             "defaults": false,
             "additional": [

@@ -348,7 +348,8 @@ export const translations = {
                 maxretries: "Maximale Aantal Herpogingen",
                 debug: "Debugpaneel",
                 userust: "Alternatieve Verwerkingsmodus",
-                notifydebug: "Melding Debugger Weergeven",
+                notifydebug: "Melding Debugger weergeven",
+                workerdebug: "Worker DevTools weergeven",
                 exportachdata: "Prestatiegegevens exporteren",
                 lognum: "Vorige logbestanden", 
                 audiocooldown: "Audio-wachttijd",
@@ -369,7 +370,9 @@ export const translations = {
                     `Selecteer een <span class="hl">.sanbak</span> back-upbestand om van te herstellen. Dit bestand wordt bewaard na voltooiing van het herstel`,
                     "❗ Na bevestiging wordt de app opnieuw gestart om het geselecteerde back-upbestand te herstellen"
                 ],
-                restorefailed: "Kan back-up niet herstellen."
+                restorefailed: "Kan back-up niet herstellen.",
+                usesanwatcher: "SANWatcher",
+                releasewaittime: "Wachttijd voor vrijgave"
             }
         },
         ra: {
@@ -673,6 +676,7 @@ export const translations = {
         debug: "Open het Debugpaneel, dat gedetailleerde procesvolginformatie weergeeft",
         userust: "Gebruik een alternatieve Rust-gebaseerde functie om te controleren of de getrackte gameprocessen momenteel actief zijn op het systeem. Wanneer niet aangevinkt, zal de standaard NodeJS-gebaseerde procescontrole in plaats daarvan worden gebruikt.",
         notifydebug: "Maak een DevTools-venster voor alle meldingen. Handig voor het oplossen van problemen met meldingen",
+        workerdebug: "Maak een DevTools-venster voor het Worker-proces. Handig voor het debuggen/oplossen van problemen met het volgen van games",
         usecustomfiles: "Hiermee kunnen meldingen gebruikersaanpasbare bestanden laden. Voorzichtigheid is geboden voor reguliere gebruikers",
         showcustomfiles: "Open de locatie van de aangepaste bestanden",
         log: "Open het App-logvenster, waarin informatie wordt weergegeven over procesactiviteit, waarschuwingen en fouten",
@@ -892,7 +896,9 @@ export const translations = {
         gametimerwinaot: `Zet de spelvoltooiingstimer in de modus "Altijd bovenaan", zodat het venster boven het spelvenster wordt weergegeven<br><br><span class="ttdesc">Wanneer ingeschakeld, registreert de spelvoltooiingstimer geen gebruikersinteracties meer, zoals "klik"-gebeurtenissen. Om interactie met het venster opnieuw mogelijk te maken, moet deze optie worden uitgeschakeld</span>`,
         resetgametimer: "Reset de spelvoltooiingstimer voor het huidige spel",
         noshortcuts: `Schakelt alle sneltoetsen binnen de app uit<br><br><span class="ttdesc">Wanneer ingeschakeld, <u>werken alle sneltoetsen binnen de app niet langer</u>. Alle opties met betrekking tot sneltoetsen worden ook verborgen</span>`,
-        extwinnotify: "Schakelt de zichtbaarheid van alle meldingen op het scherm tijdens het gebruik van Stream Notifications"
+        extwinnotify: "Schakelt de zichtbaarheid van alle meldingen op het scherm tijdens het gebruik van Stream Notifications",
+        usesanwatcher: `Schakel SAN's nieuwe controlefunctie voor spelprocessen in<br><br><span class="ttdesc">De verschillen tussen de nieuwe SANWatcher en de oude methoden voor automatische procesdetectie zijn als volgt:<br><br><div class="wrapper sanwatcher"><span class="hl">AAN</span><ul><li>Controleert actief start-/afsluitgebeurtenissen van elk proces dat is opgeslagen in de installatiemap van het spel</li><li>Vereist niet dat het uitvoerbare bestand van het spel bekend is om het huidige spel vrij te geven</li><li>Het gedrag van opstartprogramma's vóór het spel kan verschillen, waardoor volledige compatibiliteit met alle Steam-spellen niet kan worden gegarandeerd</li></ul></div><br><div class="wrapper sanwatcher"><span class="hl" style="color: firebrick;">UIT</span><ul><li>Scant de installatiemap van het spel op actieve uitvoerbare bestanden nadat het spel is gestart</li><li>Vereist dat het uitvoerbare bestand van het spel bekend is om het huidige spel vrij te geven</li><li>Als het spelproces niet automatisch kan worden vastgesteld, moet de gebruiker handmatig een nieuwe vermelding toevoegen aan <span class="hl">Automatisch vrijgeven van spellen</span> zodat spellen automatisch kunnen worden vrijgegeven</li></ul></div>`,
+        releasewaittime: `Stel in hoe lang SANWatcher wacht totdat nieuwe gameprocessen worden gestart voordat de huidige game wordt vrijgegeven<br><br><span class="ttdesc">Als de huidige game bijvoorbeeld eerst een opstart-/configuratievenster opent voordat de daadwerkelijke game wordt gestart, bepaalt deze instelling hoeveel seconden SANWatcher wacht totdat het daadwerkelijke gamevenster verschijnt nadat het opstart-/configuratievenster is gesloten<br><br>Als binnen deze wachttijd een nieuw actief gameproces wordt gedetecteerd, wordt de vrijgave geannuleerd en wordt in plaats daarvan het nieuw actieve proces gevolgd<br><br>💡 De naam van de game zal <span style="animation: release calc(var(--transition) * 2.5) linear alternate infinite;">knipperen</span> in het vak <span class="hl">Gameweergave</span> terwijl de huidige game wacht om te worden vrijgegeven</span>`
     },
     update: {
         updateavailable: "Update beschikbaar",

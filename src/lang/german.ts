@@ -348,7 +348,8 @@ export const translations = {
                 maxretries: "Maximale Wiederholungsversuche",
                 debug: "Debug-Panel",
                 userust: "Alternativer Verarbeitungsmodus",
-                notifydebug: "Debug-Benachrichtigungen Anzeigen",
+                notifydebug: "Debug-Benachrichtigungen anzeigen",
+                workerdebug: "Worker-DevTools anzeigen",
                 exportachdata: "Erfolgsdaten exportieren",
                 lognum: "Vorherige Protokolldateien", 
                 audiocooldown: "Audio-Abklingzeit",
@@ -369,7 +370,9 @@ export const translations = {
                     `Wählen Sie eine <span class="hl">.sanbak</span>-Sicherungsdatei zur Wiederherstellung aus. Diese Datei bleibt nach Abschluss der Wiederherstellung erhalten`,
                     "❗ Nach Bestätigung wird die App neu gestartet, um die ausgewählte Sicherungsdatei wiederherzustellen"
                 ],
-                restorefailed: "Sicherung konnte nicht wiederhergestellt werden."
+                restorefailed: "Sicherung konnte nicht wiederhergestellt werden.",
+                usesanwatcher: "SANWatcher",
+                releasewaittime: "Wartezeit für Freigabe"
             }
         },
         ra: {
@@ -673,6 +676,7 @@ export const translations = {
         debug: "Öffnen Sie das Debug-Panel, das detaillierte Prozessverfolgungsinformationen anzeigt",
         userust: "Verwenden Sie eine alternative Rust-basierte Funktion, um zu überprüfen, ob die verfolgten Spielprozesse derzeit auf dem System ausgeführt werden. Wenn diese Option nicht aktiviert ist, wird stattdessen die Standardprozessüberprüfung auf NodeJS-Basis verwendet.",
         notifydebug: "Erstellen Sie ein DevTools-Fenster für alle Benachrichtigungen. Nützlich zum Debuggen/Beheben von Benachrichtigungsproblemen",
+        workerdebug: "Ein DevTools-Fenster für den Worker-Prozess erstellen. Nützlich zum Debuggen/Beheben von Problemen bei der Spielverfolgung",
         usecustomfiles: "Aktivieren Sie Benachrichtigungen, um benutzerdefinierbare Dateien zu laden. Vorsicht ist für normale Benutzer geboten",
         showcustomfiles: "Öffnen Sie den Speicherort der benutzerdefinierten Dateien",
         log: "Öffnen Sie das App-Protokollfenster, das Informationen über Prozessaktivitäten, Warnungen und Fehler anzeigt",
@@ -892,7 +896,9 @@ export const translations = {
         gametimerwinaot: `Setzt den Spielabschluss-Timer auf den Modus „Immer im Vordergrund“, sodass das Fenster über dem Spielfenster angezeigt wird<br><br><span class="ttdesc">Wenn aktiviert, registriert der Spielabschluss-Timer keine Benutzerinteraktionen mehr, wie z. B. „Klick“-Ereignisse. Um die Interaktion mit dem Fenster wieder zu aktivieren, muss diese Option deaktiviert werden</span>`,
         resetgametimer: "Setzt den Spielabschluss-Timer für das aktuelle Spiel zurück",
         noshortcuts: `Deaktiviert alle Tastenkürzel in der App<br><br><span class="ttdesc">Wenn aktiviert, <u>funktionieren alle Tastenkürzel in der App nicht mehr</u>. Alle Optionen im Zusammenhang mit Tastenkürzeln werden ebenfalls ausgeblendet</span>`,
-        extwinnotify: "Schaltet die Sichtbarkeit aller Bildschirmbenachrichtigungen bei der Verwendung von Stream Notifications um"
+        extwinnotify: "Schaltet die Sichtbarkeit aller Bildschirmbenachrichtigungen bei der Verwendung von Stream Notifications um",
+        usesanwatcher: `SANs neue Überwachung für Spielprozesse aktivieren<br><br><span class="ttdesc">Die Unterschiede zwischen dem neuen SANWatcher und den alten Methoden zur automatischen Prozessverfolgung sind wie folgt:<br><br><div class="wrapper sanwatcher"><span class="hl">EIN</span><ul><li>Überwacht aktiv Start-/Beendigungsereignisse aller Prozesse, die sich im Installationsverzeichnis des Spiels befinden</li><li>Es ist nicht erforderlich, die ausführbare Datei des Spiels zu kennen, um das aktuelle Spiel freizugeben</li><li>Das Verhalten von vorgeschalteten Launchern kann variieren, daher kann eine vollständige Kompatibilität mit allen Steam-Spielen nicht garantiert werden</li></ul></div><br><div class="wrapper sanwatcher"><span class="hl" style="color: firebrick;">AUS</span><ul><li>Durchsucht nach dem Start des Spiels das Installationsverzeichnis nach laufenden ausführbaren Dateien</li><li>Erfordert die Kenntnis der ausführbaren Datei des Spiels, um das aktuelle Spiel freizugeben</li><li>Wenn der Spielprozess nicht automatisch ermittelt werden kann, muss der Benutzer manuell einen neuen Eintrag zu <span class="hl">Automatische Spielfreigabe</span> hinzufügen, damit Spiele automatisch freigegeben werden können</li></ul></div>`,
+        releasewaittime: `Legen Sie fest, wie lange SANWatcher auf das Starten neuer Spielprozesse wartet, bevor das aktuelle Spiel freigegeben wird<br><br><span class="ttdesc">Wenn das aktuelle Spiel beispielsweise vor dem eigentlichen Spiel ein Start-/Konfigurationsfenster öffnet, bestimmt diese Einstellung, wie viele Sekunden SANWatcher nach dem Schließen des Start-/Konfigurationsfensters auf das Erscheinen des eigentlichen Spielfensters wartet<br><br>Wird innerhalb dieser Wartezeit ein neuer aktiver Spielprozess erkannt, wird die Freigabe abgebrochen und stattdessen der neu aktive Prozess verfolgt<br><br>💡 Der Spielname wird im Feld <span class="hl">Spielanzeige</span> <span style="animation: release calc(var(--transition) * 2.5) linear alternate infinite;">blinken</span>, während das aktuelle Spiel auf die Freigabe wartet</span>`
     },
     update: {
         updateavailable: "Update verfügbar",

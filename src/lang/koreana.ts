@@ -349,6 +349,7 @@ export const translations = {
                 debug: "디버그 패널",
                 userust: "대체 처리 모드",
                 notifydebug: "디버그 알림 표시",
+                workerdebug: "Worker DevTools 표시",
                 exportachdata: "업적 데이터 내보내기",
                 lognum: "이전 로그 파일", 
                 audiocooldown: "오디오 대기 시간",
@@ -369,7 +370,9 @@ export const translations = {
                     `복원할 <span class="hl">.sanbak</span> 백업 파일을 선택하세요. 복원 후에도 이 파일은 보존됩니다`,
                     "❗ 확인 후, 선택한 백업 파일을 복원하기 위해 앱이 재시작됩니다"
                 ],
-                restorefailed: "백업 복원에 실패했습니다."
+                restorefailed: "백업 복원에 실패했습니다.",
+                usesanwatcher: "SANWatcher",
+                releasewaittime: "해제 대기 시간"
             }
         },
         ra: {
@@ -673,6 +676,7 @@ export const translations = {
         debug: "디버그 패널을 열면 프로세스 추적 정보가 자세하게 표시됩니다.",
         userust: "시스템에서 추적된 게임 프로세스가 현재 실행 중인지 확인하기 위해 Rust 기반의 대체 기능을 사용합니다. 체크를 해제하면 대신 기본 NodeJS 기반 프로세스 확인이 사용됩니다.",
         notifydebug: "모든 알림에 대한 DevTools 창 생성. 알림 문제의 디버깅/문제 해결에 유용",
+        workerdebug: "Worker 프로세스용 DevTools 창을 생성합니다. 게임 추적 문제를 디버깅하거나 문제를 해결하는 데 유용합니다",
         usecustomfiles: "사용자 정의 가능한 파일을 알림에로드 가능하게 함. 일반 사용자에게 주의가 필요",
         showcustomfiles: "사용자 정의 파일의 위치 열기",
         log: "앱 로그 창 열기, 프로세스 활동, 경고 및 오류에 대한 정보 표시",
@@ -892,7 +896,9 @@ export const translations = {
         gametimerwinaot: `게임 완료 타이머를 "항상 위에 표시" 모드로 설정하여 게임 창 위에 표시되도록 합니다<br><br><span class="ttdesc">활성화되면 게임 완료 타이머는 "click" 이벤트와 같은 사용자 상호작용을 더 이상 감지하지 않습니다. 창과 다시 상호작용하려면 이 옵션을 비활성화해야 합니다</span>`,
         resetgametimer: "현재 게임의 게임 완료 타이머를 초기화합니다",
         noshortcuts: `앱 내의 모든 키보드 단축키를 비활성화합니다<br><br><span class="ttdesc">활성화되면 <u>모든 앱 내 단축키가 더 이상 작동하지 않습니다</u>. 키보드 단축키와 관련된 모든 옵션도 숨겨집니다</span>`,
-        extwinnotify: "Stream Notifications 사용 중 모든 화면 알림의 표시 여부를 전환합니다"
+        extwinnotify: "Stream Notifications 사용 중 모든 화면 알림의 표시 여부를 전환합니다",
+        usesanwatcher: `SAN의 새로운 게임 프로세스 감시 기능 활성화<br><br><span class="ttdesc">새로운 SANWatcher와 기존 자동 프로세스 추적 방식의 차이점은 다음과 같습니다.<br><br><div class="wrapper sanwatcher"><span class="hl">ON</span><ul><li>게임 설치 디렉터리에 저장된 모든 프로세스의 시작/종료 이벤트를 적극적으로 모니터링합니다</li><li>현재 게임을 해제하기 위해 게임 실행 파일을 미리 알고 있을 필요가 없습니다</li><li>게임 실행 전 런처의 동작은 달라질 수 있으므로 모든 Steam 게임과의 완전한 호환성은 보장되지 않습니다</li></ul></div><br><div class="wrapper sanwatcher"><span class="hl" style="color: firebrick;">OFF</span><ul><li>게임 실행 후 게임 설치 디렉터리에서 실행 중인 실행 파일을 검색합니다</li><li>현재 게임을 해제하려면 게임 실행 파일을 알고 있어야 합니다</li><li>게임 프로세스를 자동으로 확인할 수 없는 경우, 게임을 자동으로 해제하려면 사용자가 <span class="hl">자동 릴리스 게임</span>에 새 항목을 수동으로 추가해야 합니다</li></ul></div>`,
+        releasewaittime: `현재 게임을 해제하기 전에 SANWatcher가 새 게임 프로세스가 시작될 때까지 대기할 시간을 설정합니다<br><br><span class="ttdesc">예를 들어, 현재 게임이 실제 게임을 실행하기 전에 런처 또는 설정 창을 먼저 실행하는 경우, 이 설정은 런처 또는 설정 창이 닫힌 후 실제 게임 창이 나타날 때까지 SANWatcher가 기다릴 초 단위를 결정합니다<br><br>이 대기 시간 내에 새로운 활성 게임 프로세스가 감지되면 해제가 취소되고, 대신 새로 활성화된 프로세스가 추적됩니다<br><br>💡 현재 게임이 해제 대기 중인 동안 게임 이름이 <span style="animation: release calc(var(--transition) * 2.5) linear alternate infinite;">깜박이며</span> <span class="hl">게임 표시</span> 상자에 표시됩니다</span>`
     },
     update: {
         updateavailable: "업데이트 가능",

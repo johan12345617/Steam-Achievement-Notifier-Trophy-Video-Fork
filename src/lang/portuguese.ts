@@ -349,6 +349,7 @@ export const translations = {
                 debug: "Painel de Depuração",
                 userust: "Modo de Processamento Alternativo",
                 notifydebug: "Mostrar Notificações de Depuração",
+                workerdebug: "Mostrar DevTools do Worker",
                 exportachdata: "Exportar Dados de Conquista",
                 lognum: "Arquivos de Log Anteriores", 
                 audiocooldown: "Tempo de Espera do Áudio",
@@ -369,7 +370,9 @@ export const translations = {
                     `Selecione um ficheiro de backup <span class="hl">.sanbak</span> para restaurar. Este ficheiro será preservado após a restauração`,
                     "❗ Uma vez confirmado, a app será reiniciada para restaurar o ficheiro de backup selecionado"
                 ],
-                restorefailed: "Não foi possível restaurar o backup."
+                restorefailed: "Não foi possível restaurar o backup.",
+                usesanwatcher: "SANWatcher",
+                releasewaittime: "Tempo de Espera para Libertação"
             }
         },
         ra: {
@@ -673,6 +676,7 @@ export const translations = {
         debug: "Abra o Painel de Depuração, que exibe informações detalhadas de rastreamento de processos",
         userust: "Use uma função alternativa baseada em Rust para verificar se os processos de jogo rastreados estão atualmente em execução no sistema. Quando não marcado, o controle de processo padrão baseado em NodeJS será usado em vez disso.",
         notifydebug: "Criar uma janela DevTools para todas as notificações. Útil para depurar/solucionar problemas de notificação",
+        workerdebug: "Criar uma janela DevTools para o processo Worker. Útil para depuração/resolução de problemas de rastreamento de jogos",
         usecustomfiles: "Permite que as notificações carreguem arquivos personalizáveis pelo usuário. É recomendada cautela para usuários regulares",
         showcustomfiles: "Abrir o local dos arquivos personalizados",
         log: "Abrir a janela de log do aplicativo, que exibe informações sobre a atividade do processo, avisos e erros",
@@ -892,7 +896,9 @@ export const translations = {
         gametimerwinaot: `Definir o Temporizador de Conclusão do Jogo para o modo "Sempre no Topo", permitindo que a janela seja exibida acima da janela do jogo<br><br><span class="ttdesc">Quando ativado, o Temporizador de Conclusão do Jogo deixará de registar interações do utilizador, como eventos de "click". Para voltar a permitir a interação com a janela, esta opção deve ser desativada</span>`,
         resetgametimer: "Redefinir o Temporizador de Conclusão do Jogo para o jogo atual",
         noshortcuts: `Desativa todos os atalhos de teclado dentro da aplicação<br><br><span class="ttdesc">Quando ativado, <u>todos os atalhos da aplicação deixarão de funcionar</u>. Todas as opções relacionadas com atalhos de teclado também serão ocultadas</span>`,
-        extwinnotify: "Alternar a visibilidade de todas as notificações no ecrã ao utilizar Stream Notifications"
+        extwinnotify: "Alternar a visibilidade de todas as notificações no ecrã ao utilizar Stream Notifications",
+        usesanwatcher: `Ativar o novo monitor de processos de jogos do SAN<br><br><span class="ttdesc">As diferenças entre o novo SANWatcher e os métodos antigos de monitorização automática de processos são as seguintes:<br><br><div class="wrapper sanwatcher"><span class="hl">ON</span><ul><li>Monitoriza ativamente eventos de início/encerramento de qualquer processo armazenado no diretório de instalação do jogo</li><li>Não requer que o executável do jogo seja conhecido para libertar o jogo atual</li><li>O comportamento dos lançadores pré-jogo pode variar, pelo que a compatibilidade total com todos os jogos Steam não é garantida</li></ul></div><br><div class="wrapper sanwatcher"><span class="hl" style="color: firebrick;">OFF</span><ul><li>Analisa o diretório de instalação do jogo à procura de executáveis em execução após o arranque do jogo</li><li>Requer que o executável do jogo seja conhecido para libertar o jogo atual</li><li>Se o processo do jogo não puder ser determinado automaticamente, o utilizador terá de adicionar manualmente uma nova entrada a <span class="hl">Jogos com libertação automática</span> para que os jogos sejam libertados automaticamente</li></ul></div>`,
+        releasewaittime: `Defina por quanto tempo o SANWatcher aguardará o surgimento de novos processos de jogo antes de liberar o jogo atual<br><br><span class="ttdesc">Por exemplo, se o jogo atual iniciar um lançador ou janela de configuração antes de iniciar o jogo propriamente dito, esta configuração determina o número de segundos que o SANWatcher aguardará pelo aparecimento da janela do jogo real após o fechamento do lançador ou da janela de configuração<br><br>Se um novo processo de jogo ativo for detectado dentro deste período de espera, a liberação será cancelada e o processo recém-ativado passará a ser monitorado em seu lugar<br><br>💡 O nome do jogo irá <span style="animation: release calc(var(--transition) * 2.5) linear alternate infinite;">piscar</span> na caixa <span class="hl">Exibição do Jogo</span> enquanto o jogo atual estiver aguardando para ser liberado</span>`
     },
     update: {
         updateavailable: "Atualização disponível",

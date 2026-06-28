@@ -349,6 +349,7 @@ export const translations = {
                 debug: "Panel debugowania",
                 userust: "Alternatywny tryb przetwarzania",
                 notifydebug: "Pokaż powiadomienia debugowania",
+                workerdebug: "Pokaż DevTools Workera",
                 exportachdata: "Eksportuj dane osiągnięć",
                 lognum: "Poprzednie pliki dziennika", 
                 audiocooldown: "Czas oczekiwania dźwięku",
@@ -369,7 +370,9 @@ export const translations = {
                     `Wybierz plik kopii zapasowej <span class="hl">.sanbak</span>, z którego chcesz przywrócić. Plik ten zostanie zachowany po zakończeniu przywracania`,
                     "❗ Po potwierdzeniu aplikacja uruchomi się ponownie, aby przywrócić wybrany plik kopii zapasowej"
                 ],
-                restorefailed: "Nie udało się przywrócić kopii zapasowej."
+                restorefailed: "Nie udało się przywrócić kopii zapasowej.",
+                usesanwatcher: "SANWatcher",
+                releasewaittime: "Czas oczekiwania przed zwolnieniem"
             }
         },
         ra: {
@@ -673,6 +676,7 @@ export const translations = {
         debug: "Otwórz panel debugowania, który wyświetla szczegółowe informacje o śledzeniu procesów",
         userust: "Użyj alternatywnej funkcji opartej na Rust, aby sprawdzić, czy śledzone procesy gry są obecnie uruchomione na systemie. Gdy nie jest zaznaczone, zostanie użyta domyślna kontrola procesów oparta na NodeJS.",
         notifydebug: "Utwórz okno narzędzi deweloperskich dla wszystkich powiadomień. Przydatne do debugowania/problemów z powiadomieniami",
+        workerdebug: "Utwórz okno DevTools dla procesu Worker. Przydatne do debugowania/rozwiązywania problemów ze śledzeniem gier",
         usecustomfiles: "Włącza ładowanie niestandardowych plików przez powiadomienia. Ostrożność jest zalecana dla zwykłych użytkowników",
         showcustomfiles: "Otwórz lokalizację niestandardowych plików",
         log: "Otwórz okno dziennika aplikacji, które wyświetla informacje o działalności procesu, ostrzeżenia i błędy",
@@ -892,7 +896,9 @@ export const translations = {
         gametimerwinaot: `Ustaw Timer Ukończenia Gry w trybie "Zawsze na Wierzchu", umożliwiając wyświetlanie okna nad oknem gry<br><br><span class="ttdesc">Po włączeniu Timer Ukończenia Gry nie będzie już rejestrować interakcji użytkownika, takich jak zdarzenia "click". Aby ponownie włączyć interakcję z oknem, należy wyłączyć tę opcję</span>`,
         resetgametimer: "Resetuj Timer Ukończenia Gry dla bieżącej gry",
         noshortcuts: `Wyłącza wszystkie skróty klawiaturowe w aplikacji<br><br><span class="ttdesc">Po włączeniu <u>wszystkie skróty w aplikacji przestaną działać</u>. Wszystkie opcje związane ze skrótami klawiaturowymi również zostaną ukryte</span>`,
-        extwinnotify: "Przełącz widoczność wszystkich powiadomień ekranowych podczas korzystania ze Stream Notifications"
+        extwinnotify: "Przełącz widoczność wszystkich powiadomień ekranowych podczas korzystania ze Stream Notifications",
+        usesanwatcher: `Włącz nowy monitor procesów gier SAN<br><br><span class="ttdesc">Różnice między nowym SANWatcher a starymi metodami automatycznego śledzenia procesów są następujące:<br><br><div class="wrapper sanwatcher"><span class="hl">ON</span><ul><li>Aktywnie monitoruje zdarzenia uruchomienia/zakończenia dla każdego procesu znajdującego się w katalogu instalacyjnym gry</li><li>Nie wymaga znajomości pliku wykonywalnego gry, aby zwolnić bieżącą grę</li><li>Zachowanie programów uruchamiających przed startem gry może się różnić, dlatego pełna kompatybilność ze wszystkimi grami Steam nie jest gwarantowana</li></ul></div><br><div class="wrapper sanwatcher"><span class="hl" style="color: firebrick;">OFF</span><ul><li>Po uruchomieniu gry skanuje katalog instalacyjny gry w poszukiwaniu uruchomionych plików wykonywalnych</li><li>Wymaga znajomości pliku wykonywalnego gry, aby zwolnić bieżącą grę</li><li>Jeśli proces gry nie może zostać określony automatycznie, użytkownik musi ręcznie dodać nowy wpis do <span class="hl">Gry z automatycznym zwalnianiem</span>, aby gry były automatycznie zwalniane</li></ul></div>`,
+        releasewaittime: `Ustaw, jak długo SANWatcher ma czekać na uruchomienie nowych procesów gry przed zwolnieniem bieżącej gry<br><br><span class="ttdesc">Na przykład, jeśli bieżąca gra uruchamia program startowy lub okno konfiguracji przed uruchomieniem właściwej gry, to ustawienie określa liczbę sekund, przez które SANWatcher będzie czekać na pojawienie się właściwego okna gry po zamknięciu programu startowego lub okna konfiguracji<br><br>Jeśli w tym czasie oczekiwania zostanie wykryty nowy aktywny proces gry, zwolnienie zostanie anulowane, a zamiast tego śledzony będzie nowo aktywny proces<br><br>💡 Nazwa gry będzie <span style="animation: release calc(var(--transition) * 2.5) linear alternate infinite;">migać</span> w polu <span class="hl">Wyświetlanie Gry</span>, gdy bieżąca gra oczekuje na zwolnienie</span>`
     },
     update: {
         updateavailable: "Dostępna aktualizacja",

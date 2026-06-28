@@ -349,6 +349,7 @@ export const translations = {
                 debug: "Pannello di Debug",
                 userust: "Modalità di Elaborazione Alternativa",
                 notifydebug: "Mostra notifiche di debug",
+                workerdebug: "Mostra DevTools del Worker",
                 exportachdata: "Esporta dati di successo",
                 lognum: "File di registro precedenti", 
                 audiocooldown: "Tempo di attesa audio",
@@ -369,7 +370,9 @@ export const translations = {
                     `Seleziona un file di backup <span class="hl">.sanbak</span> da cui ripristinare. Questo file sarà preservato dopo il completamento del ripristino`,
                     "❗ Una volta confermato, l'app si riavvierà per ripristinare il file di backup selezionato"
                 ],
-                restorefailed: "Impossibile ripristinare il backup."
+                restorefailed: "Impossibile ripristinare il backup.",
+                usesanwatcher: "SANWatcher",
+                releasewaittime: "Tempo di attesa per il rilascio"
             }
         },
         ra: {
@@ -673,6 +676,7 @@ export const translations = {
         debug: "Apri il Pannello di Debug, che mostra informazioni dettagliate sul tracciamento dei processi",
         userust: "Utilizza una funzione alternativa basata su Rust per verificare se i processi di gioco tracciati sono attualmente in esecuzione sul sistema. Quando non selezionato, verrà utilizzato invece il controllo dei processi predefinito basato su NodeJS.",
         notifydebug: "Crea una finestra DevTools per tutte le notifiche. Utile per il debug/risoluzione dei problemi delle notifiche",
+        workerdebug: "Crea una finestra DevTools per il processo Worker. Utile per il debug/la risoluzione dei problemi di tracciamento dei giochi",
         usecustomfiles: "Abilita le notifiche per caricare file personalizzabili dall'utente. Si consiglia cautela per gli utenti comuni",
         showcustomfiles: "Apri la posizione dei file personalizzati",
         log: "Apri la finestra del registro dell'app, che visualizza informazioni sull'attività del processo, avvisi ed errori",
@@ -892,7 +896,9 @@ export const translations = {
         gametimerwinaot: `Imposta il Timer Completamento Gioco in modalità "Sempre in Primo Piano", consentendo alla finestra di essere visualizzata sopra la finestra del gioco<br><br><span class="ttdesc">Quando abilitato, il Timer Completamento Gioco non registrerà più le interazioni dell'utente, come gli eventi "click". Per riabilitare l'interazione con la finestra, questa opzione deve essere disabilitata</span>`,
         resetgametimer: "Reimposta il Timer Completamento Gioco per il gioco corrente",
         noshortcuts: `Disabilita tutte le scorciatoie da tastiera dell'applicazione<br><br><span class="ttdesc">Quando abilitato, <u>tutte le scorciatoie dell'applicazione non funzioneranno più</u>. Verranno inoltre nascoste tutte le opzioni relative alle scorciatoie da tastiera</span>`,
-        extwinnotify: "Attiva/disattiva la visibilità di tutte le notifiche a schermo durante l'utilizzo delle Stream Notifications"
+        extwinnotify: "Attiva/disattiva la visibilità di tutte le notifiche a schermo durante l'utilizzo delle Stream Notifications",
+        usesanwatcher: `Abilita il nuovo monitor dei processi di gioco di SAN<br><br><span class="ttdesc">Le differenze tra il nuovo SANWatcher e i vecchi metodi di tracciamento automatico dei processi sono le seguenti:<br><br><div class="wrapper sanwatcher"><span class="hl">ON</span><ul><li>Monitora attivamente gli eventi di avvio/chiusura di qualsiasi processo presente nella directory di installazione del gioco</li><li>Non richiede che l'eseguibile del gioco sia noto per rilasciare il gioco corrente</li><li>Il comportamento dei launcher pre-gioco può variare, quindi la piena compatibilità con tutti i giochi Steam non è garantita</li></ul></div><br><div class="wrapper sanwatcher"><span class="hl" style="color: firebrick;">OFF</span><ul><li>Analizza la directory di installazione del gioco alla ricerca di eventuali eseguibili in esecuzione dopo l'avvio del gioco</li><li>Richiede che l'eseguibile del gioco sia noto per rilasciare il gioco corrente</li><li>Se il processo del gioco non può essere determinato automaticamente, l'utente deve aggiungere manualmente una nuova voce a <span class="hl">Giochi con rilascio automatico</span> affinché i giochi vengano rilasciati automaticamente</li></ul></div>`,
+        releasewaittime: `Imposta per quanto tempo SANWatcher attenderà la comparsa di nuovi processi di gioco prima di rilasciare il gioco corrente<br><br><span class="ttdesc">Ad esempio, se il gioco corrente avvia un launcher/finestra di configurazione prima di avviare il gioco vero e proprio, questa impostazione determina il numero di secondi che SANWatcher attenderà affinché la finestra del gioco effettivo venga visualizzata dopo la chiusura del launcher/della finestra di configurazione<br><br>Se viene rilevato un nuovo processo di gioco attivo entro questo intervallo di attesa, il rilascio verrà annullato e verrà invece monitorato il nuovo processo attivo<br><br>💡 Il nome del gioco <span style="animation: release calc(var(--transition) * 2.5) linear alternate infinite;">lampeggerà</span> nella casella <span class="hl">Visualizzazione Gioco</span> mentre il gioco corrente è in attesa di essere rilasciato</span>`
     },
     update: {
         updateavailable: "Aggiornamento disponibile",
